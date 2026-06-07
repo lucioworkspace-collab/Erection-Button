@@ -1233,10 +1233,28 @@
         /* ---- 7) live chat overlay on the VSL (short messages + emojis, same people) ---- */
         var chatEl = $('#vslChat');
         var CHAT = [
-          'this is incredible 😍', 'my mom needs this 🙏', 'just ordered!! 🔥', 'wait, this explains so much 😮',
-          'thank you for sharing ❤️', 'watching from Ohio 👋', 'week 2 and I feel sharper 😊', 'sharing with my husband',
-          '🙌🙌🙌', 'can’t believe I almost skipped this', 'taking notes 📝', 'this is me 100%', 'finally some real answers 🙏',
-          'ordered for me and my sister 💛', 'so glad I stayed till the end', 'goosebumps 😮', 'yes!! 🔥🔥', 'praying this works for my dad ❤️'
+          "wait did he just say HONEY?? lol i have that in my pantry rn",
+          "ok what are the 2 ingredients im hanging on every word",
+          "anybody catch what he said the second one was",
+          "my mom doesnt recognize me half the time anymore. praying this is real",
+          "102 years old and sharper than my doctor lol",
+          "hold on rewind what did he say about the brain parasite",
+          "my dad used to fix anything. now he cant find his own kitchen. this is breaking me",
+          "has anyone here actually tried what he's describing",
+          "im 56 and already losing words mid sentence. scares the heck outta me",
+          "so it's just 2 things from the grocery store?? that simple??",
+          "watched my grandma disappear in front of us. wouldnt wish it on anyone",
+          "why is no one talking abt this. first im hearing of it",
+          "need to hear the rest before i have to go pick up the kids ugh",
+          "the part about getting lost on a road you drove 40 yrs... thats literally my husband",
+          "wait WHAT does big pharma not want us to know now",
+          "how long till it actually kicks in tho, anybody know",
+          "watching this for my mother in law, she forgets my kids names now 💔",
+          "is he gonna explain HOW to do it or do i gotta watch the whole thing lol",
+          "ngl came in skeptical but im still here 20 min later",
+          "y'all i forgot why i walked into the room TWICE today. half kidding half terrified",
+          "does this work for early stage or is it too late once it starts",
+          "someone tell me i didnt miss the part where he says what it is"
         ];
         function addChat() {
           if (!chatEl) return;
@@ -1246,7 +1264,7 @@
           row.innerHTML = '<img class="vsl-chat__av" src="' + p.a + '" alt="" loading="lazy">' +
             '<div class="vsl-chat__txt"><span class="vsl-chat__name">' + p.n.split(' ')[0] + '</span>' + pick(CHAT) + '</div>';
           chatEl.appendChild(row);
-          while (chatEl.childElementCount > 4) chatEl.removeChild(chatEl.firstChild);
+          while (chatEl.childElementCount > 3) chatEl.removeChild(chatEl.firstChild);
           if (Math.random() < 0.25) emitReaction();
         }
         (function loopChat() { setTimeout(function () { addChat(); loopChat(); }, rand(4500, 8000)); })();
