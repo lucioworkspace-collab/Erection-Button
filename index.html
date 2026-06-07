@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="preconnect" href="https://i.ibb.co" crossorigin="">
   <!-- Fonts: single combined request, trimmed weights (faster than 3 separate calls) -->
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Roboto:wght@400;700&family=Jost:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Roboto:wght@400;700&family=Jost:wght@500;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
 
 
@@ -201,6 +201,175 @@
     .cm-composer input:focus { border-color: var(--brand); }
     .cm-load { width: 100%; margin-top: 18px; padding: 10px; border: 1px solid #ccd0d5; border-radius: 8px; background: #fff; font-weight: 700; font-size: 13.5px; color: #050505; cursor: pointer; }
     .cm-load:hover { background: #f0f2f5; }
+
+    /* ===== CBS-style serif headline ===== */
+    .headline-serif {
+      font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -0.01em;
+    }
+
+    /* ===== Live presence ===== */
+    .live-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: #e0103a;
+      box-shadow: 0 0 0 0 rgba(224, 16, 58, .6);
+      animation: live-pulse 1.6s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes live-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(224, 16, 58, .55); }
+      70% { box-shadow: 0 0 0 7px rgba(224, 16, 58, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(224, 16, 58, 0); }
+    }
+
+    .livebar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 0;
+      font-size: 13px;
+      color: #333;
+      font-family: 'Open Sans', Arial, sans-serif;
+    }
+
+    .livebar__label { font-weight: 800; color: #e0103a; letter-spacing: .08em; }
+    .livebar__count { color: #555; font-weight: 600; }
+    .livebar__count #liveViewers { color: #111; font-weight: 800; }
+
+    /* ===== Scarcity widget ===== */
+    .scarcity {
+      max-width: 460px;
+      margin: 22px auto;
+      padding: 16px 18px 18px;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 12px;
+      text-align: center;
+      font-family: 'Open Sans', Arial, sans-serif;
+      box-shadow: 0 8px 24px rgba(133, 87, 0, .28);
+    }
+
+    .scarcity__live {
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      opacity: .95;
+      margin-bottom: 10px;
+    }
+
+    .scarcity__stock { font-size: 17px; font-weight: 700; line-height: 1.25; }
+    .scarcity__stock .counter_left { font-weight: 800; text-decoration: underline; }
+
+    .scarcity__bar {
+      height: 10px;
+      background: rgba(255, 255, 255, .35);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 12px 0 12px;
+    }
+
+    .scarcity__bar span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: #fff;
+      border-radius: 9999px;
+      transition: width .8s ease;
+    }
+
+    .scarcity__timer {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(0, 0, 0, .18);
+      padding: 7px 14px;
+      border-radius: 9999px;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .scarcity__timer strong { font-variant-numeric: tabular-nums; font-weight: 800; }
+
+    /* ===== Live "just reserved" toasts ===== */
+    .toast-wrap {
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+      max-width: min(330px, 86vw);
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 13px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+      border-left: 4px solid var(--brand);
+      transform: translateX(-120%);
+      opacity: 0;
+      transition: transform .45s cubic-bezier(.2, .8, .2, 1), opacity .45s;
+      font-family: 'Open Sans', Arial, sans-serif;
+    }
+
+    .toast.is-in { transform: translateX(0); opacity: 1; }
+
+    .toast__avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 9999px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .toast__body { line-height: 1.3; }
+    .toast__title { font-size: 13px; color: #111; font-weight: 700; }
+    .toast__title span { color: var(--brand-darker); }
+    .toast__meta { font-size: 11px; color: #777; margin-top: 1px; display: flex; align-items: center; gap: 5px; }
+    .toast__check { color: #1a9e54; display: inline-flex; }
+
+    /* ===== Live comment arrival ===== */
+    .cm-live-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #e0103a;
+      letter-spacing: .04em;
+    }
+
+    @keyframes cm-in {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cm-row.cm-new { animation: cm-in .5s ease; }
+    .cm-row.cm-new .cm-bubble { box-shadow: 0 0 0 2px rgba(205, 137, 0, .35); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot, .cm-row.cm-new { animation: none; }
+      .toast { transition: opacity .3s; }
+    }
   </style>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -254,15 +423,20 @@
     </nav>
 
     <section class="principal">
-      <!-- Headline (CBS Morning style: kicker + live localized date + title) -->
-      <div class="px-4 pt-3 pb-3 max-w-3xl mx-auto font-sans">
+      <!-- Headline (CBS Sunday Morning editorial style: kicker + serif title + dek) -->
+      <div class="px-4 pt-3 pb-4 max-w-3xl mx-auto">
         <div class="cbs-eyebrow">
           <span class="cbs-eyebrow__kicker">Sunday Morning</span>
           <span class="cbs-eyebrow__date data_atual"></span>
         </div>
-        <h1 class="text-[24px] md:text-[34px] leading-[1.12] font-extrabold text-black tracking-tight">
+        <h1 class="headline-serif text-[26px] md:text-[38px] leading-[1.15] mb-3">
           <span class="text-[#cd8900]">URGENT:</span> Scientists uncover a natural solution to boost memory and support cognitive health that can be done at home
         </h1>
+        <div class="flex items-start border-l-[3px] border-[#cd8900] pl-3 py-1">
+          <p class="text-[15px] md:text-[17px] text-[#333] font-medium leading-snug">
+            Over 15,000 Americans have already reported a significant improvement in memory.
+          </p>
+        </div>
       </div>
       <div class="video_vturb">
 
@@ -292,10 +466,8 @@
               clearInterval(checkInterval);
               player.addEventListener("player:ready", () => {
                 player.displayHiddenElements(SECONDS_TO_DISPLAY, [".esconder"], { persist: true });
-                // Start the "bottles left" countdown only once the offer is revealed.
-                if (typeof startCounter === "function") {
-                  startCounter();
-                }
+                // Start the reservation countdown exactly when the offer is revealed.
+                if (window.CBSLive) window.CBSLive.onOfferReveal();
               });
             }
           }
@@ -306,62 +478,31 @@
         <!-- END Vturb JS -->
 
       </div>
-      <!-- Social proof line (moved below the VSL so the video sits higher) -->
-      <div class="px-4 pt-3 pb-1 max-w-3xl mx-auto font-sans">
-        <div class="flex items-start border-l-[3px] border-[#cd8900] pl-3 py-1">
-          <p class="text-[15px] md:text-[17px] text-[#333] font-medium leading-tight">
-            Over 15,000 Americans have already reported a significant improvement in memory.
-          </p>
-        </div>
+      <!-- Live presence strip (always visible — sets the "live broadcast" tone) -->
+      <div class="livebar" aria-hidden="true">
+        <span class="live-dot"></span>
+        <span class="livebar__label">LIVE</span>
+        <span class="livebar__count"><span id="liveViewers">1,247</span> watching now</span>
       </div>
       <div style="display: flex; justify-content: center ;">
         <img decoding="async" src="images/ADV-PORTAIS.webp" class="img_adv" alt="Advertorial">
       </div>
-      <section data-bs-version="5.1" class="content4 cid-tUi171W7Op esconder" id="content4-y" style="margin: 25px 0px 25px !important;padding: 20px 5px 10px;background-color: #cd8900;text-align: center;">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="title col-md-12 col-lg-12">
-              <h3 class="mbr-section-title mbr-fonts-style align-center display-2" style="font-family: 'Jost', sans-serif !important;font-weight: 500 !important;font-size: 1.8rem;">
-                <strong style="font-family: 'Jost', sans-serif !important;font-weight: bolder !important;color: white;">Last
-                  bottles left: <span style="color: #fff;text-decoration:underline;" class="counter_left">84</span></strong>
-              </h3>
-            </div>
-          </div>
+      <!-- ===== Live scarcity widget (revealed with the offer) ===== -->
+      <section class="scarcity esconder" id="content4-y">
+        <div class="scarcity__live">
+          <span class="live-dot"></span> LIVE · <span id="liveCheckout">39</span> people checking out right now
+        </div>
+        <div class="scarcity__stock">
+          Only <span class="counter_left" id="stockLeft">84</span> kits left at this discounted price
+        </div>
+        <div class="scarcity__bar" role="progressbar" aria-label="Remaining stock">
+          <span id="stockBar"></span>
+        </div>
+        <div class="scarcity__timer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M9 2h6"></path></svg>
+          Your discount is reserved for <strong id="resTimer">15:00</strong>
         </div>
       </section>
-      <script>
-        // Altere a quantidade de potes restantes
-        let count = 84;
-        const counterElement = document.querySelector('.counter_left');
-
-        function getRandomReduction() {
-          return Math.floor(Math.random() * 3) + 1;
-        }
-
-        function updateCounter() {
-          if (!counterElement) {
-            return;
-          }
-          count -= getRandomReduction();
-          if (count < 5) {
-            count = 5;
-          }
-          counterElement.innerText = count;
-        }
-
-        // Kick off the countdown. Exposed so the VSL "player:ready" handler can
-        // start it exactly when the offer becomes visible; falls back to a timer
-        // here so the counter still animates even if the player never fires.
-        let counterStarted = false;
-
-        function startCounter() {
-          if (counterStarted || !counterElement) {
-            return;
-          }
-          counterStarted = true;
-          setInterval(updateCounter, 15000);
-        }
-      </script>
       <div class="row esconder">
         <div class="row dflex">
 
@@ -512,8 +653,8 @@
     <section class="cv-auto container mx-auto my-10 p-4 font-sans max-w-3xl">
 
       <div class="border-b border-gray-300 pb-3 mb-4 flex items-center justify-between">
-        <h3 class="text-[16px] font-bold text-black">4,128 comments</h3>
-        <span class="text-[12px] font-semibold text-gray-500">Sort by: <span class="text-black">Top</span></span>
+        <h3 class="text-[16px] font-bold text-black"><span id="cmCount">4,128</span> comments</h3>
+        <span class="cm-live-tag"><span class="live-dot"></span> LIVE</span>
       </div>
 
       <!-- Composer -->
@@ -652,25 +793,160 @@
 
       <button type="button" class="cm-load" id="cm-load">View more comments</button>
     </section>
+    <!-- Live "just reserved" toast notifications -->
+    <div class="toast-wrap" id="toastWrap" aria-hidden="true"></div>
+
     <script>
-      // Lightweight interactivity so the comment feed feels live.
+      /* ===================================================================
+         CBSLive — real-time presence, scarcity and social proof engine.
+         Self-contained; degrades gracefully if any element is absent.
+         =================================================================== */
       (function () {
-        document.querySelectorAll('.cm-like').forEach(function (b) {
-          b.addEventListener('click', function () {
-            var liked = b.classList.toggle('is-liked');
-            b.textContent = liked ? 'Liked' : 'Like';
-            var c = b.closest('.cm-meta');
-            c = c && c.querySelector('.cm-count');
+        'use strict';
+        var $ = function (s, r) { return (r || document).querySelector(s); };
+        var rand = function (a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; };
+        var pick = function (a) { return a[rand(0, a.length - 1)]; };
+
+        var NAMES = ['Margaret', 'Robert', 'Helen', 'James', 'Patricia', 'Don', 'Linda', 'George',
+          'Barbara', 'William', 'Susan', 'Richard', 'Karen', 'Joseph', 'Nancy', 'Charles', 'Betty', 'Thomas'];
+        var STATES = ['Florida', 'Texas', 'Ohio', 'Arizona', 'Georgia', 'Michigan', 'Nevada',
+          'Tennessee', 'Indiana', 'Missouri', 'Kentucky', 'Oregon', 'Colorado', 'Virginia'];
+        var KITS = [{ label: '6-bottle kit', qty: 2 }, { label: '3-bottle kit', qty: 1 }, { label: '2-bottle kit', qty: 1 }];
+        var COMMENTS = [
+          'Day 12 and I finally remembered my grandson’s birthday without a reminder. Emotional.',
+          'I was so skeptical but the focus difference is real. Wish I started sooner.',
+          'Watched the whole thing twice. Ordered for me and my husband.',
+          'My word recall in conversations is noticeably better this week.',
+          'The brain fog after lunch is basically gone now.',
+          'Shared with my book club — three of us are trying it.',
+          'Sharper in the mornings than I’ve been in years.',
+          'Didn’t expect much. Three weeks in I’m a believer.',
+          'My wife said I seem “more present.” That hit me.',
+          'Finally something that actually does what it says.'
+        ];
+        var AVATARS = ['images/foto1 (3).jpg', 'images/foto1 (1).jpg', 'images/nova1 (2).jpg', 'images/nova1 (4).jpg'];
+        var HEART = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.3 5 5.6 5c2 0 3.3 1.2 4.4 2.6C11.1 6.2 12.4 5 14.4 5c3.3 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"></path></svg>';
+
+        /* ---- 1) live viewers / checkout counters ---- */
+        var viewers = rand(1180, 1320);
+        function renderViewers() { var v = $('#liveViewers'); if (v) v.textContent = viewers.toLocaleString(); }
+        function renderCheckout() { var c = $('#liveCheckout'); if (c) c.textContent = rand(28, 54); }
+        renderViewers(); renderCheckout();
+        setInterval(function () {
+          viewers += rand(-9, 14);
+          if (viewers < 900) viewers = 940;
+          if (viewers > 1600) viewers = 1560;
+          renderViewers();
+        }, 3000);
+        setInterval(renderCheckout, 4000);
+
+        /* ---- 2) scarcity: persistent stock + progress bar + reservation timer ---- */
+        var STOCK_KEY = 'cbs_stock_v1', RES_KEY = 'cbs_res_deadline_v1';
+        var STOCK_START = 84, STOCK_FLOOR = 12, RES_MS = 15 * 60000;
+        var stock = parseInt(localStorage.getItem(STOCK_KEY), 10);
+        if (isNaN(stock) || stock < STOCK_FLOOR || stock > STOCK_START) stock = STOCK_START;
+
+        function renderStock() {
+          var el = $('#stockLeft'); if (el) el.textContent = stock;
+          var bar = $('#stockBar'); if (bar) bar.style.width = Math.max(6, Math.round(stock / STOCK_START * 100)) + '%';
+          try { localStorage.setItem(STOCK_KEY, stock); } catch (e) {}
+        }
+        function reduceStock(n) { stock = Math.max(STOCK_FLOOR, stock - n); renderStock(); }
+        renderStock();
+        setInterval(function () { if (Math.random() < 0.5) reduceStock(1); }, 12000);
+
+        var deadline = null;
+        function ensureDeadline() {
+          var d = parseInt(localStorage.getItem(RES_KEY), 10);
+          if (isNaN(d) || d - Date.now() <= 0 || d - Date.now() > RES_MS + 2000) {
+            d = Date.now() + RES_MS;
+            try { localStorage.setItem(RES_KEY, d); } catch (e) {}
+          }
+          return d;
+        }
+        function renderTimer() {
+          var el = $('#resTimer'); if (!el) return;
+          if (deadline === null) deadline = ensureDeadline();
+          var left = deadline - Date.now();
+          if (left <= 0) { deadline = Date.now() + RES_MS; try { localStorage.setItem(RES_KEY, deadline); } catch (e) {} left = RES_MS; }
+          var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+          el.textContent = m + ':' + (s < 10 ? '0' + s : s);
+        }
+        setInterval(renderTimer, 1000); renderTimer();
+
+        window.CBSLive = window.CBSLive || {};
+        window.CBSLive.onOfferReveal = function () { deadline = ensureDeadline(); renderTimer(); };
+
+        /* ---- 3) "just reserved" toasts (live social proof, drive stock) ---- */
+        var wrap = $('#toastWrap');
+        function showToast() {
+          if (!wrap) return;
+          var name = pick(NAMES), state = pick(STATES), kit = pick(KITS), secs = rand(2, 48);
+          var el = document.createElement('div');
+          el.className = 'toast';
+          el.innerHTML =
+            '<div class="toast__avatar">' + name.charAt(0) + '</div>' +
+            '<div class="toast__body">' +
+              '<div class="toast__title"><span>' + name + '</span> from ' + state + ' just reserved a ' + kit.label + '</div>' +
+              '<div class="toast__meta"><span class="toast__check">✔</span> Verified order · ' + secs + 's ago</div>' +
+            '</div>';
+          wrap.appendChild(el);
+          requestAnimationFrame(function () { el.classList.add('is-in'); });
+          reduceStock(kit.qty);
+          setTimeout(function () { el.classList.remove('is-in'); setTimeout(function () { el.remove(); }, 500); }, 5200);
+        }
+        (function loopToast() { setTimeout(function () { showToast(); loopToast(); }, rand(7000, 16000)); })();
+
+        /* ---- 4) live comment feed (drip + relative timestamps) ---- */
+        var list = $('#cm-list'), cmCountEl = $('#cmCount'), times = [];
+        function relTime(ts) {
+          var d = Math.floor((Date.now() - ts) / 1000);
+          if (d < 5) return 'now';
+          if (d < 60) return d + 's';
+          if (d < 3600) return Math.floor(d / 60) + 'm';
+          return Math.floor(d / 3600) + 'h';
+        }
+        function addComment() {
+          if (!list) return;
+          var ts = Date.now(), row = document.createElement('div');
+          row.className = 'cm-row cm-new';
+          row.innerHTML =
+            '<img class="cm-avatar" src="' + pick(AVATARS) + '" loading="lazy" alt="">' +
+            '<div class="w-full"><div class="cm-bubble">' +
+              '<p class="cm-name">' + pick(NAMES) + ' ' + pick(['R.', 'T.', 'M.', 'S.', 'K.', 'W.']) + '</p>' +
+              '<p class="cm-text">' + pick(COMMENTS) + '</p></div>' +
+            '<div class="cm-meta">' +
+              '<button type="button" class="cm-like">Like</button>' +
+              '<button type="button">Reply</button>' +
+              '<span class="cm-time">now</span>' +
+              '<span class="cm-likes">' + HEART + '<span class="cm-count">' + rand(1, 9) + '</span></span>' +
+            '</div></div>';
+          list.insertBefore(row, list.firstChild);
+          times.push({ el: row.querySelector('.cm-time'), ts: ts });
+          if (cmCountEl) cmCountEl.textContent = ((parseInt(cmCountEl.textContent.replace(/\D/g, ''), 10) || 0) + 1).toLocaleString();
+          setTimeout(function () { row.classList.remove('cm-new'); }, 600);
+          var rows = list.querySelectorAll('.cm-row');
+          if (rows.length > 14) list.removeChild(rows[rows.length - 1]);
+        }
+        (function loopComment() { setTimeout(function () { addComment(); loopComment(); }, rand(9000, 20000)); })();
+        setInterval(function () { times.forEach(function (t) { if (t.el && t.el.isConnected) t.el.textContent = relTime(t.ts); }); }, 5000);
+
+        /* ---- 5) delegated comment interactions ---- */
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest) return;
+          var like = e.target.closest('.cm-like');
+          if (like) {
+            var liked = like.classList.toggle('is-liked');
+            like.textContent = liked ? 'Liked' : 'Like';
+            var meta = like.closest('.cm-meta'), c = meta && meta.querySelector('.cm-count');
             if (c) c.textContent = (parseInt(c.textContent, 10) || 0) + (liked ? 1 : -1);
-          });
-        });
-        document.querySelectorAll('[data-replies]').forEach(function (b) {
-          b.addEventListener('click', function () { b.remove(); });
-        });
-        var load = document.getElementById('cm-load');
-        if (load) load.addEventListener('click', function () {
-          document.querySelectorAll('#cm-list [data-extra]').forEach(function (el) { el.hidden = false; });
-          load.remove();
+            return;
+          }
+          if (e.target.closest('[data-replies]')) { e.target.closest('[data-replies]').remove(); return; }
+          if (e.target.closest('#cm-load')) {
+            document.querySelectorAll('#cm-list [data-extra]').forEach(function (el) { el.hidden = false; });
+            e.target.closest('#cm-load').remove();
+          }
         });
       })();
     </script>
