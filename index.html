@@ -56,7 +56,7 @@
       --shadow-soft: 0 8px 22px rgba(20, 22, 31, .06);
     }
 
-    body { background: var(--paper); }
+    body { background: #fff; }
 
     /* Clean & airy: let the offer cards float with a soft, light shadow */
     .theme-border-radius { box-shadow: var(--shadow-soft); }
@@ -307,12 +307,14 @@
       max-width: 460px;
       margin: 24px auto 0;
       background:
-        radial-gradient(120% 120% at 50% -10%, rgba(230, 179, 77, .14), transparent 60%),
-        linear-gradient(180deg, #14161b, #23272e);
-      border-radius: 14px 14px 0 0;
-      padding: 18px 18px 16px;
+        radial-gradient(135% 115% at 50% -25%, rgba(232, 182, 84, .22), transparent 58%),
+        linear-gradient(180deg, #14161b, #1f242b);
+      border: 1px solid rgba(232, 182, 84, .18);
+      border-bottom: 0;
+      border-radius: 16px 16px 0 0;
+      padding: 20px 22px 17px;
       text-align: center;
-      box-shadow: 0 12px 30px rgba(20, 22, 31, .14);
+      box-shadow: 0 14px 34px rgba(20, 22, 31, .18);
     }
 
     .cbs-deals::before {
@@ -322,27 +324,28 @@
       right: 0;
       top: 0;
       height: 3px;
-      background: linear-gradient(90deg, #f0c869, #c8922f);
-      border-radius: 14px 14px 0 0;
+      background: linear-gradient(90deg, transparent, #f3cf7a 20%, #c8922f 80%, transparent);
+      border-radius: 16px 16px 0 0;
     }
 
     .cbs-deals__eyebrow {
       display: block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .26em;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: .34em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, .55);
-      margin-bottom: 9px;
+      color: rgba(243, 207, 122, .85);
+      margin-bottom: 11px;
       font-family: 'Open Sans', Arial, sans-serif;
     }
 
     .cbs-deals img {
-      height: 37px;
+      height: 39px;
       width: auto;
       max-width: 86%;
       display: inline-block;
       vertical-align: middle;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .45));
     }
 
     .cbs-deals__trust {
@@ -350,24 +353,33 @@
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px 16px;
-      margin-top: 13px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, .10);
+      gap: 7px 0;
+      margin-top: 15px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(232, 182, 84, .18);
     }
 
     .cbs-deals__trust span {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 11px;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 10.5px;
       font-weight: 700;
-      letter-spacing: .02em;
-      color: rgba(255, 255, 255, .82);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .85);
+      padding: 0 14px;
       font-family: 'Open Sans', Arial, sans-serif;
     }
 
-    .cbs-deals__trust svg { width: 13px; height: 13px; color: #e6b34d; flex: 0 0 auto; }
+    .cbs-deals__trust span + span { border-left: 1px solid rgba(255, 255, 255, .15); }
+    .cbs-deals__trust svg { width: 13px; height: 13px; color: #ecbb5a; flex: 0 0 auto; }
+
+    @media (max-width: 380px) {
+      .cbs-deals__trust span { padding: 0 10px; font-size: 10px; }
+      .cbs-deals__trust span + span { border-left: 0; }
+    }
 
     .cbs-deals + .scarcity {
       margin-top: 0;
