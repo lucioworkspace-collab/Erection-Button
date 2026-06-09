@@ -915,6 +915,9 @@
                 player.displayHiddenElements(SECONDS_TO_DISPLAY, [".esconder"], { persist: true });
                 // Start the reservation countdown exactly when the offer is revealed.
                 if (window.CBSLive) window.CBSLive.onOfferReveal();
+                // Re-sweep the checkout links so VTurb's conversion key lands in subid5
+                // (fixes the load-order race where the param wasn't injected on first paint).
+                if (window.__bgSubid5Sweep) window.__bgSubid5Sweep();
               });
             }
           }
@@ -923,6 +926,132 @@
         </script>
 
         <!-- END Vturb JS -->
+
+        <!-- ================================================================
+             VTurb conversion key  →  BuyGoods subid5 bridge
+             ----------------------------------------------------------------
+             The VTurb player generates a conversion key (sck / vtid) and is
+             supposed to inject it into the checkout links so BuyGoods can
+             attribute the sale (parameter: subid5). Because the offer buttons
+             are revealed late (.esconder) and the href is also rewritten by
+             the indexer (subid2) and UTMify (utm_*), the player's first link
+             scan can miss them — so subid5 never gets written.
+
+             This bridge re-applies the key on player:ready, whenever any
+             checkout href changes (MutationObserver) and at click time. It is
+             strictly ADDITIVE: it only ever writes subid5, copied from a real
+             VTurb value (never fabricated), and never alters subid2 / utm_*.
+             ================================================================ -->
+        <script>
+          (function () {
+            'use strict';
+            var PLAYER_ID = '6a250fac5306f4786ccf8321'; // content id — never use as a key
+
+            function isCheckout(a) {
+              try { return /(^|\.)buygoods\.com$/i.test(new URL(a.href).hostname); }
+              catch (e) { return false; }
+            }
+            function links() {
+              return Array.prototype.filter.call(document.querySelectorAll('a[href]'), isCheckout);
+            }
+            function readParam(str, name) {
+              var m = str.match(new RegExp('[?&]' + name + '=([^&#]*)'));
+              if (!m) return '';
+              try { return m[1] ? decodeURIComponent(m[1]) : ''; } catch (e) { return m[1] || ''; }
+            }
+            function plausibleKey(v) {
+              return typeof v === 'string' && /^[A-Za-z0-9_.\-]{12,}$/.test(v) && v !== PLAYER_ID;
+            }
+
+            // The VTurb conversion key, taken ONLY from values VTurb itself produces.
+            // Priority = most authoritative/safe first. Returns '' when nothing real
+            // is available yet (in which case we leave the link untouched).
+            function vturbKey(hrefAlreadyHasSubid5) {
+              if (hrefAlreadyHasSubid5) return ''; // respect a value already present
+              var k;
+              // 1) tracking params carried on the page URL (canonical VTurb keys)
+              var qs = location.search;
+              k = readParam(qs, 'sck') || readParam(qs, 'vtid') || readParam(qs, 'subid5');
+              if (plausibleKey(k)) return k;
+              // 2) the player instance, if it surfaces a session/conversion token
+              try {
+                var inst = window.smartplayer && window.smartplayer.instances;
+                if (inst) {
+                  var arr = inst.length != null ? Array.prototype.slice.call(inst)
+                                                : Object.keys(inst).map(function (n) { return inst[n]; });
+                  for (var i = 0; i < arr.length; i++) {
+                    var o = arr[i]; if (!o || typeof o !== 'object') continue;
+                    for (var p in o) {
+                      if (/sck|vtid|session|conversion|lead/i.test(p) && plausibleKey(o[p])) return o[p];
+                    }
+                  }
+                }
+              } catch (e) {}
+              // 3) VTurb cookies (best effort)
+              var cm = document.cookie.match(/(?:^|;\s*)(?:sck|vtid|_scl[a-z0-9]*|__vt[a-z0-9]*)=([^;]+)/i);
+              if (cm && plausibleKey(decodeURIComponent(cm[1]))) return decodeURIComponent(cm[1]);
+              return '';
+            }
+
+            // Write subid5 onto one link without disturbing any other parameter.
+            function apply(a) {
+              var href = a.getAttribute('href'); if (!href) return;
+              var cur = href.match(/[?&]subid5=([^&#]*)/);
+              if (cur && cur[1]) return;                 // already populated — leave it
+              var key = vturbKey(!!(cur && cur[1]));
+              if (!key) return;                          // no real key yet — don't fabricate
+              var frag = '', base = href, h = href.indexOf('#');
+              if (h >= 0) { frag = href.slice(h); base = href.slice(0, h); }
+              if (cur) {                                 // empty "subid5=" → fill it
+                base = base.replace(/([?&]subid5=)[^&#]*/, '$1' + encodeURIComponent(key));
+              } else {                                   // absent → append it
+                base += (base.indexOf('?') >= 0 ? '&' : '?') + 'subid5=' + encodeURIComponent(key);
+              }
+              a.setAttribute('href', base + frag);
+            }
+            function sweep() { links().forEach(apply); }
+            window.__bgSubid5Sweep = sweep;              // exposed for the player:ready hook
+
+            // React to VTurb / indexer / UTMify rewriting any checkout href.
+            function observe() {
+              if (!window.MutationObserver) return;
+              var mo = new MutationObserver(function (muts) {
+                for (var i = 0; i < muts.length; i++) {
+                  var t = muts[i].target;
+                  if (t && t.tagName === 'A') apply(t);
+                }
+              });
+              links().forEach(function (a) { mo.observe(a, { attributes: true, attributeFilter: ['href'] }); });
+            }
+
+            // Final guarantee: refresh subid5 from the live href the instant the CTA is used.
+            ['pointerdown', 'click', 'auxclick'].forEach(function (evt) {
+              document.addEventListener(evt, function (e) {
+                var a = e.target && e.target.closest && e.target.closest('a[href*="buygoods.com"]');
+                if (a) apply(a);
+              }, true);
+            });
+
+            function boot() { sweep(); observe(); }
+            if (document.readyState !== 'loading') boot();
+            else document.addEventListener('DOMContentLoaded', boot);
+
+            // Re-sweep right after the player is ready, then a few more times since
+            // VTurb may publish its key a moment later.
+            (function bindReady() {
+              var tries = 0, iv = setInterval(function () {
+                var pl = document.querySelector('vturb-smartplayer');
+                if (pl) {
+                  clearInterval(iv);
+                  pl.addEventListener('player:ready', function () {
+                    sweep();
+                    var n = 0, t = setInterval(function () { sweep(); if (++n >= 12) clearInterval(t); }, 1000);
+                  });
+                } else if (++tries > 100) { clearInterval(iv); }
+              }, 200);
+            })();
+          })();
+        </script>
 
       </div>
       <!-- Live presence strip (always visible — sets the "live broadcast" tone) -->
