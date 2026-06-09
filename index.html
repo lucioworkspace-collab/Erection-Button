@@ -45,15 +45,30 @@
   <style type="text/css">
     /* ===== Brand palette (#cd8900) ===== */
     :root {
+      /* Authority — CBS header / deals (gold) */
       --brand: #cd8900;
       --brand-light: #e09c12;
       --brand-dark: #a66e00;
       --brand-darker: #855700;
-      --ink: #181a1f;
-      --muted: #667085;
-      --line: #e9eaee;
+      /* Action — buy CTAs (green: go / safe / buy) */
+      --cta: #15803d;
+      --cta-light: #1a9e4b;
+      --cta-dark: #126a32;
+      /* Trust & credibility (blue) */
+      --trust: #1d4ed8;
+      --trust-dark: #1e40af;
+      /* Urgency — live / scarcity / urgent (red) */
+      --urgent: #e0103a;
+      /* Neutrals — high contrast on white */
+      --ink: #15181e;
+      --muted: #525b69;
+      --line: #e6e8ec;
       --shadow-soft: 0 8px 22px rgba(20, 22, 31, .06);
     }
+
+    /* Palette roles applied to Tailwind-styled accents */
+    .lbl-urgent { color: var(--urgent); }
+    .bar-urgent { border-color: var(--urgent); }
 
     body { background: #fff; }
 
@@ -86,6 +101,7 @@
       background: var(--brand);
       color: #fff;
       padding: 14px 16px 16px;
+      text-shadow: 0 1px 1.5px rgba(70, 40, 0, .32);
     }
 
     .cbs-program-title {
@@ -160,7 +176,8 @@
       font-weight: 600;
       font-family: 'Open Sans', Arial, sans-serif;
       flex: 0 0 auto;
-      opacity: .96;
+      opacity: 1;
+      text-shadow: 0 1px 1.5px rgba(70, 40, 0, .32);
     }
 
     .cbs-nav a:hover { opacity: 1; }
@@ -202,18 +219,18 @@
     .btn-primary-new,
     .btn-new.btn-primary-new,
     .cta.btn-primary-new {
-      background: linear-gradient(180deg, var(--brand-light), var(--brand)) !important;
-      border-color: var(--brand) !important;
+      background: linear-gradient(180deg, var(--cta-light), var(--cta)) !important;
+      border-color: var(--cta) !important;
       color: #fff !important;
     }
 
     .btn-primary-new:hover,
     .btn-new.btn-primary-new:hover {
-      background: var(--brand-dark) !important;
-      border-color: var(--brand-dark) !important;
+      background: var(--cta-dark) !important;
+      border-color: var(--cta-dark) !important;
     }
 
-    .border-primary-new { border: 2px solid var(--brand) !important; }
+    .border-primary-new { border: 2px solid var(--cta) !important; }
 
     /* Footer: override external red (#A70C0C) with brand palette */
     footer { background-color: var(--brand) !important; }
@@ -228,7 +245,7 @@
     .cm-avatar--you { background: #e4e6eb; display: flex; align-items: center; justify-content: center; color: #b0b3b8; }
     .cm-bubble { background: #f0f2f5; border-radius: 16px; padding: 9px 13px; }
     .cm-name { font-weight: 700; font-size: 13px; color: #050505; line-height: 1.2; margin: 0 0 2px; display: flex; align-items: center; gap: 5px; }
-    .cm-badge { color: var(--brand); display: inline-flex; }
+    .cm-badge { color: var(--trust); display: inline-flex; }
     .cm-text { font-size: 13.5px; color: #1c1e21; line-height: 1.45; margin: 0; }
     .cm-meta { display: flex; align-items: center; gap: 14px; margin: 5px 0 0 12px; font-size: 12px; font-weight: 700; color: #65676b; }
     .cm-meta button { background: none; border: 0; padding: 0; font: inherit; color: #65676b; cursor: pointer; }
@@ -386,7 +403,7 @@
       margin-top: 12px;
     }
 
-    .trust__lock { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 800; color: #1f7a3d; }
+    .trust__lock { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 800; color: var(--cta-dark); }
     .trust__lock svg { width: 14px; height: 14px; }
     .trust__cards { display: inline-flex; align-items: center; }
     .trust__cards img { height: 26px; width: auto; display: block; }
@@ -435,8 +452,8 @@
     .rv-card__top { display: flex; align-items: center; gap: 11px; }
     .rv-card__av { width: 46px; height: 46px; border-radius: 9999px; object-fit: cover; flex: 0 0 auto; }
     .rv-card__name { font-size: 14px; font-weight: 800; color: #111; margin: 0; display: flex; align-items: center; gap: 5px; }
-    .rv-card__name svg { width: 14px; height: 14px; color: var(--brand); flex: 0 0 auto; }
-    .rv-card__meta { font-size: 11.5px; color: #1f9d55; font-weight: 700; margin: 2px 0 0; }
+    .rv-card__name svg { width: 14px; height: 14px; color: var(--trust); flex: 0 0 auto; }
+    .rv-card__meta { font-size: 11.5px; color: var(--trust); font-weight: 700; margin: 2px 0 0; }
     .rv-card__stars { color: #f5a623; font-size: 14px; letter-spacing: 1px; margin: 11px 0 7px; }
     .rv-card__text { font-size: 13.5px; line-height: 1.5; color: #2d2f33; margin: 0; }
 
@@ -555,17 +572,17 @@
     .buybar__info { display: flex; flex-direction: column; line-height: 1.2; }
     .buybar__label { font-size: 12px; font-weight: 800; color: #111; text-transform: uppercase; letter-spacing: .03em; }
     .buybar__price { font-size: 12.5px; color: #555; margin-top: 2px; }
-    .buybar__price b { color: var(--brand-darker); font-size: 14px; }
+    .buybar__price b { color: var(--ink); font-size: 14px; }
 
     .buybar__cta {
       flex: 0 0 auto;
-      background: linear-gradient(180deg, var(--brand-light), var(--brand));
+      background: linear-gradient(180deg, var(--cta-light), var(--cta));
       color: #fff;
       font-weight: 800;
       font-size: 15px;
       padding: 11px 22px;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(133, 87, 0, .30);
+      box-shadow: 0 6px 14px rgba(21, 128, 61, .32);
     }
 
     body.has-buybar { padding-bottom: 72px; }
@@ -815,9 +832,9 @@
           <span class="cbs-eyebrow__date data_atual"></span>
         </div>
         <h1 class="headline-serif text-[26px] md:text-[38px] leading-[1.15] mb-3">
-          <span class="text-[#cd8900]">URGENT:</span> Scientists uncover a natural solution to boost memory and support cognitive health that can be done at home
+          <span class="lbl-urgent">URGENT:</span> Scientists uncover a natural solution to boost memory and support cognitive health that can be done at home
         </h1>
-        <div class="flex items-start border-l-[3px] border-[#cd8900] pl-3 py-1">
+        <div class="flex items-start border-l-[3px] bar-urgent pl-3 py-1">
           <p class="text-[15px] md:text-[17px] text-[#333] font-medium leading-snug">
             Over 15,000 Americans have already reported a significant improvement in memory.
           </p>
