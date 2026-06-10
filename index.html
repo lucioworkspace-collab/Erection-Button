@@ -88,6 +88,10 @@
     .lbl-urgent { color: var(--urgent); }
     .bar-urgent { border-color: var(--urgent); }
 
+    /* The legacy .img_adv rules set width without height — restore the attr
+       aspect-ratio so the browser reserves space (clears the CLS 'unsized image' flag) */
+    .img_adv { height: auto; }
+
     body { background: #fff; }
 
     /* ===== Global rendering & interaction quality ===== */
@@ -921,7 +925,7 @@
 
       <!-- Logo: CBS News Sunday Morning -->
       <a href="#" class="cbs-logo" aria-label="CBS News Sunday Morning">
-        <img src="images/cbs-news-logo.webp" width="76" height="34" fetchpriority="high" decoding="async" alt="CBS News Sunday Morning">
+        <img src="images/cbs-news-logo.png" width="76" height="34" fetchpriority="high" decoding="async" alt="CBS News Sunday Morning">
       </a>
 
       <!-- Search -->
