@@ -1984,21 +1984,23 @@
 
   </main>
   <script>
-    // Region/timezone-aware date: uses the visitor's own locale and local time,
-    // so each prospect sees today's date formatted for their region.
+    // Always-current date, locked to en-US so it stays congruent with the
+    // English "CBS News" page regardless of the visitor's browser language.
+    // Still fully dynamic: it reflects today's date on the visitor's own clock.
     (function () {
-      var formatted = new Date().toLocaleDateString(undefined, {
+      var EN = 'en-US';
+      var formatted = new Date().toLocaleDateString(EN, {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
       document.querySelectorAll('.data_atual').forEach(function (el) {
         el.textContent = formatted;
       });
-      // Sunday Morning episode date = most recent Sunday in the visitor's locale
+      // Sunday Morning episode date = most recent Sunday relative to today
       var sm = document.getElementById('smDate');
       if (sm) {
         var sd = new Date();
         sd.setDate(sd.getDate() - sd.getDay());
-        sm.textContent = sd.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+        sm.textContent = sd.toLocaleDateString(EN, { month: 'long', day: 'numeric', year: 'numeric' });
       }
       // Duplicate the reviews track once for a seamless continuous scroll
       var rv = document.getElementById('rvTrack');
