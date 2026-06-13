@@ -2008,6 +2008,43 @@
     })();
   </script>
 
+  <script>
+    // One-time gentle nudge to bring the VSL into view. On small screens the
+    // video sits below the headline, so some visitors land and never scroll to
+    // it (the player is tap-to-play, no autoplay) — losing the play entirely.
+    // Scrolls the video into a centered frame (headline tail stays visible above,
+    // so the pre-sell hook isn't skipped). Bails the instant the visitor scrolls
+    // or taps, never fights manual scrolling, respects reduced-motion. Fires
+    // after load so layout/fonts have settled.
+    (function () {
+      var stage = document.querySelector('.vsl-stage');
+      if (!stage) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var cancelled = false, fired = false;
+      function cancel() { cancelled = true; }
+      ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
+        window.addEventListener(ev, cancel, { once: true, passive: true });
+      });
+
+      function nudge() {
+        if (cancelled) return;
+        var r = stage.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        if (!r.height) return;
+        var visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+        if (visible / r.height > 0.6) return;        // already mostly on screen → don't jump
+        try { stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        catch (e) { stage.scrollIntoView(); }
+      }
+
+      function go() { if (fired) return; fired = true; setTimeout(nudge, 600); }
+      if (document.readyState === 'complete') go();
+      else window.addEventListener('load', go);
+      setTimeout(go, 2500);                          // fallback if 3rd-party scripts delay load
+    })();
+  </script>
+
 
 
 
