@@ -1,0 +1,6 @@
+# Files in the repo root that must NOT be published as public assets.
+# (gitignore-style syntax). _headers / _redirects are consumed by the
+# assets runtime, not served, so they are intentionally kept.
+wrangler.jsonc
+.gitignore
+*.md
