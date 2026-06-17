@@ -681,6 +681,8 @@
     .rv-card__name svg { width: 14px; height: 14px; color: var(--trust); flex: 0 0 auto; }
     .rv-card__meta { font-size: 11.5px; color: #3f4654; font-weight: 700; margin: 2px 0 0; }
     .rv-card__stars { color: #f5a623; font-size: 14px; letter-spacing: 1px; margin: 11px 0 7px; }
+    .rv-card__score { color: #4b5563; font-size: 12px; font-weight: 700; letter-spacing: 0; }
+    .rv-card__lead { font-size: 13.5px; font-weight: 800; color: var(--ink); margin: 2px 0 5px; line-height: 1.3; }
     .rv-card__date { font-size: 11px; color: #59606c; margin: 9px 0 0; font-weight: 600; }
     .rv-card__date::before { content: "✓ "; color: var(--cta); font-weight: 800; }
     .reviews__trustline { text-align: center; font-size: 11.5px; color: #4b5563; font-weight: 600; margin: 7px 0 0; }
@@ -1304,39 +1306,45 @@
         <div class="reviews__viewport">
           <div class="reviews__track" id="rvTrack">
             <article class="rv-card">
-              <div class="rv-card__top"><img class="rv-card__av" src="images/rev1.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Gloria H. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Ohio · Verifizierter Käufer</p></div></div>
-              <div class="rv-card__stars" aria-hidden="true">★★★★★</div>
-              <p class="rv-card__text">In der dritten Woche passte meine Kleidung wieder &mdash; das Blähgefühl und der Heißhunger hörten einfach&hellip; auf.</p>
+              <div class="rv-card__top"><img class="rv-card__av" src="images/rev1.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Anna K. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">München, Deutschland</p></div></div>
+              <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(4,9/5)</span></div>
+              <p class="rv-card__lead">Anna hat 16 Kilo abgenommen…</p>
+              <p class="rv-card__text">„Ich habe mich in meinem Körper immer unwohl gefühlt und an manchen Tagen sogar vermieden, das Haus zu verlassen. Seit ich mit Lipo Jaro angefangen habe, sind 16 Kilo weg &mdash; und in mir hat sich etwas verändert. Heute schaue ich in den Spiegel und mag endlich, was ich sehe; mein Selbstvertrauen ist zurück.“</p>
               <p class="rv-card__date">Verifizierter Kauf &middot; vor 2 Tagen</p>
             </article>
             <article class="rv-card">
-              <div class="rv-card__top"><img class="rv-card__av" src="images/rev2.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Rosa M. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Texas · Verifizierter Käufer</p></div></div>
-              <div class="rv-card__stars" aria-hidden="true">★★★★★</div>
-              <p class="rv-card__text">Zwei Kleidergrößen weniger und der hartnäckige Bauch verschwindet endlich. Meine Familie hat es zuerst bemerkt.</p>
+              <div class="rv-card__top"><img class="rv-card__av" src="images/rev2.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Lena S. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Hamburg, Deutschland</p></div></div>
+              <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(4,9/5)</span></div>
+              <p class="rv-card__lead">Lena hat 13 Kilo verloren…</p>
+              <p class="rv-card__text">„Mein Gewicht stand völlig still, besonders am Bauch, und nichts hat geholfen. Mit Lipo Jaro kam mein Stoffwechsel wieder in Schwung und ich konnte endlich die 13 Kilo loswerden, die ich seit Jahren mit mir herumtrug. Jetzt habe ich mehr Energie, die Kleidung sitzt viel besser und ich habe wieder das Gefühl, die Kontrolle zu haben.“</p>
               <p class="rv-card__date">Verifizierter Kauf &middot; vor 5 Tagen</p>
             </article>
             <article class="rv-card">
-              <div class="rv-card__top"><img class="rv-card__av" src="images/depo8.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Marlene <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Missouri · Verifizierter Käufer</p></div></div>
-              <div class="rv-card__stars" aria-hidden="true">★★★★★</div>
-              <p class="rv-card__text">Das Nachmittagstief ist weg. Ich fühle mich den ganzen Tag wieder leicht und ausgeglichen.</p>
+              <div class="rv-card__top"><img class="rv-card__av" src="images/depo8.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Johanna M. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Frankfurt am Main, Deutschland</p></div></div>
+              <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(4,9/5)</span></div>
+              <p class="rv-card__lead">Johanna ist 18 Kilo leichter…</p>
+              <p class="rv-card__text">„Früher haben mich schon einfachste Aktivitäten total erschöpft und ich konnte mit meinen Kindern nicht mehr mithalten &mdash; das hat mich sehr belastet. Dank Lipo Jaro sind 18 Kilo weg und mein Alltag ist wie ausgewechselt. Heute unternehme ich wieder mehr und fühle mich deutlich wohler und energiegeladener.“</p>
+              <p class="rv-card__date">Verifizierter Kauf &middot; vor 1 Woche</p>
+            </article>
+            <article class="rv-card">
+              <div class="rv-card__top"><img class="rv-card__av" src="images/depo10.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Julia W. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Wien, Österreich</p></div></div>
+              <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(4,9/5)</span></div>
+              <p class="rv-card__lead">Julia hat 12 Kilo abgenommen…</p>
+              <p class="rv-card__text">„Der Heißhunger am Nachmittag hat mich jeden Tag aus der Bahn geworfen. Seit Lipo Jaro ist er kaum noch da und ich greife viel seltener zu Snacks. Nach 12 Kilo passe ich endlich wieder in die Sachen, die jahrelang ungetragen im Schrank hingen.“</p>
               <p class="rv-card__date">Verifizierter Kauf &middot; vor 2 Wochen</p>
             </article>
             <article class="rv-card">
-              <div class="rv-card__top"><img class="rv-card__av" src="images/depo10.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Brenda <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Kentucky · Verifizierter Käufer</p></div></div>
-              <div class="rv-card__stars" aria-hidden="true">★★★★★</div>
-              <p class="rv-card__text">Die Waage bewegt sich endlich &mdash; 6 Kilo weniger und der Heißhunger lässt mich jetzt kaum noch los.</p>
+              <div class="rv-card__top"><img class="rv-card__av" src="images/depo7.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Sarah B. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Zürich, Schweiz</p></div></div>
+              <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(4,9/5)</span></div>
+              <p class="rv-card__lead">Sarah ist 14 Kilo leichter…</p>
+              <p class="rv-card__text">„Keine Crash-Diät, kein ständiger Verzicht &mdash; nur hartnäckiges Gewicht, das einfach nicht weichen wollte. Mit Lipo Jaro kam alles in Bewegung: 14 Kilo weniger, ein stabiler Energielevel den ganzen Tag und endlich wieder ein gutes Gefühl im eigenen Körper.“</p>
               <p class="rv-card__date">Verifizierter Kauf &middot; vor 3 Wochen</p>
             </article>
             <article class="rv-card">
-              <div class="rv-card__top"><img class="rv-card__av" src="images/depo7.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Carol Jean <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Indiana · Verifizierter Käufer</p></div></div>
-              <div class="rv-card__stars" aria-hidden="true">★★★★★</div>
-              <p class="rv-card__text">Nur zwei einfache Zutaten. Ich wünschte nur, ich hätte das schon vor Jahren gefunden.</p>
-              <p class="rv-card__date">Verifizierter Kauf &middot; vor 1 Monat</p>
-            </article>
-            <article class="rv-card">
-              <div class="rv-card__top"><img class="rv-card__av" src="images/depo9.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Patty G. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Arizona · Verifizierter Käufer</p></div></div>
-              <div class="rv-card__stars" aria-hidden="true">★★★★★</div>
-              <p class="rv-card__text">Meine Jeans geht ohne Kampf zu und ich habe meine Energie zurück. Ich fühle mich endlich wieder wie ich selbst.</p>
+              <div class="rv-card__top"><img class="rv-card__av" src="images/depo9.webp" width="160" height="160" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Laura H. <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Graz, Österreich</p></div></div>
+              <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(4,9/5)</span></div>
+              <p class="rv-card__lead">Laura hat 9 Kilo verloren…</p>
+              <p class="rv-card__text">„Abends war mein Bauch immer aufgebläht und ich fühlte mich schwer und unwohl. Nach 9 Kilo mit Lipo Jaro ist dieses Gefühl verschwunden, meine Jeans geht ohne Kampf zu und ich mag mein Spiegelbild wieder.“</p>
               <p class="rv-card__date">Verifizierter Kauf &middot; vor 1 Monat</p>
             </article>
           </div>
@@ -1545,11 +1553,11 @@
         //   Used for the live chat overlay, the "watching now" facepile and the live
         //   "just reserved" purchase toasts. These are the only people who are "live".
         var PEOPLE = [
-          { n: 'Linda Marsh', s: 'Ohio',      a: 'images/depo1.webp' },
-          { n: 'Debbie',      s: 'Florida',   a: 'images/depo2.webp' },
-          { n: 'Sharon K.',   s: 'Texas',     a: 'images/depo3.webp' },
-          { n: 'Donna',       s: 'Georgia',   a: 'images/depo4.webp' },
-          { n: 'Sue Ann',     s: 'Tennessee', a: 'images/depo5.webp' }
+          { n: 'Sabine',  s: 'Hamburg', a: 'images/depo1.webp' },
+          { n: 'Claudia', s: 'Wien',    a: 'images/depo2.webp' },
+          { n: 'Andrea',  s: 'Zürich',  a: 'images/depo3.webp' },
+          { n: 'Petra',   s: 'Berlin',  a: 'images/depo4.webp' },
+          { n: 'Monika',  s: 'Graz',    a: 'images/depo5.webp' }
         ];
         // name -> avatar lookup, so a given name always shows the same face
         var NAME2AV = {};
@@ -1559,17 +1567,17 @@
         //   bottom comments section. Distinct faces/names from the live audience and
         //   from the DTC reviewers, so nothing repeats across the three areas.
         var FEED_PEOPLE = [
-          { n: 'Margaret E.', s: 'Iowa',      a: 'images/depo6.webp' },
-          { n: 'Eleanor P.',  s: 'Oregon',    a: 'images/live1.webp' },
-          { n: 'Nancy T.',    s: 'Kansas',    a: 'images/live2.webp' },
-          { n: 'Diane R.',    s: 'Wisconsin', a: 'images/live3.webp' }
+          { n: 'Bettina', s: 'Stuttgart', a: 'images/depo6.webp' },
+          { n: 'Karin',   s: 'Linz',      a: 'images/live1.webp' },
+          { n: 'Ulrike',  s: 'Bern',      a: 'images/live2.webp' },
+          { n: 'Heike',   s: 'Köln',      a: 'images/live3.webp' }
         ];
         var FEED2AV = {};
         FEED_PEOPLE.forEach(function (p) { FEED2AV[p.n] = p.a; });
         var KITS = [{ label: '6-Flaschen-Set', qty: 2 }, { label: '3-Flaschen-Set', qty: 1 }, { label: '2-Flaschen-Set', qty: 1 }];
         var COMMENTS = [
           'Lese diese Kommentare und nicke bei jedem einzelnen. Tag 12 hier und 4 Kilo weniger, ohne zu hungern. Emotional.',
-          '@Margaret genauso — der Heißhunger nach dem Mittagessen war mein größtes Problem und ist jetzt praktisch weg.',
+          '@Bettina genauso — der Heißhunger nach dem Mittagessen war mein größtes Problem und ist jetzt praktisch weg.',
           'Für alle, die oben fragen: es sind nur zwei Zutaten, kein Rezept nötig. Genau das hat mich überzeugt.',
           'Stimme dem Kommentar unten zum Blähbauch voll zu. Mein Hosenbund kämpft nicht mehr gegen mich.',
           'Komme zurück für ein Update — drei Wochen dabei und meine Tochter sagte, mein Gesicht sieht schlanker aus. Das hat mich getroffen.',
@@ -1761,34 +1769,34 @@
         /* ---- 7) live chat overlay on the VSL (40 named messages from the 11 people) ---- */
         var chatEl = $('#vslChat');
         var CHAT = [
-          { n: "Linda Marsh", t: "warte hat er grad gesagt man muss keine kohlenhydrate weglassen?? ich hör zu" },
-          { n: "Debbie", t: "ok noch so ne abnehm-sache. kenn ich alles schon aber gut, ich hör mal zu" },
-          { n: "Sharon K.", t: "bin 58 und das bauchfett geht einfach nicht weg egal was ich versuche 😩" },
-          { n: "Donna", t: "hab dieselben 15 kilo seit jahren verloren und wieder zugenommen. so leid 💔" },
-          { n: "Sue Ann", t: "wie hieß nochmal der arzt den er erwähnt hat, hab ich verpasst" },
-          { n: "Sue Ann", t: "ich versteck mich mittlerweile auf jedem familienfoto hinten 😔 hab genug" },
-          { n: "Linda Marsh", t: "meine knie tun vom extra gewicht weh. ich bete dass das echt ist" },
-          { n: "Donna", t: "ist das sicher mit blutdruckmitteln?? bin 62 und nehm ein paar" },
-          { n: "Sharon K.", t: "ok was sind die 2 zutaten, ich häng an jedem wort" },
-          { n: "Debbie", t: "klingt ehrlich viel zu gut. bin aber trotzdem noch dabei" },
-          { n: "Donna", t: "der heißhunger gegen 15 uhr macht mich jeden einzelnen tag fertig" },
-          { n: "Sue Ann", t: "erklärt er das jetzt wirklich oder muss ich mir das ganze ding anschauen" },
-          { n: "Sue Ann", t: "nichts in meinem schrank passt und ich kauf nicht nochmal ne größere größe 😔" },
-          { n: "Linda Marsh", t: "funktioniert das auch wenn ich nur so 10 kilo hab oder nur bei viel" },
-          { n: "Debbie", t: "bin echt skeptisch reingegangen ehrlich. aber er hat das warum besser erklärt als gedacht" },
-          { n: "Sharon K.", t: "mach mir notizen lol mein stoffwechsel ist nicht mehr was er war" },
-          { n: "Donna", t: "das blähgefühl am ende des tages 💔 das ist mein ganzes leben" },
-          { n: "Debbie", t: "jedes video sagt pharmaindustrie dies pharmaindustrie das. naja" },
-          { n: "Linda Marsh", t: "das mit dem hartnäckigen bauch. genau das passiert bei mir" },
-          { n: "Sue Ann", t: "also was genau ist das ritual, hat er das schon gesagt" },
-          { n: "Donna", t: "ich zähl jede kalorie und nehm trotzdem nicht ab. man fühlt sich so besiegt" },
-          { n: "Sharon K.", t: "warte was war die zweite zutat, hat das jemand mitbekommen" },
-          { n: "Sharon K.", t: "kommentier normal nie aber das hat mich aufhorchen lassen" },
-          { n: "Donna", t: "ich will mich einfach wieder wohl in meinem körper fühlen" },
-          { n: "Debbie", t: "noch nicht ganz überzeugt aber ok er hat ein paar punkte gemacht die ich nicht erwartet hab" },
-          { n: "Linda Marsh", t: "ich bete dass das mal echt ist. hab schon alles andere probiert" },
-          { n: "Sue Ann", t: "muss gleich die kinder abholen, hoffe ich verpass nicht den wichtigen teil" },
-          { n: "Sharon K.", t: "schau mir das ganze ding an, hab ich bei sowas schon lang nicht mehr gemacht" }
+          { n: "Sabine", t: "warte hat er grad gesagt man muss keine kohlenhydrate weglassen?? ich hör zu" },
+          { n: "Claudia", t: "ok noch so ne abnehm-sache. kenn ich alles schon aber gut, ich hör mal zu" },
+          { n: "Andrea", t: "bin 58 und das bauchfett geht einfach nicht weg egal was ich versuche 😩" },
+          { n: "Petra", t: "hab dieselben 15 kilo seit jahren verloren und wieder zugenommen. so leid 💔" },
+          { n: "Monika", t: "wie hieß nochmal der arzt den er erwähnt hat, hab ich verpasst" },
+          { n: "Monika", t: "ich versteck mich mittlerweile auf jedem familienfoto hinten 😔 hab genug" },
+          { n: "Sabine", t: "meine knie tun vom extra gewicht weh. ich bete dass das echt ist" },
+          { n: "Petra", t: "ist das sicher mit blutdruckmitteln?? bin 62 und nehm ein paar" },
+          { n: "Andrea", t: "ok was sind die 2 zutaten, ich häng an jedem wort" },
+          { n: "Claudia", t: "klingt ehrlich viel zu gut. bin aber trotzdem noch dabei" },
+          { n: "Petra", t: "der heißhunger gegen 15 uhr macht mich jeden einzelnen tag fertig" },
+          { n: "Monika", t: "erklärt er das jetzt wirklich oder muss ich mir das ganze ding anschauen" },
+          { n: "Monika", t: "nichts in meinem schrank passt und ich kauf nicht nochmal ne größere größe 😔" },
+          { n: "Sabine", t: "funktioniert das auch wenn ich nur so 10 kilo hab oder nur bei viel" },
+          { n: "Claudia", t: "bin echt skeptisch reingegangen ehrlich. aber er hat das warum besser erklärt als gedacht" },
+          { n: "Andrea", t: "mach mir notizen lol mein stoffwechsel ist nicht mehr was er war" },
+          { n: "Petra", t: "das blähgefühl am ende des tages 💔 das ist mein ganzes leben" },
+          { n: "Claudia", t: "jedes video sagt pharmaindustrie dies pharmaindustrie das. naja" },
+          { n: "Sabine", t: "das mit dem hartnäckigen bauch. genau das passiert bei mir" },
+          { n: "Monika", t: "also was genau ist das ritual, hat er das schon gesagt" },
+          { n: "Petra", t: "ich zähl jede kalorie und nehm trotzdem nicht ab. man fühlt sich so besiegt" },
+          { n: "Andrea", t: "warte was war die zweite zutat, hat das jemand mitbekommen" },
+          { n: "Andrea", t: "kommentier normal nie aber das hat mich aufhorchen lassen" },
+          { n: "Petra", t: "ich will mich einfach wieder wohl in meinem körper fühlen" },
+          { n: "Claudia", t: "noch nicht ganz überzeugt aber ok er hat ein paar punkte gemacht die ich nicht erwartet hab" },
+          { n: "Sabine", t: "ich bete dass das mal echt ist. hab schon alles andere probiert" },
+          { n: "Monika", t: "muss gleich die kinder abholen, hoffe ich verpass nicht den wichtigen teil" },
+          { n: "Andrea", t: "schau mir das ganze ding an, hab ich bei sowas schon lang nicht mehr gemacht" }
         ];
         var nextChatMsg = shuffler(CHAT);
         function addChat() {
