@@ -327,38 +327,39 @@
     @media (hover: hover) {
       .row.dflex .theme-border-radius:hover { box-shadow: 0 1px 2px rgba(20, 22, 31, .05), 0 18px 40px rgba(20, 22, 31, .10) !important; transform: translateY(-2px); }
     }
-    /* Hero (recommended) kit: navy accent + gentle lift, no red */
+    /* Hero (recommended) kit: green "best value" accent + gentle lift */
     .row.dflex .border-primary-new {
-      border: 1.5px solid var(--brand) !important;
-      box-shadow: 0 2px 4px rgba(0, 24, 80, .06), 0 18px 46px rgba(0, 24, 80, .16) !important;
+      border: 2px solid var(--cta) !important;
+      box-shadow: 0 2px 4px rgba(21, 128, 61, .07), 0 18px 46px rgba(21, 128, 61, .16) !important;
       position: relative;
+      background: linear-gradient(180deg, rgba(21, 128, 61, .045), #fff 130px) !important;
     }
     @media (min-width: 768px) { #kit6 .border-primary-new { transform: translateY(-10px); } }
-    #kit6 .kit-eyebrow { background: var(--brand); box-shadow: 0 4px 12px rgba(0, 24, 80, .22); letter-spacing: .14em; padding: 4px 14px; margin-bottom: 10px; }
+    #kit6 .kit-eyebrow { background: var(--cta); box-shadow: 0 4px 12px rgba(21, 128, 61, .26); letter-spacing: .14em; padding: 4px 14px; margin-bottom: 10px; }
     /* Typography: calmer, more confident */
     .row.dflex h3.fw-bold { font-family: 'Open Sans', Arial, sans-serif; font-size: 20px; letter-spacing: -.01em; color: var(--ink); }
     .row.dflex .small { color: var(--muted); }
     .row.dflex p.fw-bold.mb-2 { color: var(--cta-dark); font-weight: 700; font-size: 14px; letter-spacing: .01em; }
-    /* The CTA: solid, calm, trustworthy — no gradient, no pulsing */
-    .cta.btn-new {
+    /* The CTA: solid green, robust (literal color so it never drops out) */
+    .cta.btn-new, a.cta.btn-new {
       background-image: none !important;
-      background-color: var(--cta);
-      border: none;
-      color: #fff;
+      background-color: #15803d !important;
+      border: none !important;
+      color: #fff !important;
       font-family: 'Open Sans', Arial, sans-serif;
       font-size: 16px;
       font-weight: 700;
       letter-spacing: .01em;
       text-transform: none;
       border-radius: 12px;
-      padding: 15px 16px;
+      padding: 15px 16px !important;
       width: 100%;
       margin: 8px auto 0;
-      box-shadow: 0 6px 16px rgba(21, 128, 61, .20);
+      box-shadow: 0 6px 16px rgba(21, 128, 61, .22);
       animation: none !important;
       transition: background-color .15s ease, box-shadow .15s ease, transform .12s ease;
     }
-    .cta.btn-new:hover { background-color: var(--cta-dark); box-shadow: 0 10px 22px rgba(21, 128, 61, .26); transform: translateY(-1px); }
+    .cta.btn-new:hover { background-color: #126a32 !important; box-shadow: 0 10px 22px rgba(21, 128, 61, .28); transform: translateY(-1px); }
     .cta.btn-new:active { transform: translateY(0); }
     .cta-note { margin-top: 10px; }
 
@@ -736,6 +737,36 @@
     }
 
     .scarcity__timer strong { font-variant-numeric: tabular-nums; font-weight: 800; }
+
+    /* ===== Scarcity + deal seal — re-skinned to the site palette ===== */
+    /* Authority seal: neutral premium dark (no gold), with a green verified accent */
+    .cbs-deals {
+      background: linear-gradient(180deg, #20242b, #14171c) !important;
+      border: 1px solid rgba(255, 255, 255, .10) !important;
+      border-bottom: 0 !important;
+      box-shadow: 0 14px 34px rgba(20, 22, 31, .22) !important;
+    }
+    .cbs-deals::before { background: linear-gradient(90deg, transparent 8%, var(--cta-light) 30%, var(--cta) 50%, var(--cta-light) 70%, transparent 92%) !important; }
+    .cbs-deals__eyebrow { color: rgba(190, 222, 203, .9) !important; }
+    .cbs-deals__verify { color: #b9d8c6 !important; }
+    .cbs-deals__verify::before { color: var(--cta-light); }
+    /* Scarcity: clean light card, red reserved only for the urgency cues */
+    .cbs-deals + .scarcity { border-top: 0; }
+    .scarcity {
+      background: #fff !important;
+      color: var(--ink) !important;
+      border: 1px solid var(--line);
+      box-shadow: 0 1px 2px rgba(20, 22, 31, .05), 0 12px 28px rgba(20, 22, 31, .07) !important;
+    }
+    .scarcity .live-dot { background: var(--urgent) !important; }
+    .scarcity .live-dot::after { background: rgba(224, 16, 58, .5) !important; }
+    .scarcity__live { color: var(--muted); opacity: 1; }
+    .scarcity__stock { color: var(--ink); }
+    .scarcity__stock .counter_left { color: var(--urgent); text-decoration-color: rgba(224, 16, 58, .45); }
+    .scarcity__bar { background: var(--line) !important; }
+    .scarcity__bar span { background: var(--urgent) !important; }
+    .scarcity__timer { background: rgba(224, 16, 58, .08) !important; color: var(--urgent) !important; }
+    .scarcity__timer strong { color: var(--urgent); }
 
     /* ===== Live "just reserved" toasts ===== */
     .lvt-wrap {
