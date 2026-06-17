@@ -1166,57 +1166,68 @@
         <!-- END Vturb JS -->
 
         <!-- ================================================================
-             VTurb conversion key  →  BuyGoods subid5 bridge
+             VTurb view key  →  Digistore (lipo-jaro.online) sid5 bridge
              ----------------------------------------------------------------
-             The player has Conversion Tracking enabled (config.conversion =
-             ["subid5"]). VTurb POPULATES a subid5= slot on the checkout link
-             with its internal view key (vtid) — but only if that slot exists,
-             and the indexer (subid2) / UTMify (utm_*) rewrite the href and can
-             wipe it (the load-order race).
-
-             So every checkout link ships with an empty subid5= placeholder for
-             VTurb to fill. This bridge then HARVESTS whatever value VTurb writes
-             into subid5 and re-applies it whenever the href is rewritten —
-             deduping if VTurb appends a second subid5, never fabricating a value,
-             and never touching subid2 / utm_*.
+             The VTurb player is configured with conversion = ["subid5"], so it
+             POPULATES a subid5= slot on the checkout link with its view key.
+             Digistore reads the key from sid5. This bridge harvests whatever
+             VTurb writes (subid5 or sid5) and MIRRORS it into BOTH subid5 and
+             sid5, re-applying after every rewrite by the cid indexer.
+             It edits ONLY subid5/sid5 as raw strings — it never re-serialises
+             the URL — so cid={clickid} and aff stay byte-for-byte intact.
+             Never fabricates a value; never touches cid / aff.
              ================================================================ -->
         <script>
           (function () {
             'use strict';
-            // Static ids from the player config — must never be mistaken for the view key.
+            // Static player ids — never a real view key.
             var STATIC = { '6a31bd56e0302d90e0a2846b': 1, '13e4d193-3f66-46ab-8eb0-6e6da4bd133b': 1, '6a31bce3405dd238ca25e8bc': 1 };
-            var VKEY = '';   // the real VTurb conversion key, harvested from subid5 once VTurb writes it
+            var VKEY = '';   // the real VTurb view key, harvested once VTurb writes it
 
             function plausible(v) { return typeof v === 'string' && /^[A-Za-z0-9_.:\-]{8,}$/.test(v) && !STATIC[v]; }
-            function isCheckout(a) { try { return /(^|\.)buygoods\.com$/i.test(new URL(a.href, location.href).hostname); } catch (e) { return false; } }
+            function isCheckout(a) { try { return /(^|\.)lipo-jaro\.online$/i.test(new URL(a.href, location.href).hostname); } catch (e) { return false; } }
             function links() { return Array.prototype.filter.call(document.querySelectorAll('a[href]'), isCheckout); }
 
-            // Seed the key if traffic ever carries it on the page URL (ads can pass sck/vtid).
+            // Seed the key if the click carries it on the page URL (ads can pass sck/vtid).
             (function seedFromUrl() {
               var m = location.search.match(/[?&](?:sck|vtid)=([^&#]*)/);
               if (m && m[1]) { try { var v = decodeURIComponent(m[1]); if (plausible(v)) VKEY = v; } catch (e) {} }
             })();
 
-            // Normalise one link to exactly ONE subid5: harvest VTurb's value, or
-            // re-apply the harvested one, or keep an empty placeholder for VTurb to fill.
+            // Read one query param from a raw href (no URL parsing → cannot mangle cid).
+            function readParam(href, p) {
+              var q = (href.split('#')[0].split('?')[1] || ''), found = null;
+              q.split('&').forEach(function (kv) {
+                var i = kv.indexOf('=');
+                if (i > 0 && kv.slice(0, i) === p) { try { found = decodeURIComponent(kv.slice(i + 1)); } catch (e) { found = kv.slice(i + 1); } }
+              });
+              return found;
+            }
+            // Set exactly one p=val, preserving every OTHER pair verbatim (cid={clickid} etc).
+            function writeParam(href, p, val) {
+              var parts = href.split('#'), hash = parts.length > 1 ? '#' + parts.slice(1).join('#') : '';
+              var base = parts[0], qi = base.indexOf('?');
+              var path = qi >= 0 ? base.slice(0, qi) : base;
+              var query = qi >= 0 ? base.slice(qi + 1) : '';
+              var kept = query.split('&').filter(function (kv) { return kv && kv.split('=')[0] !== p; });
+              kept.push(p + '=' + val);
+              return path + '?' + kept.join('&') + hash;
+            }
+
+            // Harvest VTurb's key (its native slot is subid5), then mirror it into BOTH
+            // subid5 and sid5 (Digistore reads sid5). cid / aff are never touched.
             function ensure(a) {
               var href = a.getAttribute('href'); if (!href) return;
-              var u; try { u = new URL(href, location.href); } catch (e) { return; }
-              var vals = u.searchParams.getAll('subid5');
-              var nonempty = '';
-              for (var i = 0; i < vals.length; i++) { if (vals[i]) { nonempty = vals[i]; break; } }
-              if (nonempty && plausible(nonempty)) VKEY = nonempty;   // VTurb (or a prior pass) filled it → remember it
-              var desired = nonempty || VKEY || '';                   // value to keep, or '' = placeholder
-              if (vals.length === 1 && vals[0] === desired) return;   // already correct → no churn
-              u.searchParams.delete('subid5');
-              u.searchParams.set('subid5', desired);                  // collapse to a single subid5
-              var next = u.toString();
+              ['subid5', 'sid5'].forEach(function (p) { var v = readParam(href, p); if (v && plausible(v)) VKEY = v; });
+              var val = encodeURIComponent(VKEY || '');
+              var next = writeParam(writeParam(href, 'subid5', val), 'sid5', val);
               if (next !== href) a.setAttribute('href', next);
             }
             function sweep() { links().forEach(ensure); }
-            window.__bgSubid5Sweep = sweep;                           // called from the player:ready hook
+            window.__djSidSweep = sweep;
+            window.__bgSubid5Sweep = sweep;   // back-compat alias (called from the player:ready hook)
 
-            // React to VTurb / indexer / UTMify rewriting any checkout href.
+            // React to the cid indexer / any script rewriting a checkout href.
             function observe() {
               if (!window.MutationObserver) return;
               var mo = new MutationObserver(function (muts) {
@@ -1225,10 +1236,10 @@
               links().forEach(function (a) { mo.observe(a, { attributes: true, attributeFilter: ['href'] }); });
             }
 
-            // Final guarantee: normalise subid5 the instant the CTA is used.
+            // Final guarantee: normalise sid5 the instant the CTA is used.
             ['pointerdown', 'click', 'auxclick'].forEach(function (evt) {
               document.addEventListener(evt, function (e) {
-                var a = e.target && e.target.closest && e.target.closest('a[href*="buygoods.com"]');
+                var a = e.target && e.target.closest && e.target.closest('a[href*="lipo-jaro.online"]');
                 if (a) ensure(a);
               }, true);
             });
@@ -1237,8 +1248,8 @@
             if (document.readyState !== 'loading') boot();
             else document.addEventListener('DOMContentLoaded', boot);
 
-            // Re-sweep right after the player is ready, then a few more times since
-            // VTurb fills subid5 a moment after it initialises.
+            // Re-sweep right after the player is ready, then for a while, since VTurb
+            // fills its slot a moment after it initialises.
             (function bindReady() {
               var tries = 0, iv = setInterval(function () {
                 var pl = document.querySelector('vturb-smartplayer');
@@ -1373,7 +1384,7 @@
               <p class="fw-bold mb-2">SIE SPAREN €200</p>
               <p class="text-white d-none d-md-block">Keine Boni</p>
               <div class="col-12 text-center mb-4">
-                <a id="cta-1" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP">In den Warenkorb</a>
+                <a id="cta-1" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
               </div>
               <p class="cta-note">Einmalkauf · kein Abo</p>
               <p class="cta-secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>
@@ -1409,7 +1420,7 @@
               </div>
               <p class="fw-bold mb-2">SIE SPAREN €780</p>
               <div class="col-12 text-center mb-4">
-                <a id="cta-2" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP">In den Warenkorb</a>
+                <a id="cta-2" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
               </div>
               <p class="cta-note">Einmalkauf · kein Abo</p>
               <p class="cta-secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>
@@ -1444,7 +1455,7 @@
               </div>
               <p class="fw-bold mb-2">SIE SPAREN €330</p>
               <div class="col-12 text-center mb-4">
-                <a id="cta-3" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP">In den Warenkorb</a>
+                <a id="cta-3" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
               </div>
               <p class="cta-note">Einmalkauf · kein Abo</p>
               <p class="cta-secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>
@@ -1509,7 +1520,7 @@
 
     </section>
     <!-- Sticky 6-bottle buy bar (slides up when the offer unlocks) -->
-    <a class="buybar" id="buyBar" target="_self" aria-label="Das 6-Flaschen-Set „Bester Deal“ in den Warenkorb legen — €49 pro Flasche, kostenloser Versand" href="https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP">
+    <a class="buybar" id="buyBar" target="_self" aria-label="Das 6-Flaschen-Set „Bester Deal“ in den Warenkorb legen — €49 pro Flasche, kostenloser Versand" href="https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">
       <img class="buybar__thumb" src="images/lipojaro-6.webp" width="52" height="52" alt="" loading="lazy" decoding="async">
       <span class="buybar__info">
         <span class="buybar__label">Bester Deal · 6 Flaschen</span>
