@@ -1080,6 +1080,52 @@
     .exo-skip { display: inline-block; margin-top: 12px; font-size: 12.5px; color: #aab0b6; background: none; border: 0; cursor: pointer; text-decoration: underline; }
     @media (prefers-reduced-motion: reduce) { .exo-modal { animation: none; } }
   </style>
+
+  <style>
+    /* ===== „Personalisierte Formel“ Quiz — Back-Redirect Takeover (injected via JS) ===== */
+    .ljq-overlay { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; background: #fff; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .ljq-overlay.is-open { display: flex; }
+    .ljq-bar { position: sticky; top: 0; display: flex; align-items: center; gap: 13px; padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--line); z-index: 2; }
+    .ljq-bar img { height: 24px; width: auto; display: block; }
+    .ljq-track { flex: 1; height: 6px; border-radius: 999px; background: #e9edf3; overflow: hidden; }
+    .ljq-fill { display: block; height: 100%; width: 0; background: var(--cta); border-radius: 999px; transition: width .45s cubic-bezier(.4, 0, .2, 1); }
+    .ljq-close { background: none; border: 0; font-size: 25px; line-height: 1; color: #aab0b6; cursor: pointer; padding: 2px 4px; }
+    .ljq-stage { flex: 1 0 auto; width: 100%; max-width: 540px; margin: 0 auto; padding: 28px 20px 44px; }
+    .ljq-step { animation: ljq-in .28s ease-out; }
+    @keyframes ljq-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .ljq-eyebrow { display: block; text-align: center; font-weight: 800; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--cta); margin-bottom: 10px; }
+    .ljq-q { font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.28; color: var(--ink); text-align: center; margin: 0 0 22px; }
+    .ljq-opts { display: flex; flex-direction: column; gap: 11px; }
+    .ljq-opt { display: flex; align-items: center; gap: 14px; text-align: left; width: 100%; background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px; font-size: 16px; font-weight: 600; color: var(--ink); cursor: pointer; transition: border-color .15s, box-shadow .15s, background-color .15s, transform .08s; }
+    .ljq-opt:hover { border-color: var(--cta); box-shadow: 0 6px 18px rgba(21, 128, 61, .12); }
+    .ljq-opt:active { transform: scale(.99); }
+    .ljq-opt.is-sel { border-color: var(--cta); background: #f3f9f4; }
+    .ljq-ico { flex: 0 0 auto; font-size: 22px; width: 28px; text-align: center; }
+    /* analyse / loading */
+    .ljq-load { text-align: center; padding: 54px 10px 30px; }
+    .ljq-spin { width: 54px; height: 54px; border-radius: 50%; border: 5px solid #e9edf3; border-top-color: var(--cta); margin: 0 auto 22px; animation: ljq-rot .9s linear infinite; }
+    @keyframes ljq-rot { to { transform: rotate(360deg); } }
+    .ljq-load h3 { font-size: 19px; color: var(--ink); margin: 0 0 8px; }
+    .ljq-load p { font-size: 14px; color: var(--muted); margin: 0; min-height: 20px; transition: opacity .25s; }
+    /* result */
+    .ljq-res { text-align: center; }
+    .ljq-res-badge { display: inline-block; background: var(--cta); color: #fff; font-weight: 800; font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; margin-bottom: 14px; }
+    .ljq-res h2 { font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 23px; line-height: 1.22; color: var(--ink); margin: 0 0 6px; }
+    .ljq-res .ljq-sub { font-size: 14.5px; color: var(--muted); line-height: 1.5; margin: 0 0 18px; }
+    .ljq-res-card { border: 1.5px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 14px 34px rgba(8, 11, 16, .10); text-align: left; }
+    .ljq-res-card > img { display: block; width: 100%; height: auto; }
+    .ljq-res-body { padding: 18px 18px 20px; }
+    .ljq-kit { font-weight: 800; font-size: 20px; color: var(--brand); margin: 0 0 6px; }
+    .ljq-kit-p { font-size: 14px; line-height: 1.55; color: var(--muted); margin: 0; }
+    .ljq-chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin: 16px 0 2px; }
+    .ljq-chip { font-size: 12.5px; font-weight: 700; color: var(--brand); background: #eef2f8; border-radius: 999px; padding: 5px 12px; }
+    .ljq-cta { display: block; background: #15803d !important; color: #fff !important; font-weight: 800; font-size: 17px; text-decoration: none; text-align: center; padding: 16px; border-radius: 13px; margin: 18px 0 10px; box-shadow: 0 10px 22px rgba(21, 128, 61, .28); transition: background-color .15s ease; }
+    .ljq-cta:hover { background: #126a32 !important; }
+    .ljq-guarantee { display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 12.5px; color: var(--muted); margin: 0; }
+    .ljq-skip { display: inline-block; margin-top: 18px; font-size: 12.5px; color: #aab0b6; background: none; border: 0; cursor: pointer; text-decoration: underline; }
+    @media (max-width: 480px) { .ljq-q { font-size: 20px; } .ljq-res h2 { font-size: 21px; } .ljq-opt { font-size: 15px; padding: 15px 16px; } }
+    @media (prefers-reduced-motion: reduce) { .ljq-step, .ljq-spin { animation: none; } .ljq-fill { transition: none; } }
+  </style>
 </head>
 
 <body>
@@ -1798,34 +1844,42 @@
         /* ---- 7) live chat overlay on the VSL (40 named messages from the 11 people) ---- */
         var chatEl = $('#vslChat');
         var CHAT = [
-          { n: "Sabine", t: "warte hat er grad gesagt man muss keine kohlenhydrate weglassen?? ich hör zu" },
+          // — Einstieg / Hook: neugierig, noch skeptisch, bleiben aber dran —
           { n: "Claudia", t: "ok noch so ne abnehm-sache. kenn ich alles schon aber gut, ich hör mal zu" },
-          { n: "Andrea", t: "bin 58 und das bauchfett geht einfach nicht weg egal was ich versuche 😩" },
-          { n: "Petra", t: "hab dieselben 15 kilo seit jahren verloren und wieder zugenommen. so leid 💔" },
-          { n: "Monika", t: "wie hieß nochmal der arzt den er erwähnt hat, hab ich verpasst" },
-          { n: "Monika", t: "ich versteck mich mittlerweile auf jedem familienfoto hinten 😔 hab genug" },
-          { n: "Sabine", t: "meine knie tun vom extra gewicht weh. ich bete dass das echt ist" },
-          { n: "Petra", t: "ist das sicher mit blutdruckmitteln?? bin 62 und nehm ein paar" },
-          { n: "Andrea", t: "ok was sind die 2 zutaten, ich häng an jedem wort" },
-          { n: "Claudia", t: "klingt ehrlich viel zu gut. bin aber trotzdem noch dabei" },
+          { n: "Sabine", t: "warte hat er grad gesagt man muss KEINE kohlenhydrate weglassen?? jetzt hör ich zu" },
+          { n: "Petra", t: "moment also kein hungern und kein sport? wie soll das gehen 🤔" },
+          { n: "Andrea", t: "bin extra geblieben weil ne freundin meinte ich soll mir das bis zum ende anschauen" },
+          // — Meghan Trainor / Promi-Hook —
+          { n: "Monika", t: "war das gerade meghan trainor?? hab ich das richtig gesehen" },
+          { n: "Claudia", t: "wenn das stimmt was die promis hier nehmen warum hört man da nirgends was davon" },
+          { n: "Sabine", t: "kommt mir bekannt vor diese frau aus dem video, woher kenn ich die" },
+          // — Neugier auf den Mechanismus / die 2 Zutaten —
+          { n: "Andrea", t: "ok was sind jetzt diese 2 zutaten, ich häng an jedem wort" },
+          { n: "Petra", t: "warte was war die erste zutat, hat das jemand mitbekommen" },
+          { n: "Monika", t: "also der trick ist im DARM?? das hab ich so noch nie gehört" },
+          { n: "Claudia", t: "schreibt er irgendwo die genauen mengen hin oder muss ich mitschreiben" },
+          { n: "Sabine", t: "halt stop nochmal langsam welches gewürz war das 😅" },
+          { n: "Andrea", t: "mach mir tatsächlich notizen lol das ergibt mehr sinn als alles vorher" },
+          // — Dr. Adler / Glaubwürdigkeit —
+          { n: "Monika", t: "wie hieß nochmal die ärztin die er erwähnt hat, hab ich verpasst" },
+          { n: "Petra", t: "ne richtige ärztin aus der ard? ok das beruhigt mich ein bisschen" },
+          { n: "Claudia", t: "bin skeptisch reingegangen ehrlich. aber sie erklärt das WARUM besser als gedacht" },
+          // — Identifikation / Schmerzpunkte (kein Heilversprechen) —
+          { n: "Andrea", t: "55 und das bauchfett geht einfach nicht weg egal was ich versuche 😩" },
           { n: "Petra", t: "der heißhunger gegen 15 uhr macht mich jeden einzelnen tag fertig" },
-          { n: "Monika", t: "erklärt er das jetzt wirklich oder muss ich mir das ganze ding anschauen" },
-          { n: "Monika", t: "nichts in meinem schrank passt und ich kauf nicht nochmal ne größere größe 😔" },
-          { n: "Sabine", t: "funktioniert das auch wenn ich nur so 10 kilo hab oder nur bei viel" },
-          { n: "Claudia", t: "bin echt skeptisch reingegangen ehrlich. aber er hat das warum besser erklärt als gedacht" },
-          { n: "Andrea", t: "mach mir notizen lol mein stoffwechsel ist nicht mehr was er war" },
-          { n: "Petra", t: "das blähgefühl am ende des tages 💔 das ist mein ganzes leben" },
-          { n: "Claudia", t: "jedes video sagt pharmaindustrie dies pharmaindustrie das. naja" },
-          { n: "Sabine", t: "das mit dem hartnäckigen bauch. genau das passiert bei mir" },
-          { n: "Monika", t: "also was genau ist das ritual, hat er das schon gesagt" },
+          { n: "Sabine", t: "das blähgefühl am ende des tages, genau DAS ist mein ganzes leben 💔" },
+          { n: "Monika", t: "mein stoffwechsel ist seit den wechseljahren einfach nicht mehr derselbe" },
+          { n: "Claudia", t: "hab dieselben 15 kilo seit jahren verloren und wieder drauf. jo-jo lässt grüßen 🙄" },
           { n: "Petra", t: "ich zähl jede kalorie und nehm trotzdem nicht ab. man fühlt sich so besiegt" },
-          { n: "Andrea", t: "warte was war die zweite zutat, hat das jemand mitbekommen" },
-          { n: "Andrea", t: "kommentier normal nie aber das hat mich aufhorchen lassen" },
-          { n: "Petra", t: "ich will mich einfach wieder wohl in meinem körper fühlen" },
-          { n: "Claudia", t: "noch nicht ganz überzeugt aber ok er hat ein paar punkte gemacht die ich nicht erwartet hab" },
-          { n: "Sabine", t: "ich bete dass das mal echt ist. hab schon alles andere probiert" },
-          { n: "Monika", t: "muss gleich die kinder abholen, hoffe ich verpass nicht den wichtigen teil" },
-          { n: "Andrea", t: "schau mir das ganze ding an, hab ich bei sowas schon lang nicht mehr gemacht" }
+          { n: "Andrea", t: "versteck mich mittlerweile auf jedem familienfoto hinten 😔 hab genug davon" },
+          // — Spannung halten / dranbleiben —
+          { n: "Sabine", t: "ich bete dass das mal was echtes ist. hab schon ALLES andere probiert" },
+          { n: "Monika", t: "muss gleich die kinder abholen, bitte sag mir keiner ich verpass den wichtigen teil" },
+          { n: "Claudia", t: "noch nicht ganz überzeugt aber sie hat punkte gemacht die ich nicht erwartet hab" },
+          { n: "Petra", t: "funktioniert das auch wenn ich nur so 8 kilo runter will oder eher bei mehr" },
+          { n: "Andrea", t: "kommentier sonst NIE bei sowas aber das hat mich echt aufhorchen lassen" },
+          { n: "Sabine", t: "bleibt dran mädels, ich will wissen wie das mit dem darm jetzt genau funktioniert" },
+          { n: "Monika", t: "ok ich schau mir das ganze ding an, hab ich bei sowas lang nicht mehr gemacht" }
         ];
         var nextChatMsg = shuffler(CHAT);
         function addChat() {
@@ -1950,11 +2004,180 @@
 
   <script>
     /* ============================================================
+       „Personalisierte Formel“ — Back-Redirect Quiz (post-DTC).
+       Self-contained full-screen takeover, injected via JS. Triggered by the
+       exit/back handler below ONLY after the offer is revealed; abandoners get a
+       short, premium ARD-styled assessment aligned to Dr. Adlers Protokoll
+       (Hafer/Ingwer/Berberin → GLP-1/GIP, Stoffwechsel) that ends in a personal
+       3- or 6-Monats-Kur recommendation + reservierter Vorzugspreis + checkout.
+       Exposes window.__ljQuiz.open(). Does not touch the page layout/structure.
+       ============================================================ */
+    (function () {
+      'use strict';
+      var CHECKOUT = {
+        3: 'https://lipo-jaro.online/af/checkout-3.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
+        6: 'https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5='
+      };
+      var RESULT_IMG = ['images/lipo-result-2.webp', 'images/lipo-result-1.webp', 'images/lipo-result-4.webp'];
+
+      // Each option carries a `score` for "needs the longer protocol" (higher → 6-Monats-Kur).
+      var QUESTIONS = [
+        { key: 'zone', q: 'Wo stört Sie Ihr Gewicht am meisten?', opts: [
+          { ico: '🎯', label: 'Am Bauch', chip: 'Bauchfett', score: 1 },
+          { ico: '🍑', label: 'Hüften &amp; Oberschenkel', chip: 'Hüften', score: 1 },
+          { ico: '💪', label: 'Arme &amp; Rücken', chip: 'Arme &amp; Rücken', score: 0 },
+          { ico: '✨', label: 'Am ganzen Körper', chip: 'Ganzkörper', score: 2 }
+        ]},
+        { key: 'amount', q: 'Wie viel möchten Sie idealerweise abnehmen?', opts: [
+          { ico: '🌱', label: 'Bis 7 kg', chip: 'bis 7 kg', score: 0 },
+          { ico: '⚖️', label: '7 – 15 kg', chip: '7–15 kg', score: 1 },
+          { ico: '🔥', label: '15 – 25 kg', chip: '15–25 kg', score: 2 },
+          { ico: '🚀', label: 'Mehr als 25 kg', chip: '25 kg+', score: 3 }
+        ]},
+        { key: 'block', q: 'Was bremst Sie bisher am meisten aus?', opts: [
+          { ico: '🍫', label: 'Heißhunger am Nachmittag', chip: 'Heißhunger', score: 1 },
+          { ico: '🐌', label: 'Ein langsamer Stoffwechsel', chip: 'Stoffwechsel', score: 1 },
+          { ico: '🎈', label: 'Ständiges Blähgefühl', chip: 'Blähbauch', score: 1 },
+          { ico: '🔄', label: 'Der Jo-Jo-Effekt nach jeder Diät', chip: 'Jo-Jo-Effekt', score: 2 }
+        ]},
+        { key: 'age', q: 'In welcher Lebensphase befinden Sie sich?', opts: [
+          { ico: '🙂', label: '25 – 39 Jahre', chip: '25–39 J.', score: 0 },
+          { ico: '🌸', label: '40 – 54 Jahre', chip: '40–54 J.', score: 1 },
+          { ico: '🌼', label: '55 – 64 Jahre', chip: '55–64 J.', score: 2 },
+          { ico: '🌷', label: '65 Jahre und älter', chip: '65+ J.', score: 2 }
+        ]},
+        { key: 'goal', q: 'Was ist Ihnen bei Ihrem Ergebnis am wichtigsten?', opts: [
+          { ico: '🌿', label: 'Eine natürliche, sanfte Methode', chip: 'natürlich', score: 2 },
+          { ico: '📈', label: 'Stetige, dauerhafte Ergebnisse', chip: 'dauerhaft', score: 1 },
+          { ico: '⚡', label: 'Möglichst schnell sichtbar', chip: 'schnell', score: 0 }
+        ]}
+      ];
+
+      var KEY = 'exoShown';
+      var el = null, idx = 0, answers = [], score = 0;
+
+      function build() {
+        if (el) return;
+        el = document.createElement('div');
+        el.className = 'ljq-overlay';
+        el.setAttribute('role', 'dialog');
+        el.setAttribute('aria-modal', 'true');
+        el.setAttribute('aria-label', 'Personalisierte Formel');
+        el.innerHTML =
+          '<div class="ljq-bar">' +
+            '<img src="images/ard-logo.webp" width="38" height="24" alt="ARD" decoding="async">' +
+            '<span class="ljq-track"><span class="ljq-fill" id="ljqFill"></span></span>' +
+            '<button class="ljq-close" type="button" aria-label="Schließen">&times;</button>' +
+          '</div>' +
+          '<div class="ljq-stage" id="ljqStage"></div>';
+        document.body.appendChild(el);
+        el.querySelector('.ljq-close').addEventListener('click', close);
+      }
+      function setFill(pct) {
+        var f = document.getElementById('ljqFill'); if (f) f.style.width = pct + '%';
+      }
+      function renderQuestion() {
+        var Q = QUESTIONS[idx];
+        var html = '<div class="ljq-step">' +
+          '<span class="ljq-eyebrow">Schritt ' + (idx + 1) + ' von ' + QUESTIONS.length + '</span>' +
+          '<h2 class="ljq-q">' + Q.q + '</h2>' +
+          '<div class="ljq-opts">';
+        Q.opts.forEach(function (o, i) {
+          html += '<button class="ljq-opt" type="button" data-i="' + i + '">' +
+            '<span class="ljq-ico">' + o.ico + '</span><span>' + o.label + '</span></button>';
+        });
+        html += '</div></div>';
+        var stage = document.getElementById('ljqStage');
+        stage.innerHTML = html;
+        stage.scrollTop = 0;
+        setFill(Math.round((idx) / QUESTIONS.length * 100));
+        Array.prototype.forEach.call(stage.querySelectorAll('.ljq-opt'), function (btn) {
+          btn.addEventListener('click', function () {
+            var o = Q.opts[+btn.getAttribute('data-i')];
+            btn.classList.add('is-sel');
+            answers.push({ key: Q.key, chip: o.chip });
+            score += o.score;
+            setTimeout(next, 230);
+          });
+        });
+      }
+      function next() {
+        idx++;
+        if (idx < QUESTIONS.length) { renderQuestion(); }
+        else { renderLoading(); }
+      }
+      function renderLoading() {
+        setFill(100);
+        var msgs = ['Analysiere Ihre Antworten…', 'Gleiche mit Dr. Adlers Protokoll ab…', 'Stelle Ihre persönliche Kur zusammen…'];
+        var stage = document.getElementById('ljqStage');
+        stage.innerHTML = '<div class="ljq-step ljq-load"><div class="ljq-spin"></div>' +
+          '<h3>Ihre persönliche Formel wird erstellt</h3><p id="ljqMsg">' + msgs[0] + '</p></div>';
+        var i = 0, p = document.getElementById('ljqMsg');
+        var t = setInterval(function () {
+          i++; if (i >= msgs.length) { clearInterval(t); return; }
+          if (p) { p.style.opacity = 0; setTimeout(function () { p.textContent = msgs[i]; p.style.opacity = 1; }, 220); }
+        }, 1050);
+        setTimeout(renderResult, 3300);
+      }
+      function renderResult() {
+        var six = score >= 4;
+        var url = six ? CHECKOUT[6] : CHECKOUT[3];
+        var img = RESULT_IMG[Math.floor(Math.random() * RESULT_IMG.length)];
+        var kit = six ? 'Die 6-Monats-Kur' : 'Die 3-Monats-Kur';
+        var kitP = six
+          ? 'Damit die ruhenden L-Zellen in Ihrem Darm wieder ausreichend GLP-1 und GIP bilden, braucht Ihr Stoffwechsel Zeit. Die 6-Monats-Kur deckt den vollständigen Zyklus ab — für ein dauerhaftes Ergebnis ohne Jo-Jo-Effekt.'
+          : 'Ein idealer Einstieg, um Ihren Stoffwechsel anzustoßen und mit Hafer, Ingwer und Berberin die ersten sichtbaren Veränderungen zu erreichen.';
+        // chips from the visitor's own answers → feels truly personalised
+        var chips = '';
+        answers.forEach(function (a) { chips += '<span class="ljq-chip">' + a.chip + '</span>'; });
+        var stage = document.getElementById('ljqStage');
+        stage.innerHTML = '<div class="ljq-step ljq-res">' +
+          '<span class="ljq-res-badge">Ihr persönliches Ergebnis</span>' +
+          '<h2>Ihre Lipo&nbsp;Jaro-Formel steht fest</h2>' +
+          '<p class="ljq-sub">Auf Basis Ihrer Antworten empfehlen wir Ihnen:</p>' +
+          '<div class="ljq-chips">' + chips + '</div>' +
+          '<div class="ljq-res-card" style="margin-top:16px">' +
+            '<img src="' + img + '" width="760" height="700" loading="lazy" decoding="async" alt="Vorher / Nachher mit Lipo Jaro">' +
+            '<div class="ljq-res-body">' +
+              '<p class="ljq-kit">' + kit + '</p>' +
+              '<p class="ljq-kit-p">' + kitP + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<a class="ljq-cta" id="ljqCta" target="_self" rel="nofollow" href="' + url + '">' +
+            (six ? 'Meine 6-Monats-Kur sichern' : 'Meine 3-Monats-Kur sichern') + '</a>' +
+          '<p class="ljq-guarantee">🔒 Kostenloser Versand · 60 Tage Geld-zurück-Garantie</p>' +
+          '<button class="ljq-skip" type="button" id="ljqSkip">Nein danke, Seite verlassen</button>' +
+        '</div>';
+        stage.scrollTop = 0;
+        var cta = document.getElementById('ljqCta');
+        cta.addEventListener('click', function () {
+          if (window.__djSidSweep) { try { window.__djSidSweep(); } catch (x) {} }
+        });
+        document.getElementById('ljqSkip').addEventListener('click', leave);
+      }
+      function open() {
+        build();
+        idx = 0; answers = []; score = 0;
+        renderQuestion();
+        el.classList.add('is-open');
+        document.documentElement.style.overflow = 'hidden';
+      }
+      function close() {
+        if (el) { el.classList.remove('is-open'); }
+        document.documentElement.style.overflow = '';
+      }
+      function leave() { close(); try { history.back(); } catch (e) {} }
+      window.__ljQuiz = { open: open };
+    })();
+  </script>
+
+  <script>
+    /* ============================================================
        Exit / back-button offer — keeps leaving visitors in the funnel.
-       Fires on the browser BACK button (mobile) and on desktop exit-intent,
-       both BEFORE and AFTER the DTC (different copy for each). Shows once
-       per session. Edit the CFG block to change the copy / CTA / discount,
-       or set mode:'redirect' + redirectUrl to hard-redirect to a downsell.
+       Fires on the browser BACK button (mobile) and on desktop exit-intent.
+       BEFORE the DTC is revealed → a light "keep watching" nudge.
+       AFTER the DTC is revealed → the „Personalisierte Formel“ quiz takeover.
+       Shows once per session.
        ============================================================ */
     (function () {
       'use strict';
@@ -2014,6 +2237,9 @@
       }
       function open() {
         if (used()) return false;
+        // After the DTC is revealed, abandoners get the personalised-formula quiz
+        // takeover instead of the simple nudge; before that, the light nudge.
+        if (revealed() && window.__ljQuiz) { markUsed(); window.__ljQuiz.open(); return true; }
         build(); fill();
         el.classList.add('is-open'); el.setAttribute('aria-hidden', 'false');
         markUsed();
