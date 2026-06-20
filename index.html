@@ -936,7 +936,7 @@
     .cm-list > .cm-row.cm-new { box-shadow: inset 3px 0 0 var(--brand); background: rgba(205, 137, 0, .06); }
 
     /* ===== Live VSL stage: LIVE badge + broadcast clock + floating reactions ===== */
-    .vsl-stage { position: relative; width: 100%; max-width: 400px; margin: 0 auto; }
+    .vsl-stage { position: relative; width: 100%; max-width: 440px; margin: 0 auto; }
 
     /* Reserve the 16:9 video box up-front so the player can't shift layout (CLS) */
     .vsl-stage vturb-smartplayer { display: block; width: 100%; aspect-ratio: 16 / 9; }
@@ -1155,13 +1155,6 @@
       </button>
     </header>
 
-    <!-- Program block -->
-    <div class="cbs-program">
-      <p class="cbs-program-title">Gesundheit &amp; Ernährung</p>
-      <p class="cbs-program-date" id="smDate"></p>
-      <p class="cbs-program-sched">Verfügbar in der ARD Mediathek · Reportage</p>
-    </div>
-
     <!-- Category nav -->
     <nav class="cbs-nav" aria-label="Bereiche">
       <a href="#">Startseite</a>
@@ -1172,6 +1165,20 @@
     </nav>
 
     <section class="principal">
+      <!-- Interview hook headline (above the VSL — leads into the player) -->
+      <div class="px-4 pt-3 pb-3 max-w-3xl mx-auto">
+        <div class="cbs-eyebrow">
+          <span class="cbs-eyebrow__date data_atual"></span>
+        </div>
+        <h1 class="headline-serif text-[26px] md:text-[38px] leading-[1.15] mb-3">
+          Kann dieser „Bariatrische Samen“ besser sein als <span class="lbl-urgent">Mounjaro</span>?
+        </h1>
+        <div class="flex items-start border-l-[3px] bar-urgent pl-3 py-1">
+          <p class="text-[15px] md:text-[17px] text-[#333] font-medium leading-snug">
+            In diesem exklusiven Interview sagt Dr. Yael Adler, die berühmte Prominenten-Ärztin, eindeutig ja!
+          </p>
+        </div>
+      </div>
       <!-- Live presence strip (always visible — sets the "live broadcast" tone) -->
       <div class="livebar" aria-hidden="true">
         <span class="live-dot"></span>
@@ -1194,7 +1201,7 @@
         <!-- Vídeo vturb -->
         <div class="vsl-stage">
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
-          <vturb-smartplayer id="vid-6a370ffe033aab84a759584b" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+          <vturb-smartplayer id="vid-6a370ffe033aab84a759584b" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
           <div class="vsl-chat" id="vslChat" aria-hidden="true"></div>
           <div class="reactions" id="reactions" aria-hidden="true"></div>
         </div>
@@ -1330,20 +1337,6 @@
           })();
         </script>
 
-      </div>
-      <!-- Interview hook headline (below the VSL) -->
-      <div class="px-4 pt-3 pb-4 max-w-3xl mx-auto">
-        <div class="cbs-eyebrow">
-          <span class="cbs-eyebrow__date data_atual"></span>
-        </div>
-        <h1 class="headline-serif text-[26px] md:text-[38px] leading-[1.15] mb-3">
-          Kann dieser „Bariatrische Samen“ besser sein als <span class="lbl-urgent">Mounjaro</span>?
-        </h1>
-        <div class="flex items-start border-l-[3px] bar-urgent pl-3 py-1">
-          <p class="text-[15px] md:text-[17px] text-[#333] font-medium leading-snug">
-            In diesem exklusiven Interview sagt Dr. Yael Adler, die berühmte Prominenten-Ärztin, eindeutig ja!
-          </p>
-        </div>
       </div>
       <!-- ===== Live scarcity widget (revealed with the offer) ===== -->
       <!-- Featured offer — premium 'official offer' seal (DTC header) -->
