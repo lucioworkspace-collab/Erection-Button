@@ -473,7 +473,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin: 10px auto 0;
+      margin: 7px auto 9px;
       font-size: 13px;
       color: #333;
       font-family: 'Open Sans', Arial, sans-serif;
@@ -938,6 +938,26 @@
     /* ===== Live VSL stage: LIVE badge + broadcast clock + floating reactions ===== */
     .vsl-stage { position: relative; width: 100%; max-width: 440px; margin: 0 auto; }
 
+    /* Audio/play reinforcement cue — drives video-start rate; collapses on play */
+    .vsl-cue {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; max-width: 440px; margin: 0 auto 10px;
+      background: #fff; border: 1.5px solid var(--cta); border-radius: 12px;
+      padding: 11px 14px; color: var(--ink);
+      font-family: 'Open Sans', Arial, sans-serif; font-weight: 700; font-size: 13.5px; line-height: 1.25;
+      cursor: pointer; box-shadow: 0 6px 18px rgba(21, 128, 61, .16);
+      transition: opacity .3s ease, transform .3s ease, max-height .35s ease, margin .35s ease, padding .35s ease, border-width .35s ease;
+    }
+    .vsl-cue b { color: var(--cta); }
+    .vsl-cue__play {
+      flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+      background: var(--cta); color: #fff; display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; padding-left: 2px; animation: vsl-cue-pulse 1.6s ease-in-out infinite;
+    }
+    .vsl-cue.is-hidden { opacity: 0; transform: translateY(-6px); max-height: 0; margin: 0 auto; padding: 0 14px; border-width: 0; box-shadow: none; pointer-events: none; }
+    @keyframes vsl-cue-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(21, 128, 61, .45); } 70% { box-shadow: 0 0 0 9px rgba(21, 128, 61, 0); } }
+    @media (prefers-reduced-motion: reduce) { .vsl-cue__play { animation: none; } }
+
     /* Reserve the 16:9 video box up-front so the player can't shift layout (CLS) */
     .vsl-stage vturb-smartplayer { display: block; width: 100%; aspect-ratio: 16 / 9; }
 
@@ -1190,7 +1210,7 @@
 
     <section class="principal">
       <!-- Interview hook headline (above the VSL — leads into the player) -->
-      <div class="px-4 pt-3 pb-3 max-w-3xl mx-auto">
+      <div class="px-4 pt-2 pb-2 max-w-3xl mx-auto">
         <div class="cbs-eyebrow">
           <span class="cbs-eyebrow__date data_atual"></span>
         </div>
@@ -1207,7 +1227,7 @@
           <img src="images/depo2.webp" width="120" height="120" alt="" loading="lazy">
           <img src="images/depo3.webp" width="120" height="120" alt="" loading="lazy">
         </span>
-        <span class="livebar__count"><span id="liveViewers">1,247</span> sehen gerade zu</span>
+        <span class="livebar__count"><span id="liveViewers">1.247</span> sehen gerade zu</span>
       </div>
       <div class="video_vturb">
 
@@ -1218,6 +1238,11 @@
       -->
 
         <!-- Vídeo vturb -->
+        <!-- Audio/play reinforcement cue (collapses the moment the video plays) -->
+        <div class="vsl-cue" id="vslCue" role="button" tabindex="0" aria-label="Video mit Ton starten">
+          <span class="vsl-cue__play" aria-hidden="true">▶</span>
+          <span>Tippen Sie auf das Video, um es <b>mit Ton</b> zu starten</span>
+        </div>
         <div class="vsl-stage">
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
           <vturb-smartplayer id="vid-6a370ffe033aab84a759584b" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
@@ -1245,6 +1270,9 @@
           // ===================================================
           var SECONDS_TO_DISPLAY = 2533; // Pitch reveal at 42:13 (42*60+13)
 
+          // Hide the "tap to start with sound" cue the moment the video actually plays.
+          function hideCue() { var c = document.getElementById('vslCue'); if (c) c.classList.add('is-hidden'); }
+
           function waitForPlayer() {
             const player = document.querySelector("vturb-smartplayer");
             if (player) {
@@ -1257,6 +1285,15 @@
                 // (fixes the load-order race where the param wasn't injected on first paint).
                 if (window.__bgSubid5Sweep) window.__bgSubid5Sweep();
               });
+              // Collapse the audio cue as soon as playback begins (any of VTurb's play events).
+              ['play', 'player:play', 'playing', 'player:start'].forEach(function (ev) {
+                try { player.addEventListener(ev, hideCue); } catch (e) {}
+              });
+              // Tapping the cue nudges the player to start; tapping the player counts too.
+              var cue = document.getElementById('vslCue');
+              if (cue) cue.addEventListener('click', function () { try { player.play && player.play(); } catch (e) {} hideCue(); });
+              var stage = document.querySelector('.vsl-stage');
+              if (stage) stage.addEventListener('pointerdown', hideCue, { once: true });
             }
           }
 
@@ -1614,7 +1651,7 @@
       <span class="buybar__info">
         <span class="buybar__label">Bester Deal · 6 Flaschen</span>
         <span class="buybar__price"><b>€49</b>/Flasche <span class="buybar__old">€179</span></span>
-        <span class="buybar__save">Sparen Sie €780 · Kostenloser Versand</span>
+        <span class="buybar__save">Gratis-Versand · 60 Tage Geld-zurück</span>
       </span>
       <span class="buybar__cta">In den Warenkorb <span class="buybar__arrow" aria-hidden="true">→</span></span>
     </a>
@@ -1697,7 +1734,11 @@
 
         /* ---- 1) live viewers / checkout counters ---- */
         var viewers = rand(1180, 1320);
-        function renderViewers() { var v = $('#liveViewers'); if (v) v.textContent = viewers.toLocaleString(); }
+        function renderViewers() {
+          var t = viewers.toLocaleString('de-DE');               // German thousands separator (1.247)
+          var v = $('#liveViewers'); if (v) v.textContent = t;
+          var c = $('#vslChatCount'); if (c) c.textContent = t;  // chat "dabei" tracks the live audience
+        }
         function renderCheckout() { var c = $('#liveCheckout'); if (c) c.textContent = rand(28, 54); }
         renderViewers(); renderCheckout();
         setInterval(function () {
@@ -1735,7 +1776,13 @@
         function renderTimer() {
           var el = $('#resTimer'); if (!el || deadline === null) return;
           var left = deadline - Date.now();
-          if (left <= 0) { deadline = Date.now() + RES_MS; try { localStorage.setItem(RES_KEY, deadline); } catch (e) {} left = RES_MS; }
+          if (left <= 0) {
+            // Don't snap back to 15:00 (obvious reset kills urgency) — re-arm inside the
+            // 1–2 min "last minutes" band so it always reads as genuinely running out.
+            deadline = Date.now() + (60 + Math.floor(Math.random() * 60)) * 1000;
+            try { localStorage.setItem(RES_KEY, deadline); } catch (e) {}
+            left = deadline - Date.now();
+          }
           var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
           el.textContent = m + ':' + (s < 10 ? '0' + s : s);
         }
@@ -1750,9 +1797,11 @@
           deadline = ensureDeadline();   // 15-min reservation from first offer view (persisted, continuous)
           renderTimer();
           loopToast();                   // buy notifications begin together with the offer
-          // Auto-scroll straight to the 6-bottle "Best Value" kit the moment the pitch unlocks
-          var top = document.getElementById('kit6') || document.querySelector('.cbs-deals') || offerEl;
-          if (top) { try { top.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { top.scrollIntoView(); } }
+          // Gently reveal the offer (its seal) at the top of the viewport the moment the
+          // pitch unlocks — the still-playing video stays just above (one short swipe),
+          // so the audio/close keeps running instead of being yanked away mid-sentence.
+          var top = document.querySelector('.cbs-deals') || document.getElementById('kit6') || offerEl;
+          if (top) { try { top.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { top.scrollIntoView(); } }
           // Reveal the sticky 6-bottle buy bar
           var bb = $('#buyBar');
           if (bb) { bb.classList.add('is-on'); document.body.classList.add('has-buybar'); }
@@ -1841,12 +1890,15 @@
         /* ---- 6) immersion: broadcast clock, floating reactions, typing, face pile, tab title ---- */
         var BC_KEY = 'cbs_bcast_start_v1';
         var bstart = parseInt(localStorage.getItem(BC_KEY), 10);
-        if (isNaN(bstart)) { bstart = Date.now() - rand(40, 180) * 60000; try { localStorage.setItem(BC_KEY, bstart); } catch (e) {} }
+        // Broadcast started only a few minutes ago → the visitor feels they caught it
+        // near the start ("better stay"), not hours late ("I already missed the offer").
+        if (isNaN(bstart)) { bstart = Date.now() - rand(6, 20) * 60000; try { localStorage.setItem(BC_KEY, bstart); } catch (e) {} }
         function renderClock() {
           var el = $('#vslClock'); if (!el) return;
           var t = Math.max(0, Math.floor((Date.now() - bstart) / 1000));
-          var h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60;
-          el.textContent = (h > 0 ? h + ':' + (m < 10 ? '0' + m : m) : m) + ':' + (s < 10 ? '0' + s : s);
+          if (t > 3539) t = 3539;                          // clamp: stays MM:SS, never shows hours
+          var m = Math.floor(t / 60), s = t % 60;
+          el.textContent = m + ':' + (s < 10 ? '0' + s : s);
         }
         setInterval(renderClock, 1000); renderClock();
 
