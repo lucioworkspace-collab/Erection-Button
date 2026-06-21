@@ -988,6 +988,25 @@
     /* Reserve the 16:9 video box up-front so the player can't shift layout (CLS) */
     .vsl-stage vturb-smartplayer { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 15px; overflow: hidden; box-shadow: 0 18px 44px rgba(8, 11, 16, .15), 0 2px 8px rgba(8, 11, 16, .06), 0 0 0 1px rgba(8, 11, 16, .04); }
 
+    /* ===== Sticky mini-player (offer reveal) =====
+       At the pitch reveal the VSL shrinks into a floating, still-playing thumbnail
+       so the closing pitch keeps running while the offer is on screen. Toggled by
+       JS via body.vsl-mini — the player node is never moved in the DOM, so VTurb
+       keeps playing without a reload. Sits above the sticky buy bar, below it in z. */
+    body.vsl-mini .vsl-stage {
+      position: fixed; z-index: 8000; right: 10px; bottom: 14px;
+      width: 150px; max-width: 42vw; margin: 0;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(8, 11, 16, .30), 0 0 0 1px rgba(8, 11, 16, .07);
+      animation: vsl-mini-in .34s cubic-bezier(.2, .8, .2, 1);
+    }
+    body.vsl-mini.has-buybar .vsl-stage { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+    body.vsl-mini .vsl-stage vturb-smartplayer { border-radius: 12px; box-shadow: none; }
+    body.vsl-mini .reactions { display: none; }
+    body.vsl-mini .vsl-badge { top: 5px; left: 5px; font-size: 9px; padding: 3px 7px; gap: 4px; }
+    @keyframes vsl-mini-in { from { opacity: 0; transform: translateY(12px) scale(.9); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { body.vsl-mini .vsl-stage { animation: none; } }
+
     .vsl-badge {
       position: absolute;
       top: 8px;
@@ -1910,6 +1929,14 @@
 
         // Everything tied to the offer ("DTC") starts ONLY when it actually appears:
         // the reservation countdown AND the purchase notifications.
+        var RMScroll = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        function isMostlyInView(el, frac) {
+          var r = el.getBoundingClientRect(), vh = window.innerHeight || document.documentElement.clientHeight;
+          if (!r.height) return false;
+          var vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+          return vis / Math.min(r.height, vh) >= (frac || 0.5);
+        }
+        var offerEl = $('#content4-y');
         var dtcStarted = false;
         function startDTC() {
           if (dtcStarted) return;
@@ -1917,21 +1944,41 @@
           deadline = ensureDeadline();   // 15-min reservation from first offer view (persisted, continuous)
           renderTimer();
           loopToast();                   // buy notifications begin together with the offer
-          // Gently reveal the offer (its seal) at the top of the viewport the moment the
-          // pitch unlocks — the still-playing video stays just above (one short swipe),
-          // so the audio/close keeps running instead of being yanked away mid-sentence.
-          var top = document.querySelector('.cbs-deals') || document.getElementById('kit6') || offerEl;
-          if (top) { try { top.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { top.scrollIntoView(); } }
-          // Reveal the sticky 6-bottle buy bar
+          // Reveal the sticky 6-bottle buy bar (set first so the mini-player can offset above it).
           var bb = $('#buyBar');
           if (bb) { bb.classList.add('is-on'); document.body.classList.add('has-buybar'); }
+          // Shrink the player into a still-playing sticky mini, so the closing pitch keeps
+          // running in view while the offer is shown (the node is NOT moved → no reload).
+          document.body.classList.add('vsl-mini');
+          // Bring the offer into view — but only if it isn't already (never yank an engaged
+          // visitor) and honour reduced-motion (instant instead of animated).
+          var top = document.querySelector('.cbs-deals') || document.getElementById('kit6') || offerEl;
+          if (top && !isMostlyInView(top, 0.5)) {
+            try { top.scrollIntoView({ behavior: RMScroll ? 'auto' : 'smooth', block: 'start' }); }
+            catch (e) { top.scrollIntoView(); }
+          }
         }
         window.CBSLive = window.CBSLive || {};
         window.CBSLive.onOfferReveal = function () {};  // real trigger is the visibility watcher below
-        var offerEl = $('#content4-y');
-        var dtcWatch = setInterval(function () {
-          if (offerEl && offerEl.offsetParent !== null) { clearInterval(dtcWatch); startDTC(); }
-        }, 1000);
+        // Fire the instant the offer becomes visible: a MutationObserver on the offer's
+        // own attributes catches VTurb un-hiding it immediately, with a 250ms poll as a
+        // safety net (was a 1s poll → up to a second of lag between pitch and reveal).
+        function dtcCheck() {
+          if (offerEl && offerEl.offsetParent !== null) {
+            clearInterval(dtcWatch);
+            if (dtcMO) { try { dtcMO.disconnect(); } catch (e) {} }
+            startDTC();
+            return true;
+          }
+          return false;
+        }
+        var dtcMO = null;
+        if (window.MutationObserver && offerEl) {
+          dtcMO = new MutationObserver(function () { dtcCheck(); });
+          try { dtcMO.observe(offerEl, { attributes: true, attributeFilter: ['style', 'class'] }); } catch (e) {}
+        }
+        var dtcWatch = setInterval(dtcCheck, 250);
+        dtcCheck();
 
         /* ---- 3) "just reserved" toasts (live social proof, drive stock) ---- */
         var wrap = $('#lvtWrap');
@@ -2375,11 +2422,17 @@
         if (!r.height) return;
         var visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
         if (visible / r.height > 0.6) return;        // already mostly on screen → don't jump
-        try { stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-        catch (e) { stage.scrollIntoView(); }
+        // Place the TOP of the (tall, vertical) player just below the sticky header,
+        // keeping a sliver of the headline above and the play button comfortably in reach.
+        // Centering a vertical video would bury the headline and push the frame too far.
+        var header = document.querySelector('.cbs-header');
+        var hh = header ? Math.round(header.getBoundingClientRect().height) : 0;
+        var y = Math.max(0, window.pageYOffset + r.top - hh - 12);
+        try { window.scrollTo({ top: y, behavior: 'smooth' }); }
+        catch (e) { window.scrollTo(0, y); }
       }
 
-      function go() { if (fired) return; fired = true; setTimeout(nudge, 600); }
+      function go() { if (fired) return; fired = true; setTimeout(nudge, 1200); }
       if (document.readyState === 'complete') go();
       else window.addEventListener('load', go);
       setTimeout(go, 2500);                          // fallback if 3rd-party scripts delay load
