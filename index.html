@@ -1242,12 +1242,43 @@
           <span class="cbs-eyebrow__kicker">Exklusiv-Reportage</span>
           <span class="cbs-eyebrow__date data_atual"></span>
         </div>
-        <h1 class="headline-serif text-[24px] md:text-[38px] leading-[1.12] mb-2">
+        <h1 id="lpHeadline" class="headline-serif text-[24px] md:text-[38px] leading-[1.12] mb-2">
           10-Sekunden-Ritual für <span class="lbl-urgent">1 Euro</span>: So passen Frauen über 40 zurück in Größe 36
         </h1>
-        <p class="text-[15px] md:text-[17px] text-[#3f4654] font-medium leading-snug">
+        <p id="lpSubhead" class="text-[15px] md:text-[17px] text-[#3f4654] font-medium leading-snug">
           Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.
         </p>
+        <script>
+          /* ===== Per-ad headline / subheadline variants (message match) =====
+             Append  ?hl=KEY  to an ad's destination URL to show that angle.
+             No param = the default copy above. Add a new angle = add a KEY here,
+             nothing else changes. The hl= param is read-only (never touches
+             cid/aff/subid5) and is captured by GTM/GA so you can compare angles. */
+          (function () {
+            var V = {
+              spritzen: {
+                h: 'Warum geben so viele Frauen über 40 jetzt die Spritzen auf — für Dr. Adlers „Bariatrischen Haferbrei“ für <span class="lbl-urgent">1 Euro</span>?',
+                s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
+              },
+              ritual: {
+                h: 'Deutsche Stoffwechsel-Expertin enthüllt das morgendliche 10-Sekunden-Ritual für <span class="lbl-urgent">1 Euro</span> — mit dem Frauen über 40 wieder in Größe 36 passen',
+                s: 'Sehen Sie sich das Gespräch an, solange es noch online ist — <b class="text-[#15181e]">die Reihenfolge der Zutaten</b> macht den Unterschied.'
+              },
+              ozempic: {
+                h: 'Ozempic-Face? Frauen über 40 wählen jetzt das <span class="lbl-urgent">1-Euro</span>-Ritual für Größe 36 — ganz ohne Spritze',
+                s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
+              }
+            };
+            try {
+              var k = (new URLSearchParams(location.search).get('hl') || '').toLowerCase();
+              if (k && V[k]) {
+                var h = document.getElementById('lpHeadline'), s = document.getElementById('lpSubhead');
+                if (h) h.innerHTML = V[k].h;
+                if (s && V[k].s) s.innerHTML = V[k].s;
+              }
+            } catch (e) {}
+          })();
+        </script>
       </div>
       <!-- Live presence strip (always visible — sets the "live broadcast" tone) -->
       <div class="livebar" aria-hidden="true">
