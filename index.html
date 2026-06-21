@@ -1256,25 +1256,25 @@
              cid/aff/subid5) and is captured by GTM/GA so you can compare angles. */
           (function () {
             var V = {
-              spritzen: {
-                h: 'Warum geben so viele Frauen über 40 jetzt die Spritzen auf — für Dr. Adlers „Bariatrischen Haferbrei“ für <span class="lbl-urgent">1 Euro</span>?',
+              hafer: {
+                h: 'Hafertrick für <span class="lbl-urgent">1 Euro</span>: Frauen über 40 erreichen Größe 36 schneller als mit jeder klassischen Methode',
                 s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
               },
-              ritual: {
-                h: 'Deutsche Stoffwechsel-Expertin enthüllt das morgendliche 10-Sekunden-Ritual für <span class="lbl-urgent">1 Euro</span> — mit dem Frauen über 40 wieder in Größe 36 passen',
-                s: 'Sehen Sie sich das Gespräch an, solange es noch online ist — <b class="text-[#15181e]">die Reihenfolge der Zutaten</b> macht den Unterschied.'
+              pommes: {
+                h: 'Pommes essen und trotzdem die Schlankste am Tisch — <span class="lbl-urgent">die kleine Sache</span>, die Frauen über 40 jetzt anders machen',
+                s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
               },
-              ozempic: {
-                h: 'Ozempic-Face? Frauen über 40 wählen jetzt das <span class="lbl-urgent">1-Euro</span>-Ritual für Größe 36 — ganz ohne Spritze',
+              brei: {
+                h: '<span class="lbl-urgent">1-Euro</span>-Bariatri-Brei: So passen Frauen über 40 zurück in Größe 36',
                 s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
               }
             };
-            // Map each TikTok Ad ID -> angle, so an ad auto-selects its own headline.
-            // The Ad ID arrives in the URL via TikTok's dynamic macro (pass it as aid=).
+            // Map each TikTok Ad ID AND its Ad Group ID -> angle, so the right headline
+            // shows whether the tracker forwards __CID__ (ad) or __AID__ (ad group).
             var AID_MAP = {
-              '1868554376052753': 'spritzen',
-              '1868554374774897': 'ritual',
-              '1868554374775825': 'ozempic'
+              '1868554376052753': 'hafer',  '1868554146658705': 'hafer',   // hafer (ad / adgroup)
+              '1868554374774897': 'pommes', '1868554374774881': 'pommes',  // pommes (ad / adgroup)
+              '1868554374775825': 'brei',   '1868554374775809': 'brei'     // brei (ad / adgroup)
             };
             try {
               var qs = new URLSearchParams(location.search);
