@@ -990,8 +990,11 @@
     @keyframes vsl-cue-attn { 0%, 100% { box-shadow: 0 4px 14px rgba(8, 11, 16, .05); } 50% { box-shadow: 0 0 0 4px rgba(224, 16, 58, .16); } }
     @media (prefers-reduced-motion: reduce) { .vsl-cue--nudge { animation: none; } }
 
-    /* Reserve the 9:16 vertical video box up-front so the player can't shift layout (CLS) */
-    .vsl-stage vturb-smartplayer { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 15px; overflow: hidden; box-shadow: 0 18px 44px rgba(8, 11, 16, .15), 0 2px 8px rgba(8, 11, 16, .06), 0 0 0 1px rgba(8, 11, 16, .04); }
+    /* VTurb injects its own correctly-proportioned video once the custom element
+       upgrades; don't force a host ratio (a mismatch leaves filled empty space →
+       the "seam"). Reserve a placeholder box only until the element is defined (CLS). */
+    .vsl-stage vturb-smartplayer { display: block; width: 100%; border-radius: 15px; overflow: hidden; box-shadow: 0 18px 44px rgba(8, 11, 16, .15), 0 2px 8px rgba(8, 11, 16, .06), 0 0 0 1px rgba(8, 11, 16, .04); }
+    .vsl-stage vturb-smartplayer:not(:defined) { aspect-ratio: 9 / 16; }
 
     /* ===== Sticky mini-player (offer reveal) =====
        At the pitch reveal the VSL shrinks into a floating, still-playing thumbnail
