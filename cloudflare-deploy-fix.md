@@ -38,6 +38,18 @@ Re-testei a integração ponta a ponta. **Veredito: conecta, mas o build não pr
 não há rota de API para o build config (`/accounts/…/workers/builds/configs` → `7000 No route`)
 e **não há** workflow em `.github/` no repo. Logo, o toggle é manual no dashboard (passos no §4B).
 
+### Atualização (2026-06-22 ~03:32 UTC) — testado + produção promovida na mão
+- **Teste decisivo:** um commit vazio em `main` (`89ba278`) disparou build de produção → criou
+  **versão #16** (`bfdb39da`, alias `main`) como **`version_upload`**, e as implantações
+  **continuaram em 4**. Prova direta: o "Deploy command" do build **ainda é `versions upload`**
+  (a correção do §4B **não** foi aplicada/efetivada).
+- **Token TEM escrita (novo):** `wrangler versions deploy bfdb39da@100%` → **SUCCESS**.
+  Implantações **4 → 5**; ativa agora = **#16 `bfdb39da` @100%** (era #9 `8044ea31`, 02:34).
+  Ou seja, o §4C ("liberar token") já está atendido — dá para publicar/promover daqui.
+- **Ainda pendente:** a correção **permanente** (§4B — trocar o deploy command no painel)
+  continua necessária; sem ela, o próximo push em `main` volta a só subir versão sem promover.
+- Egress ao site segue bloqueado → não dá para conferir os bytes servidos do sandbox.
+
 ---
 
 ## 1. Sintoma
