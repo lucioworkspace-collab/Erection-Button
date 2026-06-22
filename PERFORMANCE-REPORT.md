@@ -9,6 +9,47 @@
 
 ---
 
+## 0. PADRÕES OBRIGATÓRIOS PARA ALTERAÇÕES FUTURAS
+
+> Toda mudança neste repositório **deve** seguir estes padrões — eles mantêm o desempenho
+> no teto **sem comprometer o rastreamento/medição** (regra absoluta do cliente).
+
+**Imagens**
+- Servir **WEBP** sempre que possível.
+- **Dimensionar para o uso real** (máx. ~3× o tamanho exibido). Nunca subir mockup
+  3000×2000 para exibir a ~285px. Cards de frasco → **≤ 900px de largura**.
+  Ferramenta: `PIL.Image.resize(..., LANCZOS)` + `save(quality≈85, method=6)`.
+- Sempre `loading="lazy" decoding="async"` + `width`/`height` na proporção correta (evita CLS).
+- `/images/*` é cache `immutable`: ao **trocar o conteúdo** de um asset que visitantes já
+  podem ter cacheado, **renomear** (cache-busting).
+
+**HTML / CSS / JS inline**
+- Manter CSS **crítico inline** e **fontes assíncronas** (`media="print" onload`).
+- **Não** minificar a ponto de perder a editabilidade — ganho pós-gzip é desprezível e o
+  fluxo exige edição cirúrgica legível. Sem frameworks/libs novas (página estática).
+- Rodar o **validador de scripts §12 do handoff** (0 erros) após editar qualquer `<script>`.
+
+**Cache / entrega (Cloudflare Workers assets)**
+- `_headers`: `/css /images /js` = `max-age=31536000, immutable`; `*.html` = `max-age=0,
+  must-revalidate`. Não afrouxar.
+- `.assetsignore` deve excluir `.git`, `.wrangler`, `node_modules`, `*.md`, `wrangler.jsonc`.
+
+**🚫 INTOCÁVEL — rastreamento/medição e player**
+- **Nunca** quebrar/adiar de forma que comprometa **GTM**, **GA4**, **pixel TikTok**,
+  **UTMify**, **sGTM**, a bridge **`__djSidSweep`** ou o **player VTurb**.
+- O peso pesado dos relatórios (GTM ~2,8MB, vídeo VTurb ~5,5MB, TikTok ~0,9MB) é
+  **third-party** e **fica como está** — não é regressão da página.
+
+**Fora de escopo (não "consertar")**
+- `noindex`/SEO baixo (proposital), `alt` do thumbnail (interno do VTurb), TBT de
+  terceiros, CSP/HSTS (CSP **arrisca quebrar o tracking**).
+
+**Registro — 2026-06-22:** "Properly size images" do relatório atendido — `forcevital-2/3/6.webp`
+redimensionados de **3000×2000 → 900×600** (WEBP q85): **313KB → 97KB (−216KB / −69%)**.
+Nenhum outro asset first-party estava superdimensionado.
+
+---
+
 ## 1. RESUMO EXECUTIVO
 
 - **Core Web Vitals reais (estáveis, excelentes):**
