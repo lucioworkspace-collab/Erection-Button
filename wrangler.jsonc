@@ -5,7 +5,7 @@
   // `npx wrangler versions upload` (preview builds) and `wrangler deploy`
   // (production) need — without it, wrangler errors with
   // "Missing entry-point to Worker script or to assets directory".
-  "name": "bariatric-seed-wl",
+  "name": "erection-button",
   "compatibility_date": "2026-06-16",
   "assets": {
     "directory": "."
