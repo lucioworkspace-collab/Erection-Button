@@ -27,9 +27,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- Preload -->
   <script>!function (i, n) { i._plt = i._plt || (n && n.timeOrigin ? n.timeOrigin + n.now() : Date.now()) }(window, performance);</script>
-  <link rel="preload" href="https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a370ffe033aab84a759584b/v4/player.js" as="script">
+  <link rel="preload" href="https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a38b1ec10b9d251132c4f2e/v4/player.js" as="script">
   <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
-  <link rel="preload" href="https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a370f8b10b9d251132b6366/main.m3u8" as="fetch" crossorigin="anonymous">
+  <link rel="preload" href="https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a38b0b4084b7b6c494d1bda/main.m3u8" as="fetch" crossorigin="anonymous">
   <link rel="dns-prefetch" href="https://cdn.converteai.net">
   <link rel="dns-prefetch" href="https://scripts.converteai.net">
   <link rel="dns-prefetch" href="https://images.converteai.net">
@@ -1356,7 +1356,7 @@
         </div>
         <div class="vsl-stage">
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
-          <vturb-smartplayer id="vid-6a370ffe033aab84a759584b" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+          <vturb-smartplayer id="vid-6a38b1ec10b9d251132c4f2e" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
           <div class="reactions" id="reactions" aria-hidden="true"></div>
         </div>
 
@@ -1371,7 +1371,7 @@
         </aside>
         <!-- Invisible "warm" sentinel: VTurb reveals it ~10 min before the pitch -->
         <div id="ljWarmGate" class="lj-warm" aria-hidden="true"></div>
-        <script type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a370ffe033aab84a759584b/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
+        <script type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a38b1ec10b9d251132c4f2e/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
 
         <!-- Vídeo vturb -->
 
@@ -1381,7 +1381,7 @@
           // ===================================================
           // Adjust the time in seconds and minutes on your VSL.
           // ===================================================
-          var SECONDS_TO_DISPLAY = 2533; // Pitch reveal at 42:13 (42*60+13)
+          var SECONDS_TO_DISPLAY = 2190; // Pitch reveal at 36:30 (36*60+30)
           // "Warm" gate ~10 min before the pitch. A viewer who reaches it has connected
           // with the pain/problem — only THEN does an exit route them to the quiz (the
           // short path to the solution). Cold/early viewers are nudged to play instead.
@@ -1449,7 +1449,7 @@
           (function () {
             'use strict';
             // Static player ids — never a real view key.
-            var STATIC = { '6a370ffe033aab84a759584b': 1, '13e4d193-3f66-46ab-8eb0-6e6da4bd133b': 1, '6a370f8b10b9d251132b6366': 1 };
+            var STATIC = { '6a38b1ec10b9d251132c4f2e': 1, '13e4d193-3f66-46ab-8eb0-6e6da4bd133b': 1, '6a38b0b4084b7b6c494d1bda': 1 };
             var VKEY = '';   // the real VTurb view key, harvested once VTurb writes it
 
             function plausible(v) { return typeof v === 'string' && /^[A-Za-z0-9_.:\-]{8,}$/.test(v) && !STATIC[v]; }
