@@ -27,11 +27,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- Preload -->
   <script>!function (i, n) { i._plt = i._plt || (n && n.timeOrigin ? n.timeOrigin + n.now() : Date.now()) }(window, performance);</script>
-  <link rel="preload" href="https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a38b1ec10b9d251132c4f2e/v4/player.js" as="script">
-  <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+  <!-- player.js / smartplayer.js are intentionally NOT preloaded: eagerly fetching
+       ~290KB of player JS competed with the headline (LCP) on first paint. They load
+       via the in-body loader over the warm connection below (video is tap-to-play, so
+       it isn't needed for first paint). -->
   <link rel="preload" href="https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a38b0b4084b7b6c494d1bda/main.m3u8" as="fetch" crossorigin="anonymous">
   <link rel="dns-prefetch" href="https://cdn.converteai.net">
-  <link rel="dns-prefetch" href="https://scripts.converteai.net">
+  <link rel="preconnect" href="https://scripts.converteai.net">
   <link rel="dns-prefetch" href="https://images.converteai.net">
   <link rel="dns-prefetch" href="https://license.vturb.com">
   <!-- Preload -->
@@ -1831,7 +1833,7 @@
          CBSLive — real-time presence, scarcity and social proof engine.
          Self-contained; degrades gracefully if any element is absent.
          =================================================================== */
-      (function () {
+      window.__cbsLiveInit = function () {
         'use strict';
         var $ = function (s, r) { return (r || document).querySelector(s); };
         var rand = function (a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; };
@@ -2403,6 +2405,19 @@
             }, 1200);
           } else if (flip) { clearInterval(flip); flip = null; document.title = origTitle; }
         });
+      };
+      /* Perf: defer the social-proof engine until after first paint so the visible hero
+         (headline + player) is prioritised on initial load. Every element it touches
+         already exists by DOMContentLoaded, and it self-paces with timers afterwards —
+         no tracking lives here (the __djSidSweep bridge stays on DOMContentLoaded). */
+      (function () {
+        var run = function () { try { window.__cbsLiveInit(); } catch (e) {} };
+        var sched = function () {
+          if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 1500 });
+          else setTimeout(run, 250);
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sched);
+        else sched();
       })();
     </script>
     <footer>

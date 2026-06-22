@@ -44,9 +44,19 @@
 - `noindex`/SEO baixo (proposital), `alt` do thumbnail (interno do VTurb), TBT de
   terceiros, CSP/HSTS (CSP **arrisca quebrar o tracking**).
 
-**Registro — 2026-06-22:** "Properly size images" do relatório atendido — `forcevital-2/3/6.webp`
+**Registro — 2026-06-22 (1):** "Properly size images" do relatório atendido — `forcevital-2/3/6.webp`
 redimensionados de **3000×2000 → 900×600** (WEBP q85): **313KB → 97KB (−216KB / −69%)**.
 Nenhum outro asset first-party estava superdimensionado.
+
+**Registro — 2026-06-22 (2):** priorização do first paint, sem tocar tracking:
+- **Player hints:** removidos os `preload as="script"` de `player.js`/`smartplayer.js` (front-carregavam
+  ~290KB disputando com a headline/LCP). Conexão aquecida via **`preconnect`** a `scripts.converteai.net`;
+  o player carrega pelo loader in-body (tap-to-play, não precisa para o paint). `main.m3u8` segue em preload.
+- **Deferral:** o motor **CBSLive** (chat/reações/toasts/contadores) virou `window.__cbsLiveInit` e roda
+  **após o primeiro paint** (`requestIdleCallback` + fallback `setTimeout`), não mais no parse. Corpo do
+  motor inalterado; `__djSidSweep` continua no `DOMContentLoaded`+clique.
+- ⚠️ **`content-visibility` é proibido aqui** — já testado e revertido (some/branqueia seções em
+  webviews Android/in-app, que é o público TikTok). Ver comentário no `index.html`.
 
 ---
 
