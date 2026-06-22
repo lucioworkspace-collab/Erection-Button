@@ -7,6 +7,39 @@
 
 ---
 
+## 0. Re-verificação (2026-06-22, sessão `claude/intelligent-maxwell-q184f4`)
+
+Re-testei a integração ponta a ponta. **Veredito: conecta, mas o build não promove a produção.**
+
+**Mudou desde o §3 (boa notícia):**
+- ✅ **O token agora TEM acesso a Workers.** `GET /accounts/9ce1202…/workers/scripts` → **200**;
+  `wrangler whoami` lista a conta; `wrangler deploy --dry-run` leu os 113 assets sem erro.
+  A afirmação do §3.1 ("token só Zone / `code 10000`") está **DESATUALIZADA**.
+  (O `401` em `/user/tokens/verify` é esperado: este é um **token de conta**, não de usuário —
+  esse endpoint valida tokens de usuário.)
+
+**Continua igual:**
+- ❌ **Egress bloqueado:** `GET …workers.dev/` → **403 `x-deny-reason: host_not_allowed`**.
+  Não dá para conferir os bytes servidos a partir do sandbox.
+- ❌ **MCP só-leitura:** sem ferramenta de deploy/promote.
+
+**Estado da implantação (via API, confirmado):**
+
+| | versão | id | criada (UTC) | alias | promovida? |
+|---|---|---|---|---|---|
+| **Produção ATIVA** | **#9** | `8044ea31` | 02:34 | — | ✅ última `deployment` real |
+| build `main` + recente | #14 | `3dcd704f` | 03:04 | `main` | ❌ só `version_upload` |
+| build `main` | #12 | `405ccfec` | 02:47 | `main` | ❌ só `version_upload` |
+
+→ Confirma o §2: produção parou na **#9 (02:34)**; os builds `main` **#12** e **#14** subiram como
+*versão* mas **nunca viraram implantação**. O "Deploy command" do build segue em `versions upload`.
+
+**Correção permanente (§4B) = AÇÃO ESCOLHIDA.** Verifiquei que ela **só** existe no painel:
+não há rota de API para o build config (`/accounts/…/workers/builds/configs` → `7000 No route`)
+e **não há** workflow em `.github/` no repo. Logo, o toggle é manual no dashboard (passos no §4B).
+
+---
+
 ## 1. Sintoma
 Os assets novos (frascos **ForceVital** + faixa de pagamentos **DACH**) foram commitados,
 o `main` recebeu o push e o **build rodou**, mas a página em produção continua mostrando o
@@ -39,7 +72,9 @@ que produção foi promovida. (O worker errado, `bariatric-seed-wl`, segue com d
 ## 3. Por que o Claude **não** consegue publicar do sandbox
 Três bloqueios independentes (todos verificados nesta sessão):
 
-1. **Token sem permissão de Workers.** `CLOUDFLARE_API_TOKEN` do ambiente é válido
+1. **Token sem permissão de Workers.** ⚠️ **DESATUALIZADO — ver §0** (em 2026-06-22 o token
+   já lê Workers e o `wrangler deploy --dry-run` funciona). Texto original abaixo:
+   `CLOUDFLARE_API_TOKEN` do ambiente é válido
    (`/user/tokens/verify` = `200 active`), mas qualquer endpoint de Workers retorna
    **`code 10000 Authentication error`**. `wrangler whoami` falha em listar a conta. O
    token só tem escopo de **Zone** (Read/Settings) — como o `handoff.md §4` já avisava.
