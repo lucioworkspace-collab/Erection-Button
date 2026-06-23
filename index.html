@@ -31,7 +31,7 @@
        ~290KB of player JS competed with the headline (LCP) on first paint. They load
        via the in-body loader over the warm connection below (video is tap-to-play, so
        it isn't needed for first paint). -->
-  <link rel="preload" href="https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a38b0b4084b7b6c494d1bda/main.m3u8" as="fetch" crossorigin="anonymous">
+  <link rel="preload" href="https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a3a03370c9bdb871a3aee32/main.m3u8" as="fetch" crossorigin="anonymous">
   <link rel="dns-prefetch" href="https://cdn.converteai.net">
   <link rel="preconnect" href="https://scripts.converteai.net">
   <link rel="dns-prefetch" href="https://images.converteai.net">
@@ -1361,7 +1361,7 @@
         </div>
         <div class="vsl-stage">
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
-          <vturb-smartplayer id="vid-6a38b1ec10b9d251132c4f2e" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+          <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
           <div class="reactions" id="reactions" aria-hidden="true"></div>
         </div>
 
@@ -1376,7 +1376,7 @@
         </aside>
         <!-- Invisible "warm" sentinel: VTurb reveals it ~10 min before the pitch -->
         <div id="ljWarmGate" class="lj-warm" aria-hidden="true"></div>
-        <script type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a38b1ec10b9d251132c4f2e/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
+        <script type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
 
         <!-- Vídeo vturb -->
 
@@ -1386,7 +1386,7 @@
           // ===================================================
           // Adjust the time in seconds and minutes on your VSL.
           // ===================================================
-          var SECONDS_TO_DISPLAY = 2190; // Pitch reveal at 36:30 (36*60+30)
+          var SECONDS_TO_DISPLAY = 2175; // Pitch reveal at 36:15 (36*60+15)
           // "Warm" gate ~10 min before the pitch. A viewer who reaches it has connected
           // with the pain/problem — only THEN does an exit route them to the quiz (the
           // short path to the solution). Cold/early viewers are nudged to play instead.
@@ -1454,7 +1454,7 @@
           (function () {
             'use strict';
             // Static player ids — never a real view key.
-            var STATIC = { '6a38b1ec10b9d251132c4f2e': 1, '13e4d193-3f66-46ab-8eb0-6e6da4bd133b': 1, '6a38b0b4084b7b6c494d1bda': 1 };
+            var STATIC = { '6a3a04211fa755ae788e8e00': 1, '13e4d193-3f66-46ab-8eb0-6e6da4bd133b': 1, '6a3a03370c9bdb871a3aee32': 1 };
             var VKEY = '';   // the real VTurb view key, harvested once VTurb writes it
 
             function plausible(v) { return typeof v === 'string' && /^[A-Za-z0-9_.:\-]{8,}$/.test(v) && !STATIC[v]; }
