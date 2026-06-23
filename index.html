@@ -2397,14 +2397,7 @@
         }
 
 
-        var origTitle = document.title, flip = null;
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) {
-            flip = setInterval(function () {
-              document.title = (document.title === origTitle ? '🔴 LIVE — neue Aktivität' : origTitle);
-            }, 1200);
-          } else if (flip) { clearInterval(flip); flip = null; document.title = origTitle; }
-        });
+        /* Tab-title flip on blur removed — it read as phishing/clickbait and hurt trust. */
       };
       /* Perf: defer the social-proof engine until after first paint so the visible hero
          (headline + player) is prioritised on initial load. Every element it touches
@@ -2755,10 +2748,22 @@
       function close() { if (el) { el.classList.remove('is-open'); el.setAttribute('aria-hidden', 'true'); } }
       function leave() { close(); history.back(); }   // let the visitor actually go
 
-      // ---- back button (mobile + desktop): trap once ----
-      try { history.pushState(null, '', location.href); } catch (e) {}
+      // ---- back button (mobile + desktop): arm ONLY after the visitor engages ----
+      // A fresh visitor who lands and immediately taps "back" is never trapped — that
+      // "I can't leave the page I just opened" feeling reads as malware. We add the
+      // history entry only once the visitor has played the video or warmed up, so the
+      // exit-intent still recovers engaged leads without spooking cold bouncers.
+      var backArmed = false;
+      function armBack() { if (backArmed) return; backArmed = true; try { history.pushState(null, '', location.href); } catch (e) {} }
+      (function watchEngage() {
+        if (window.__ljPlayed || window.__ljWarm) { armBack(); return; }
+        var iv = setInterval(function () {
+          if (window.__ljPlayed || window.__ljWarm) { clearInterval(iv); armBack(); }
+        }, 600);
+        setTimeout(function () { clearInterval(iv); }, 1800000);   // stop watching after 30 min
+      })();
       window.addEventListener('popstate', function () {
-        if (used()) return;                                   // already shown → allow the back to proceed
+        if (!backArmed || used()) return;                     // not engaged yet → let the back proceed
         if (CFG.mode === 'redirect' && CFG.redirectUrl) { markUsed(); location.href = CFG.redirectUrl; return; }
         open();                                               // show the offer (no re-arm → next back leaves)
       });
