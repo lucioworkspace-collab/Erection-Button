@@ -1439,7 +1439,7 @@
         <!-- END Vturb JS -->
 
         <!-- ================================================================
-             VTurb view key  →  Digistore (lipo-jaro.online) sid5 bridge
+             VTurb view key  →  Digistore (forcevital.site) sid5 bridge
              ----------------------------------------------------------------
              The VTurb player is configured with conversion = ["subid5"], so it
              POPULATES a subid5= slot on the checkout link with its view key.
@@ -1458,7 +1458,7 @@
             var VKEY = '';   // the real VTurb view key, harvested once VTurb writes it
 
             function plausible(v) { return typeof v === 'string' && /^[A-Za-z0-9_.:\-]{8,}$/.test(v) && !STATIC[v]; }
-            function isCheckout(a) { try { return /(^|\.)lipo-jaro\.online$/i.test(new URL(a.href, location.href).hostname); } catch (e) { return false; } }
+            function isCheckout(a) { try { return /(^|\.)forcevital\.site$/i.test(new URL(a.href, location.href).hostname); } catch (e) { return false; } }
             function links() { return Array.prototype.filter.call(document.querySelectorAll('a[href]'), isCheckout); }
 
             // Seed the key if the click carries it on the page URL (ads can pass sck/vtid).
@@ -1512,7 +1512,7 @@
             // Final guarantee: normalise sid5 the instant the CTA is used.
             ['pointerdown', 'click', 'auxclick'].forEach(function (evt) {
               document.addEventListener(evt, function (e) {
-                var a = e.target && e.target.closest && e.target.closest('a[href*="lipo-jaro.online"]');
+                var a = e.target && e.target.closest && e.target.closest('a[href*="forcevital.site"]');
                 if (a) ensure(a);
               }, true);
             });
@@ -1679,7 +1679,7 @@
               <p class="fw-bold mb-2">SIE SPAREN €200</p>
               <p class="text-white d-none d-md-block">Keine Boni</p>
               <div class="col-12 text-center mb-4">
-                <a id="cta-1" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
+                <a id="cta-1" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
               </div>
               <p class="cta-note">Einmalkauf · kein Abo</p>
               <p class="cta-secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>
@@ -1715,7 +1715,7 @@
               </div>
               <p class="fw-bold mb-2">SIE SPAREN €780</p>
               <div class="col-12 text-center mb-4">
-                <a id="cta-2" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
+                <a id="cta-2" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
               </div>
               <p class="cta-note">Einmalkauf · kein Abo</p>
               <p class="cta-secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>
@@ -1750,7 +1750,7 @@
               </div>
               <p class="fw-bold mb-2">SIE SPAREN €330</p>
               <div class="col-12 text-center mb-4">
-                <a id="cta-3" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://lipo-jaro.online/af/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
+                <a id="cta-3" class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a>
               </div>
               <p class="cta-note">Einmalkauf · kein Abo</p>
               <p class="cta-secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>
@@ -1815,7 +1815,7 @@
 
     </section>
     <!-- Sticky 6-bottle buy bar (slides up when the offer unlocks) -->
-    <a class="buybar" id="buyBar" target="_self" aria-label="Das 6-Flaschen-Set „Bester Deal“ in den Warenkorb legen — €49 pro Flasche, kostenloser Versand" href="https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">
+    <a class="buybar" id="buyBar" target="_self" aria-label="Das 6-Flaschen-Set „Bester Deal“ in den Warenkorb legen — €49 pro Flasche, kostenloser Versand" href="https://forcevital.site/ck/checkout-6.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">
       <img class="buybar__thumb" src="images/forcevital-6.webp" width="52" height="52" alt="" loading="lazy" decoding="async">
       <span class="buybar__info">
         <span class="buybar__label">Bester Deal · 6 Flaschen</span>
@@ -2521,8 +2521,8 @@
     (function () {
       'use strict';
       var CHECKOUT = {
-        3: 'https://lipo-jaro.online/af/checkout-3.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
-        6: 'https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5='
+        3: 'https://forcevital.site/ck/checkout-3.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
+        6: 'https://forcevital.site/ck/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5='
       };
       var RESULT_IMG = ['images/lipo-result-2.webp', 'images/lipo-result-1.webp', 'images/lipo-result-4.webp'];
 
@@ -2693,7 +2693,7 @@
         redirectUrl: '',        // if mode==='redirect', put your downsell/discount page here
         oncePerSession: true,
         // CTA after the DTC (default = 6-bottle "Bester Deal"). Append your coupon param if you have one.
-        ctaUrl: 'https://lipo-jaro.online/af/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
+        ctaUrl: 'https://forcevital.site/ck/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
         // BEFORE the offer is revealed (visitor still watching the video):
         pre:  { badge: 'Einen Moment', h: 'Es liegt an der Reihenfolge', p: 'Gleich zeigt die Stoffwechsel-Spezialistin, in welcher <strong>Reihenfolge</strong> Hafer, Ingwer und Berberin den Unterschied machen — genau der Teil, den die meisten verpassen.', cta: 'Dran bleiben — zeig es mir' },
         // AFTER the offer is revealed (edit here to add a real discount/coupon):
