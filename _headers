@@ -1,4 +1,4 @@
-# Cloudflare Pages — caching rules
+# Cloudflare Workers static assets — caching rules + resource hints.
 # Long-lived immutable cache for fingerprint-stable static assets.
 /css/*
   Cache-Control: public, max-age=31536000, immutable
@@ -10,3 +10,18 @@
 # HTML should always revalidate so updates go live immediately.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+# Landing root ("/") — the ad-traffic entry point.
+# The /*.html rule above does NOT match "/", so the root was missing
+# must-revalidate; cover it explicitly here so edits go live immediately.
+# Also emit Link: rel=preload for the 4 conversion-critical VSL resources.
+# These act as normal preloads today and are promoted to 103 Early Hints
+# once the zone's Early Hints toggle is ON. URLs mirror the inline
+# <link rel=preload> in index.html exactly, so the browser de-dupes by URL
+# (no double fetch); crossorigin/as match the inline CORS mode for the m3u8.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+  Link: <https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/v4/player.js>; rel=preload; as=script; fetchpriority=high
+  Link: <https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js>; rel=preload; as=script; fetchpriority=high
+  Link: <https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a3a03370c9bdb871a3aee32/main.m3u8>; rel=preload; as=fetch; crossorigin
+  Link: <https://images.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/thumbnail.jpg>; rel=preload; as=image; fetchpriority=high
