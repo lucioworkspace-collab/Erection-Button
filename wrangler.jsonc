@@ -9,5 +9,11 @@
   "compatibility_date": "2026-06-16",
   "assets": {
     "directory": "."
+  },
+  // Turn on Workers Observability so asset-request logs/errors are captured
+  // (was off — a blind spot flagged in the Cloudflare audit). Negligible cost
+  // for a static-assets Worker and adds visibility without touching tracking.
+  "observability": {
+    "enabled": true
   }
 }
