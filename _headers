@@ -1,4 +1,5 @@
-# Cloudflare Pages — caching rules
+# Cloudflare Workers Assets — caching + Early-Hints rules.
+
 # Long-lived immutable cache for fingerprint-stable static assets.
 /css/*
   Cache-Control: public, max-age=31536000, immutable
@@ -10,3 +11,18 @@
 # HTML should always revalidate so updates go live immediately.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+# Landing document. All ad traffic hits the bare "/", which the /*.html rule
+# above does NOT match — so set its revalidation here, and emit the VSL-critical
+# cross-origin resources as Link: rel=preload headers. These mirror the inline
+# <link rel=preload> in index.html (the browser dedupes by URL, so no double
+# fetch). They already act as normal preload hints; once Early Hints is enabled
+# for the icvsgo.com zone, Cloudflare promotes them to a 103 Early Hints
+# response sent before the HTML — starting the player/poster/manifest fetch
+# earlier. crossorigin/as attributes are matched to the inline tags exactly.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+  Link: <https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/v4/player.js>; rel=preload; as=script
+  Link: <https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js>; rel=preload; as=script
+  Link: <https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a3a03370c9bdb871a3aee32/main.m3u8>; rel=preload; as=fetch; crossorigin
+  Link: <https://images.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/thumbnail.jpg>; rel=preload; as=image
