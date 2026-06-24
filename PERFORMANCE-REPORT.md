@@ -58,6 +58,15 @@ Nenhum outro asset first-party estava superdimensionado.
 - ⚠️ **`content-visibility` é proibido aqui** — já testado e revertido (some/branqueia seções em
   webviews Android/in-app, que é o público TikTok). Ver comentário no `index.html`.
 
+**Registro — 2026-06-23 (play rate / VSL):** **revertida** a decisão do Registro (2) — a prioridade
+do operador passou a ser **maximizar o play rate**, não o first-paint. Re-adicionados os
+`preload as="script"` do `player.js` (com `fetchpriority="high"`) e do `smartplayer.js`, e as 3 origens
+ConverteAI (`scripts`, `cdn`, `images`) viraram **`preconnect`** → pôster/botão de play aparecem e o
+vídeo inicia no toque mais cedo. Trade-off aceito: a headline é texto inline (paint ~inalterado) e o JS
+do player executa um pouco mais cedo. Para caber em ~4 preconnects, `fonts.googleapis` foi rebaixado a
+`dns-prefetch` (mantido `fonts.gstatic`). **Regra atual deste VSL: priorizar o player nos resource hints**
+(o oposto do Registro 2).
+
 ---
 
 ## 1. RESUMO EXECUTIVO
