@@ -7,6 +7,29 @@
 
 ---
 
+## 0-bis. Re-verificação (2026-06-24, sessão `claude/ecstatic-wozniak-xxnt5y`)
+
+Varredura completa da integração. **Veredito: MCP OK; o `CLOUDFLARE_API_TOKEN` do ambiente REGREDIU (inválido); egress segue bloqueado.**
+
+| Camada | Resultado | Evidência |
+|---|---|---|
+| **MCP Cloudflare (OAuth)** | ✅ conecta | `workers_list` → 4 workers; `erection-button` (`tag 794139aa…`), `modified_on` **2026-06-24T08:48:08Z** |
+| **Worker em produção existe** | ✅ | `workers_get_worker erection-button` → 200; build de hoje promovido (modified_on subiu) |
+| **`CLOUDFLARE_API_TOKEN` (env)** | ❌ **INVÁLIDO** | `wrangler whoami` → **`9109 Invalid access token`**; `GET /accounts` idem. ⚠️ Regressão vs §0/§4 (em 22/06 o token publicava) |
+| **Rate-limit do token** | ⚠️ | Após as falhas: `user/tokens/verify` → **`429 / 10502 Too many authentication failures`** (consequência do token inválido, não causa) |
+| **Egress p/ o site** | ❌ bloqueado | `GET …workers.dev/` → **403 CONNECT** (`connect_rejected` / `host_not_allowed` no proxy). Não dá para conferir os bytes servidos |
+| **Config local (`wrangler.jsonc`)** | ✅ válida | `deploy --dry-run` leu **113 arquivos**, `name: erection-button`, `No bindings`. 0 erros |
+| **CI/build no repo** | ⚠️ ausente | Não há `.github/` — o build é gerido só no painel Cloudflare (toggle §4B continua manual) |
+
+**Diferença-chave vs 22/06:** o token **não publica mais** daqui (`9109`). As opções §4C ("liberar token")
+e §4A/§4B (promover no painel) voltam a ser o único caminho para publicar. Para eu publicar do sandbox de novo,
+**rotacionar/renovar** o `CLOUDFLARE_API_TOKEN` com escopo **Workers Scripts: Edit** (+ Workers Assets) na
+conta `9ce1202…`. Token atual no env: formato `cfat_…` (53 chars).
+
+Token: NÃO reexecutar verificações em loop enquanto estiver em `10502` — espera a janela de rate-limit zerar.
+
+---
+
 ## 0. Re-verificação (2026-06-22, sessão `claude/intelligent-maxwell-q184f4`)
 
 Re-testei a integração ponta a ponta. **Veredito: conecta, mas o build não promove a produção.**
