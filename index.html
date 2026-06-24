@@ -36,8 +36,12 @@
   <link rel="preconnect" href="https://images.converteai.net">
   <link rel="dns-prefetch" href="https://license.vturb.com">
   <link rel="preload" as="script" fetchpriority="high" href="https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/v4/player.js">
-  <link rel="preload" as="script" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js">
+  <link rel="preload" as="script" fetchpriority="high" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js">
   <link rel="preload" as="fetch" crossorigin="anonymous" href="https://cdn.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/6a3a03370c9bdb871a3aee32/main.m3u8">
+  <!-- Poster preload: the tap target can show before player.js even executes. Standard
+       VTurb/ConverteAI path (account/player ids) — verify it returns 200; if this player
+       uses a different poster filename, it's a one-line href fix. -->
+  <link rel="preload" as="image" fetchpriority="high" href="https://images.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/thumbnail.jpg">
   <!-- Preload -->
 
   <title>Gesundes Gewicht</title>
