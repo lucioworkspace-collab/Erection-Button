@@ -1290,33 +1290,41 @@
              nothing else changes. The hl= param is read-only (never touches
              cid/aff/subid5) and is captured by GTM/GA so you can compare angles. */
           (function () {
+            // ForceVital angles. Headline-only swap (no per-angle subhead yet — the
+            // default #lpSubhead is shared by all angles until ForceVital subhead copy
+            // is provided). lbl-urgent highlights the hook phrase, as in the default.
             var V = {
-              hafer: {
-                h: 'Hafertrick für <span class="lbl-urgent">1 Euro</span>: Frauen über 40 erreichen Größe 36 schneller als mit jeder klassischen Methode',
-                s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
+              // AD01 — "neben dem Salz im Küchenschrank" / +7 cm in zwei Wochen
+              ad01: {
+                h: 'Mein Mann hat <span class="lbl-urgent">sieben Zentimeter</span> dazu bekommen — in zwei Wochen, mit etwas, das neben dem Salz im Küchenschrank stand.'
               },
-              pommes: {
-                h: 'Pommes essen und trotzdem die Schlankste am Tisch — <span class="lbl-urgent">die kleine Sache</span>, die Frauen über 40 jetzt anders machen',
-                s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
+              // AD02 — +7 cm in vierzehn Nächten / "anderer Mann im Bett"
+              ad02: {
+                h: 'Mein Mann wurde in vierzehn Nächten <span class="lbl-urgent">sieben Zentimeter</span> größer — und seitdem habe ich einen anderen Mann im Bett.'
               },
-              brei: {
-                h: '<span class="lbl-urgent">1-Euro</span>-Bariatri-Brei: So passen Frauen über 40 zurück in Größe 36',
-                s: 'Die deutsche Stoffwechsel-Spezialistin zeigt die <b class="text-[#15181e]">Reihenfolge</b> — solange das Gespräch online ist.'
+              // AD03 — "99% ... sabotiert" / 13-Sekunden-Trick
+              ad03: {
+                h: '99% der Männer wissen nicht, dass ihr Schwanz sabotiert wurde — und ein einfacher <span class="lbl-urgent">13-Sekunden-Trick</span> schaltet alles wieder an.'
+              },
+              // AD04 — Ehefrauen mischen heimlich ins Essen / +7 cm in vierzehn Tagen
+              ad04: {
+                h: 'Ehefrauen mischen ihren Männern heimlich etwas ins Essen — und nach vierzehn Tagen wachsen sie <span class="lbl-urgent">sieben Zentimeter</span>.'
               }
             };
             // Map each TikTok Ad ID AND its Ad Group ID -> angle, so the right headline
             // shows whether the tracker forwards __CID__ (ad) or __AID__ (ad group).
             var AID_MAP = {
-              '1868554376052753': 'hafer',  '1868554146658705': 'hafer',   // hafer (ad / adgroup)
-              '1868554374774897': 'pommes', '1868554374774881': 'pommes',  // pommes (ad / adgroup)
-              '1868554374775825': 'brei',   '1868554374775809': 'brei'     // brei (ad / adgroup)
+              '1869004771545234': 'ad01', '1869004771545218': 'ad01',  // AD01 (ad / adgroup)
+              '1869006242025874': 'ad02', '1869006242025858': 'ad02',  // AD02 (ad / adgroup)
+              '1869006242025906': 'ad03', '1869006242025890': 'ad03',  // AD03 (ad / adgroup)
+              '1869006242026514': 'ad04', '1869006242026498': 'ad04'   // AD04 (ad / adgroup)
             };
             try {
               var qs = new URLSearchParams(location.search);
               var k = (qs.get('hl') || '').toLowerCase();           // manual override wins
               if (!k) {
                 // TikTok's real Ad ID (__CID__) often arrives only inside utm_content
-                // (e.g. utm_content=AdName|1868554376052753). Collect every id-ish value
+                // (e.g. utm_content=AdName|1869004771545234). Collect every id-ish value
                 // — plain params AND the pieces around a "|" — then match the map, so it
                 // works whether the id lands clean or pipe-encoded.
                 var cands = [];
