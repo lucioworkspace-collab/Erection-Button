@@ -483,15 +483,16 @@
        wins over the legacy `.principal h1` size so the block frames cleanly. */
     #lpHeadline {
       font-size: 22px;
-      line-height: 1.22;
-      margin-top: 18px;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-top: 8px;
       margin-bottom: 3px;
       text-align: center;
       text-wrap: balance;
     }
     #lpSubhead { font-size: 15px; line-height: 1.4; text-align: center; }
     @media (min-width: 768px) {
-      #lpHeadline { font-size: 34px; line-height: 1.14; margin-top: 10px; }
+      #lpHeadline { font-size: 34px; line-height: 1.12; margin-top: 6px; }
       #lpSubhead { font-size: 17px; }
     }
 
@@ -1129,85 +1130,33 @@
     }
 
     /* ===== Live-Chat panel below the player (prominent, premium, non-obstructive) ===== */
-    .vsl-livechat {
-      width: 100%;
-      max-width: 400px;
-      margin: 11px auto 0;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 15px;
-      box-shadow: 0 8px 24px rgba(8, 11, 16, .07);
-      overflow: hidden;
+    /* Live-chat overlay — one comment at a time over the bottom of the VSL (IG/TikTok live style) */
+    .vsl-chat-ov {
+      position: absolute;
+      left: 8px; right: 8px; bottom: 10px;
+      z-index: 6;
+      pointer-events: none;
     }
-
-    .vsl-lc__head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, #fbfcfe, #f4f7fb);
+    .vsl-cov {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px;
+      border-radius: 14px;
+      background: rgba(12, 15, 20, .46);
+      -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+      color: #fff;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity .42s ease, transform .42s ease;
+      font-family: 'Open Sans', Arial, sans-serif;
     }
-
-    .vsl-lc__head .live-dot { background: var(--urgent); }
-    .vsl-lc__title { font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .02em; color: var(--ink); }
-    .vsl-lc__count { margin-left: auto; font-size: 11.5px; font-weight: 700; color: var(--muted); }
-    .vsl-lc__count::before { content: "● "; color: var(--cta); font-size: 9px; vertical-align: middle; }
-
-    .vsl-lc__list {
-      height: 186px;
-      padding: 11px 13px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: 10px;
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
-      mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
-    }
-
-    .vsl-cmt {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      animation: chat-in .42s cubic-bezier(.2, .8, .2, 1);
-    }
-
-    .vsl-cmt__av {
-      width: 30px;
-      height: 30px;
-      border-radius: 9999px;
-      object-fit: cover;
-      flex: 0 0 auto;
-      box-shadow: 0 1px 4px rgba(8, 11, 16, .18);
-    }
-
-    .vsl-cmt__b { min-width: 0; }
-    .vsl-cmt__meta { display: flex; align-items: baseline; gap: 6px; line-height: 1.1; margin-bottom: 1px; }
-    .vsl-cmt__name { font-weight: 800; font-size: 12.5px; color: var(--brand); }
-    .vsl-cmt__time { font-size: 10.5px; font-weight: 600; color: #646b78; }
-    .vsl-cmt__txt { font-size: 13px; line-height: 1.4; color: var(--ink); word-wrap: break-word; }
-
-    /* "schreibt …" typing bubble inside the panel */
-    .vsl-cmt--typing .vsl-cmt__bubble {
-      display: inline-flex; gap: 4px; align-items: center;
-      background: #eef2f8; border-radius: 11px; padding: 7px 10px; margin-top: 2px;
-    }
-    .vsl-cmt--typing .vsl-cmt__bubble span {
-      width: 5px; height: 5px; border-radius: 50%; background: #9aa3b0; opacity: .5;
-      animation: vsl-typ 1s infinite;
-    }
-    .vsl-cmt--typing .vsl-cmt__bubble span:nth-child(2) { animation-delay: .15s; }
-    .vsl-cmt--typing .vsl-cmt__bubble span:nth-child(3) { animation-delay: .3s; }
-    @keyframes vsl-typ { 0%, 100% { opacity: .35; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
-
-    @keyframes chat-in {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    .vsl-chat-ov.is-in .vsl-cov { opacity: 1; transform: translateY(0); }
+    .vsl-cov__av { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+    .vsl-cov__b { min-width: 0; font-size: 12.5px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .vsl-cov__name { font-weight: 800; margin-right: 5px; }
+    .vsl-cov__txt { font-weight: 500; opacity: .96; }
+    .vsl-cov__react { margin-left: auto; flex: 0 0 auto; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, .16); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+    body.vsl-mini .vsl-chat-ov { display: none; }
     @media (prefers-reduced-motion: reduce) {
-      .vsl-cmt, .vsl-cmt--typing .vsl-cmt__bubble span { animation: none; }
+      .vsl-cov { transition: none; transform: none; }
     }
 
     @keyframes float-up {
@@ -1310,7 +1259,7 @@
          the page no longer mimics a news report — it opens straight on the hook + VSL. -->
     <section class="principal">
       <!-- Interview hook headline (above the VSL — leads into the player) -->
-      <div class="px-4 pt-2 pb-1 max-w-3xl mx-auto">
+      <div class="px-4 pt-2 pb-1 mx-auto" style="max-width:900px">
         <h1 id="lpHeadline" class="headline-serif text-[24px] md:text-[38px] leading-[1.12] mb-2">
           Mein Mann hat in zwei Wochen <span class="lbl-urgent">sieben Zentimeter</span> dazu bekommen — mit einer einfachen Methode, die in jeder Küche steht.
         </h1>
@@ -1411,17 +1360,9 @@
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
           <div class="reactions" id="reactions" aria-hidden="true"></div>
+          <!-- Live-chat overlay: one comment at a time over the bottom of the VSL (IG/TikTok live style) -->
+          <div class="vsl-chat-ov" id="vslChat" aria-live="polite" aria-label="Live-Chat"></div>
         </div>
-
-        <!-- Live chat panel (below the player → prominent, never obstructs the VSL) -->
-        <aside class="vsl-livechat" aria-label="Live-Chat">
-          <div class="vsl-lc__head">
-            <span class="live-dot"></span>
-            <span class="vsl-lc__title">Live-Chat</span>
-            <span class="vsl-lc__count"><span id="vslChatCount">1.247</span> dabei</span>
-          </div>
-          <div class="vsl-lc__list" id="vslChat" aria-live="polite"></div>
-        </aside>
 
         <!-- Authority logo carousel — research-institution credibility, just below the VSL -->
         <section class="auth" aria-label="Forschung führender Institutionen">
@@ -2336,53 +2277,36 @@
           { n: "Anonym", t: "vor 5 Minuten bestellt, fast ausverkauft schon? krass 😳" },
           { n: "Stefan", t: "keine Frage. ich bin dabei. heute beginnt mein neues Leben 💪" }
         ];
-        var MAXMSGS = 6, ci = 0;
+        var ci = 0;
         var EMO_MARK = ['❤️', '🥹', '💔', '😳', '😔', '😞', '🙏', '💕'];
         function hasEmo(t) { for (var i = 0; i < EMO_MARK.length; i++) { if (t.indexOf(EMO_MARK[i]) >= 0) return true; } return false; }
         function nextChat() { var m = CHAT[ci % CHAT.length]; ci++; return m; }
-        function trimChat() { while (chatEl.childElementCount > MAXMSGS) chatEl.removeChild(chatEl.firstChild); }
-        function ageNewest() {
-          // the previously-newest real message slips to "vor 1 Min" → time keeps moving
-          var times = chatEl.querySelectorAll('.vsl-cmt:not(.vsl-cmt--typing) .vsl-cmt__time');
-          if (times.length) times[times.length - 1].textContent = 'vor 1 Min';
+        // ONE comment at a time, overlaid on the bottom of the VSL: fade-in, hold ~3.5s,
+        // fade-out, next. Compact: avatar + name + message + a small reaction count.
+        var COV_REACT = ['❤️', '🔥', '👍'];
+        function covReact() { return COV_REACT[Math.floor(Math.random() * COV_REACT.length)] + ' ' + rand(3, 47); }
+        function showChat(m) {
+          chatEl.innerHTML =
+            '<div class="vsl-cov">' +
+              '<img class="vsl-cov__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">' +
+              '<div class="vsl-cov__b"><span class="vsl-cov__name">' + m.n + '</span> ' +
+              '<span class="vsl-cov__txt">' + m.t + '</span></div>' +
+              '<span class="vsl-cov__react">' + covReact() + '</span>' +
+            '</div>';
+          // force reflow so the fade-in transition runs on the freshly-set node
+          void chatEl.offsetWidth;
+          chatEl.classList.add('is-in');
+          if (!RM && hasEmo(m.t)) burst(rand(1, 3));
         }
-        function appendMsg(m) {
-          ageNewest();
-          var row = document.createElement('div');
-          row.className = 'vsl-cmt';
-          row.innerHTML =
-            '<img class="vsl-cmt__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">' +
-            '<div class="vsl-cmt__b"><div class="vsl-cmt__meta">' +
-              '<span class="vsl-cmt__name">' + m.n + '</span>' +
-              '<span class="vsl-cmt__time">gerade eben</span></div>' +
-            '<div class="vsl-cmt__txt">' + m.t + '</div></div>';
-          chatEl.appendChild(row);
-          trimChat();
-          if (!RM) { if (hasEmo(m.t)) burst(rand(2, 4)); else if (Math.random() < 0.4) emitReaction(); }
-        }
-        function addChat() {
+        (function cycleChat() {
           if (!chatEl) return;
-          var m = nextChat();
-          // ~45% of messages arrive after a brief "schreibt …" beat → real-time feel
-          if (!RM && Math.random() < 0.45) {
-            var ty = document.createElement('div');
-            ty.className = 'vsl-cmt vsl-cmt--typing';
-            ty.innerHTML =
-              '<img class="vsl-cmt__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy">' +
-              '<div class="vsl-cmt__b"><div class="vsl-cmt__meta">' +
-                '<span class="vsl-cmt__name">' + m.n + '</span>' +
-                '<span class="vsl-cmt__time">schreibt…</span></div>' +
-              '<div class="vsl-cmt__bubble"><span></span><span></span><span></span></div></div>';
-            chatEl.appendChild(ty); trimChat();
-            setTimeout(function () { if (ty.parentNode) ty.parentNode.removeChild(ty); appendMsg(m); }, rand(1100, 2100));
-          } else {
-            appendMsg(m);
-          }
-        }
-        // The room is already alive the moment the page loads (prime a few), then a
-        // self-pacing loop plays the script as a live timeline that tracks the VSL.
-        (function loopChat() { setTimeout(function () { addChat(); loopChat(); }, rand(3600, 6200)); })();
-        [200, 1100, 2100, 3200].forEach(function (d) { setTimeout(addChat, d); });
+          showChat(nextChat());
+          var hold = RM ? 4000 : rand(3200, 4200);
+          setTimeout(function () {
+            chatEl.classList.remove('is-in');           // fade out
+            setTimeout(cycleChat, RM ? 250 : 520);      // next after fade-out
+          }, hold);
+        })();
 
         function showTyping(person, cb) {
           if (!list || RM) { cb(person); return; }
@@ -2412,12 +2336,6 @@
       })();
     </script>
     <footer>
-      <a href="/privacy-policy.html" class="privacidade">Datenschutz</a>
-      <br>
-      <br>
-      <a href="/terms-of-service.html" class="termos">Nutzungsbedingungen</a>
-      <br>
-      <br>
       <p class="footer-copy"> <span id="currentYear"></span>. Alle Rechte vorbehalten.</p>
     </footer>
     <script>
