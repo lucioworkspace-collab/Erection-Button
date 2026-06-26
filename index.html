@@ -1264,37 +1264,11 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
   <main id="container">
-    <!-- Header -->
-    <header class="cbs-header">
-      <!-- Masthead intentionally empty (no logo, no name on top) — holds the grid column so the menu stays right -->
-      <a href="#" class="cbs-logo" aria-label="Startseite"></a>
-
-      <!-- Menü -->
-      <button type="button" class="cbs-icon cbs-icon--right" aria-label="Menü">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-    </header>
-
-    <!-- Category nav -->
-    <nav class="cbs-nav" aria-label="Bereiche">
-      <a href="#">Startseite</a>
-      <a href="#" class="cbs-nav__live"><span class="live-dot"></span> Live</a>
-      <a href="#">Sendungen A–Z</a>
-      <a href="#">Information</a>
-      <a href="#" class="is-active">Gesundheit</a>
-    </nav>
-
+    <!-- Editorial/TV chrome removed (header, station nav, "Exklusiv-Reportage" eyebrow):
+         the page no longer mimics a news report — it opens straight on the hook + VSL. -->
     <section class="principal">
       <!-- Interview hook headline (above the VSL — leads into the player) -->
       <div class="px-4 pt-2 pb-1 max-w-3xl mx-auto">
-        <div class="cbs-eyebrow">
-          <span class="cbs-eyebrow__kicker">Exklusiv-Reportage</span>
-          <span class="cbs-eyebrow__date data_atual"></span>
-        </div>
         <h1 id="lpHeadline" class="headline-serif text-[24px] md:text-[38px] leading-[1.12] mb-2">
           Mein Mann hat in zwei Wochen <span class="lbl-urgent">sieben Zentimeter</span> dazu bekommen — mit einer einfachen Methode, die in jeder Küche steht.
         </h1>
@@ -1578,7 +1552,7 @@
           <span class="cbs-deals__eyebrow">Empfohlenes Angebot</span>
           <span class="cbs-deals__brand">Geprüftes Gesundheits-Angebot</span>
         </div>
-        <p class="cbs-deals__verify">Offizielles Angebot &mdash; Preis garantiert für Zuschauer dieser Reportage</p>
+        <p class="cbs-deals__verify">Offizielles Angebot &mdash; Preis garantiert für Zuschauer dieses Videos</p>
       </div>
       <section class="scarcity esconder" id="content4-y">
         <div class="scarcity__live">
@@ -2612,112 +2586,7 @@
     })();
   </script>
 
-  <script>
-    /* ============================================================
-       Exit / back-button offer — keeps leaving visitors in the funnel.
-       Fires on the browser BACK button (mobile) and on desktop exit-intent.
-       BEFORE the DTC is revealed → a light "keep watching" nudge.
-       AFTER the DTC is revealed → the „Personalisierte Formel“ quiz takeover.
-       Shows once per session.
-       ============================================================ */
-    (function () {
-      'use strict';
-      var CFG = {
-        enabled: true,
-        mode: 'modal',          // 'modal' = on-page offer popup  |  'redirect' = hard redirect to redirectUrl
-        redirectUrl: '',        // if mode==='redirect', put your downsell/discount page here
-        oncePerSession: true,
-        // CTA after the DTC (default = 6-bottle "Bester Deal"). Append your coupon param if you have one.
-        ctaUrl: 'https://forcevital.site/ck/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
-        // BEFORE the offer is revealed (visitor still watching the video):
-        pre:  { badge: 'Einen Moment', h: 'Es liegt an der Reihenfolge', p: 'Gleich zeigt die Stoffwechsel-Spezialistin, in welcher <strong>Reihenfolge</strong> Hafer, Ingwer und Berberin den Unterschied machen — genau der Teil, den die meisten verpassen.', cta: 'Dran bleiben — zeig es mir' },
-        // AFTER the offer is revealed (edit here to add a real discount/coupon):
-        post: { badge: 'Warten Sie!', h: 'Ihr reservierter Vorzugspreis läuft ab', p: 'Sichern Sie sich Ihr Lipo Jaro jetzt zum reservierten Aktionspreis — inkl. <strong>kostenlosem Versand</strong> und <strong>30 Tage Geld-zurück-Garantie</strong>.', cta: 'Ja, zum Vorzugspreis sichern' }
-      };
-      // ----------------------------------------------------------
-      if (!CFG.enabled) return;
-      var KEY = 'exoShown', el = null;
-      function used() { try { return CFG.oncePerSession && sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
-      function markUsed() { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} }
-      function revealed() {
-        if (document.body.classList.contains('has-buybar')) return true;
-        var k = document.getElementById('kit6');
-        return !!(k && k.offsetParent !== null);
-      }
-      function build() {
-        if (el) return;
-        el = document.createElement('div');
-        el.className = 'exo-backdrop';
-        el.setAttribute('aria-hidden', 'true');
-        el.innerHTML =
-          '<div class="exo-modal" role="dialog" aria-modal="true" aria-label="Angebot">' +
-            '<button class="exo-close" type="button" aria-label="Schließen">&times;</button>' +
-            '<span class="exo-badge"></span>' +
-            '<h2 class="exo-h"></h2>' +
-            '<p class="exo-p"></p>' +
-            '<a class="exo-cta" target="_self" rel="nofollow" href="#"></a>' +
-            '<button class="exo-skip" type="button">Nein danke, Seite verlassen</button>' +
-          '</div>';
-        document.body.appendChild(el);
-        el.querySelector('.exo-close').addEventListener('click', close);
-        el.querySelector('.exo-skip').addEventListener('click', leave);
-        el.addEventListener('click', function (e) { if (e.target === el) close(); });
-        el.querySelector('.exo-cta').addEventListener('click', function (e) {
-          if (!revealed()) { e.preventDefault(); close(); return; }          // before DTC → keep watching
-          if (window.__djSidSweep) { try { window.__djSidSweep(); } catch (x) {} } // ensure subid5/sid5 are set
-        });
-      }
-      function fill() {
-        var c = revealed() ? CFG.post : CFG.pre;
-        el.querySelector('.exo-badge').textContent = c.badge;
-        el.querySelector('.exo-h').textContent = c.h;
-        el.querySelector('.exo-p').innerHTML = c.p;
-        var cta = el.querySelector('.exo-cta');
-        cta.textContent = c.cta;
-        cta.setAttribute('href', revealed() ? CFG.ctaUrl : '#');
-      }
-      function open() {
-        if (used()) return false;
-        // Warm viewers (reached ~10 min before the pitch) OR post-pitch abandoners get the
-        // personalised-formula quiz — the short path to the solution, only once the visitor
-        // has connected with the pain. Cold/early viewers get the light keep-watching nudge.
-        if ((revealed() || window.__ljWarm) && window.__ljQuiz) { markUsed(); window.__ljQuiz.open(); return true; }
-        build(); fill();
-        el.classList.add('is-open'); el.setAttribute('aria-hidden', 'false');
-        markUsed();
-        return true;
-      }
-      function close() { if (el) { el.classList.remove('is-open'); el.setAttribute('aria-hidden', 'true'); } }
-      function leave() { close(); history.back(); }   // let the visitor actually go
-
-      // ---- back button (mobile + desktop): arm ONLY after the visitor engages ----
-      // A fresh visitor who lands and immediately taps "back" is never trapped — that
-      // "I can't leave the page I just opened" feeling reads as malware. We add the
-      // history entry only once the visitor has played the video or warmed up, so the
-      // exit-intent still recovers engaged leads without spooking cold bouncers.
-      var backArmed = false;
-      function armBack() { if (backArmed) return; backArmed = true; try { history.pushState(null, '', location.href); } catch (e) {} }
-      (function watchEngage() {
-        if (window.__ljPlayed || window.__ljWarm) { armBack(); return; }
-        var iv = setInterval(function () {
-          if (window.__ljPlayed || window.__ljWarm) { clearInterval(iv); armBack(); }
-        }, 600);
-        setTimeout(function () { clearInterval(iv); }, 1800000);   // stop watching after 30 min
-      })();
-      window.addEventListener('popstate', function () {
-        if (!backArmed || used()) return;                     // not engaged yet → let the back proceed
-        if (CFG.mode === 'redirect' && CFG.redirectUrl) { markUsed(); location.href = CFG.redirectUrl; return; }
-        open();                                               // show the offer (no re-arm → next back leaves)
-      });
-      // ---- desktop exit-intent (cursor leaves toward the top) ----
-      document.addEventListener('mouseout', function (e) {
-        if (e.clientY > 0 || e.relatedTarget || (e.target && e.target.nodeName === 'SELECT')) return;
-        if (used()) return;
-        if (CFG.mode === 'redirect' && CFG.redirectUrl) { markUsed(); location.href = CFG.redirectUrl; return; }
-        open();
-      });
-    })();
-  </script>
+  <!-- Exit / back-button warning removed: the back-button trap + exit-intent popup read as malware/error. No exit interception. -->
 </body>
 
 </html>
