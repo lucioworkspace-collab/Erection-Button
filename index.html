@@ -917,7 +917,6 @@
     }
     body.vsl-mini.has-buybar .vsl-stage { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
     body.vsl-mini .vsl-stage vturb-smartplayer { border-radius: 12px; box-shadow: none; }
-    body.vsl-mini .reactions { display: none; }
     body.vsl-mini .vsl-badge { top: 5px; left: 5px; font-size: 9px; padding: 3px 7px; gap: 4px; }
     @keyframes vsl-mini-in { from { opacity: 0; transform: translateY(12px) scale(.9); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) { body.vsl-mini .vsl-stage { animation: none; } }
@@ -944,105 +943,39 @@
     .vsl-badge .live-dot { background: #fff; }
     .vsl-badge #vslClock { font-variant-numeric: tabular-nums; opacity: .9; font-weight: 700; }
 
-    .reactions {
-      position: absolute;
-      right: 6px;
-      top: 0; bottom: 0;
-      width: 120px;
-      pointer-events: none;
-      z-index: 7;                  /* above the comment overlay so risers stay visible the whole way up */
-      overflow: hidden;            /* confine floaters to the player — never escape on short videos */
-    }
-
-    .reaction {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      line-height: 1;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .35));
-      will-change: transform, opacity;
-      animation: float-up var(--dur, 3s) cubic-bezier(.34, .12, .2, 1) forwards;
-    }
-
-    /* ===== Live-Chat panel below the player (prominent, premium, non-obstructive) ===== */
-    /* Live-chat overlay — a quiet "whisper" over the bottom ~15% of the VSL: at most 2
-       comments, near-transparent, gentle fade in/out. Never competes with the video. */
+    /* ===== Live-chat overlay — passive TikTok-Live style: 3-4 comments stacked in the
+       bottom-left over the video, text-only (no cards) with a text-shadow for legibility
+       and a subtle base gradient. Slide-up + fade in, fade out. Display only — no input,
+       no reactions; the lead's only interactive element is the buy CTA. ===== */
     .vsl-chat-ov {
       position: absolute;
-      left: 0; right: 0; bottom: 11%;          /* lifted off the floor: lower third, ~11% margin-bottom */
-      max-height: 24%;
+      left: 0; right: 0; bottom: 0;
+      max-height: 42%;
       z-index: 6;
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 8px;
+      padding: 0 22% 14px 12px;                /* bottom-left; right gutter keeps text off the controls */
       overflow: hidden;
       pointer-events: none;
+      background: linear-gradient(to top, rgba(0, 0, 0, .45) 0%, rgba(0, 0, 0, .12) 55%, transparent 100%);
     }
-    .vsl-cov-list { display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+    .vsl-cov-list { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 7px; }
     .vsl-cov {
-      display: flex; align-items: center; gap: 7px;
-      padding: 8px 12px;                        /* roomier card so text breathes (+3px per side) */
-      border-radius: 12px;
-      background: rgba(0, 0, 0, .3);
-      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      max-width: 100%;
       color: #fff;
       font-family: 'Open Sans', Arial, sans-serif;
-      opacity: 0;
-      transition: opacity .5s ease;
+      font-size: 13px; line-height: 1.3;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, .95), 0 0 2px rgba(0, 0, 0, .6);
+      opacity: 0; transform: translateY(14px);
+      transition: opacity .45s ease, transform .45s ease;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-    .vsl-cov.is-in { opacity: 1; }
-    .vsl-cov__av { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
-    .vsl-cov__b { min-width: 0; font-size: 12px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .vsl-cov__name { font-weight: 700; }
-    .vsl-cov__time { font-weight: 400; opacity: .6; font-size: 10.5px; white-space: nowrap; }
-    .vsl-cov__txt { font-weight: 400; opacity: .95; margin-left: 5px; }
+    .vsl-cov.is-in { opacity: 1; transform: translateY(0); }     /* slide-up + fade in */
+    .vsl-cov.is-out { opacity: 0; transform: translateY(0); }    /* fade out (no move) */
+    .vsl-cov__name { font-weight: 700; margin-right: 6px; }
+    .vsl-cov__txt { font-weight: 400; }
+    .vsl-cov--join { font-style: italic; opacity: .92; font-size: 12.5px; }
+    .vsl-cov--join .vsl-cov__name { font-style: normal; }
     body.vsl-mini .vsl-chat-ov { display: none; }
-
-    /* Tappable live-reactions rail — bottom-right of the player, TikTok-style */
-    .vsl-reacts {
-      position: absolute;
-      right: 8px; bottom: 8px;
-      z-index: 7;
-      display: flex; gap: 5px;
-      pointer-events: auto;
-    }
-    .vsl-reacts button {
-      width: 30px; height: 30px; padding: 0;
-      border: 0; border-radius: 50%; cursor: pointer;
-      background: rgba(0, 0, 0, .32);
-      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
-      font-size: 15px; line-height: 1;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform .12s ease, background .12s ease;
-    }
-    .vsl-reacts button:hover { background: rgba(0, 0, 0, .45); }
-    .vsl-reacts button:active { transform: scale(1.3); }
-    body.vsl-mini .vsl-reacts { display: none; }
-
-    /* Comment input — separate block in normal flow, directly below the player */
-    .vsl-chat-input {
-      display: flex; align-items: center; gap: 8px;
-      width: 100%; max-width: 400px; margin: 10px auto 0;
-      padding: 4px 4px 4px 14px;
-      background: #fff; border: 1px solid var(--line); border-radius: 999px;
-    }
-    .vsl-chat-input input {
-      flex: 1 1 auto; min-width: 0; background: transparent; border: 0; outline: none;
-      color: var(--ink); font-size: 13px; font-family: 'Open Sans', Arial, sans-serif;
-    }
-    .vsl-chat-input input::placeholder { color: #9aa3b0; }
-    .vsl-chat-input button {
-      flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; border: 0; cursor: pointer;
-      background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center;
-    }
-    .vsl-chat-input button svg { width: 16px; height: 16px; }
-
-    @keyframes float-up {
-      0%   { transform: translateY(0) scale(.5) rotate(0deg); opacity: 0; }
-      12%  { opacity: 1; transform: translateY(-40px) translateX(calc(var(--dx, -10px) * .35)) scale(1.05) rotate(-7deg); }
-      50%  { opacity: 1; transform: translateY(-210px) translateX(calc(var(--dx, -10px) * -.5)) scale(1.14) rotate(6deg); }
-      80%  { opacity: 1; transform: translateY(-330px) translateX(calc(var(--dx, -10px) * .2)) scale(1.18) rotate(-3deg); }
-      100% { opacity: 0; transform: translateY(-420px) translateX(var(--dx, -10px)) scale(1.22) rotate(5deg); }
-    }
 
 
     /* ===== "Someone is typing…" indicator ===== */
@@ -1059,8 +992,9 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .live-dot, .cm-row.cm-new, .reaction, .cm-typing .dot, .buybar__cta::after { animation: none; }
+      .live-dot, .cm-row.cm-new, .cm-typing .dot, .buybar__cta::after { animation: none; }
       .lvt { transition: opacity .3s; }
+      .vsl-cov, .vsl-cov.is-in, .vsl-cov.is-out { transform: none; }   /* fade only, no slide */
       .theme-border-radius, .btn-primary-new, .btn-new.btn-primary-new, .cta.btn-primary-new { transition: none; transform: none !important; }
     }
   </style>
@@ -1180,23 +1114,9 @@
         <div class="vsl-stage">
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
-          <div class="reactions" id="reactions" aria-hidden="true"></div>
-          <!-- Live-chat overlay: subtle comments over the lower third of the VSL (whisper, not a layer) -->
+          <!-- Live-chat overlay: passive auto-comments stacked bottom-left over the video (display only) -->
           <div class="vsl-chat-ov" id="vslChat" aria-live="polite" aria-label="Live-Chat"></div>
-          <!-- Tappable live-reactions: each tap floats an emoji up the player (TikTok-style) -->
-          <div class="vsl-reacts" id="vslReacts" role="group" aria-label="Reaktion senden">
-            <button type="button" data-emoji="❤️" aria-label="Herz senden">❤️</button>
-            <button type="button" data-emoji="🔥" aria-label="Feuer senden">🔥</button>
-            <button type="button" data-emoji="👏" aria-label="Applaus senden">👏</button>
-            <button type="button" data-emoji="😮" aria-label="Wow senden">😮</button>
-          </div>
         </div>
-
-        <!-- Comment input OUTSIDE the player, in normal flow (so the mobile keyboard can't push the VSL out of frame) -->
-        <form class="vsl-chat-input" id="vslChatForm" autocomplete="off">
-          <input type="text" id="vslChatInput" maxlength="140" placeholder="Kommentar schreiben…" aria-label="Kommentar schreiben">
-          <button type="submit" aria-label="Senden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
-        </form>
 
         <!-- Authority logo carousel — research-institution credibility, just below the VSL -->
         <section class="auth" aria-label="Forschung führender Institutionen">
@@ -1890,7 +1810,6 @@
           wrap.appendChild(el);
           requestAnimationFrame(function () { el.classList.add('is-in'); });
           reduceStock(kit.qty);
-          burst(rand(1, 2));
           setTimeout(function () { el.classList.remove('is-in'); setTimeout(function () { el.remove(); }, 500); }, 5200);
         }
         function loopToast() { setTimeout(function () { showToast(); loopToast(); }, rand(7000, 16000)); }
@@ -1924,7 +1843,6 @@
           times.push({ el: row.querySelector('.cm-time'), ts: ts });
           if (cmCountEl) cmCountEl.textContent = ((parseInt(cmCountEl.textContent.replace(/\D/g, ''), 10) || 0) + 1).toLocaleString();
           setTimeout(function () { row.classList.remove('cm-new'); }, 600);
-          burst(rand(1, 2));
           var rows = list.querySelectorAll('.cm-row');
           if (rows.length > 14) list.removeChild(rows[rows.length - 1]);
         }
@@ -1963,46 +1881,9 @@
         }
         setInterval(renderClock, 1000); renderClock();
 
-        // Floating live-reactions — varied emoji, size, drift, speed → feels like a
-        // real audience tapping ❤️ in real time (weighted toward hearts).
-        var rlayer = $('#reactions');
-        var EMOJIS = ['❤️', '❤️', '❤️', '🔥', '👏', '😍', '🙏', '💪', '🥹', '😮', '✨'];
-        function emitReaction(forceEmoji) {
-          if (!rlayer || RM) return;
-          var e = document.createElement('span');
-          e.className = 'reaction';
-          e.textContent = forceEmoji || pick(EMOJIS);
-          var dur = (rand(30, 44) / 10);                 // a touch slower for the longer rise
-          e.style.setProperty('--dx', rand(-40, 14) + 'px');
-          e.style.setProperty('--dur', dur + 's');
-          e.style.right = rand(0, 70) + 'px';
-          e.style.fontSize = (forceEmoji ? rand(22, 32) : rand(15, 30)) + 'px';
-          rlayer.appendChild(e);
-          setTimeout(function () { e.remove(); }, dur * 1000 + 120);
-          if (rlayer.childElementCount > 18) rlayer.removeChild(rlayer.firstChild);
-        }
-        // A little cluster of taps at once — like several people reacting together.
-        function burst(n) { for (var i = 0; i < n; i++) setTimeout(emitReaction, i * (RM ? 0 : rand(120, 300))); }
-        if (!RM) {
-          setInterval(function () { if (Math.random() < 0.62) emitReaction(); }, 2100);
-          setInterval(function () { if (Math.random() < 0.3) burst(rand(2, 5)); }, 6500);
-        }
-
-        /* ---- 7) live-chat panel below the VSL — DACH L1 script, in narrative order,
-                 played as a live timeline so the room reacts beat-by-beat with the video.
-                 Handles keep a stable face via a deterministic avatar hash. ---- */
+        /* ---- live-chat overlay — DACH L1 script in narrative order, played as a
+                 live timeline so the room reacts beat-by-beat with the video. ---- */
         var chatEl = $('#vslChat');
-        var AV_POOL = [
-          'images/mann1.webp', 'images/mann2.webp', 'images/mann3.webp', 'images/mann4.webp', 'images/mann5.webp',
-          'images/mann6.webp', 'images/mann7.webp', 'images/mann8.webp', 'images/mann9.webp', 'images/mann10.webp',
-          'images/mann11.webp'
-        ];
-        var _avCache = {};
-        function avatarFor(handle) {
-          if (_avCache[handle]) return _avCache[handle];
-          var h = 0; for (var i = 0; i < handle.length; i++) { h = (h * 31 + handle.charCodeAt(i)) >>> 0; }
-          return (_avCache[handle] = AV_POOL[h % AV_POOL.length]);
-        }
         var CHAT = [
           // FASE 1 — Hook / Curiosidade inicial (00:00–03:00)
           { n: "Klaus_H", t: "das hab ich schon mal gehört aber nie geglaubt 🤔" },
@@ -2114,25 +1995,15 @@
           { n: "Stefan", t: "keine Frage. ich bin dabei. heute beginnt mein neues Leben 💪" }
         ];
         var ci = 0;
-        var EMO_MARK = ['❤️', '🥹', '💔', '😳', '😔', '😞', '🙏', '💕'];
-        function hasEmo(t) { for (var i = 0; i < EMO_MARK.length; i++) { if (t.indexOf(EMO_MARK[i]) >= 0) return true; } return false; }
         function nextChat() { var m = CHAT[ci % CHAT.length]; ci++; return m; }
-        // Quiet "whisper" overlay over the player's lower third: at most 2 comments,
-        // gentle fade in/out, each tagged with a live relative timestamp ("gerade",
-        // "vor 1 Min.", …) that ticks every 30s. Pauses while the player is scrolled
-        // out of view or in fullscreen. The input lives OUTSIDE the player (normal
-        // flow) and focusing it never scrolls/displaces the VSL.
+        // Passive TikTok-Live overlay: 3-4 comments stacked bottom-left, text-only with a
+        // text-shadow over the video, slide-up + fade in / fade out, join notices
+        // interspersed. Display only — no viewer interaction. Pauses while the player is
+        // scrolled out of view or in fullscreen.
         var GUEST = ['Zuschauer', 'Thomas', 'Stefan', 'Michael', 'Andreas', 'Markus', 'Jens', 'Frank', 'Dirk', 'Kai', 'Uwe', 'Ralf'];
         function guestName() { return GUEST[Math.floor(Math.random() * GUEST.length)]; }
         function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-        // Relative German timestamp — new comments read "gerade", then tick up by the minute.
-        function covTime(ts) {
-          var d = Math.floor((Date.now() - ts) / 1000);
-          if (d < 45) return 'gerade';
-          if (d < 90) return 'vor 1 Min.';
-          return 'vor ' + Math.floor(d / 60) + ' Min.';
-        }
-        var covTimes = [], covRows = [], covList = null;
+        var covRows = [], covList = null;
         if (chatEl) { chatEl.innerHTML = '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>'; covList = $('#vslChatList'); }
         var stageEl = document.querySelector('.vsl-stage');
         var stageVisible = true;
@@ -2141,68 +2012,40 @@
         }
         function isFs() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
         function chatActive() { return stageVisible && !isFs(); }
-        function covFadeOut(row) {                      // fade out (.5s) then remove, once
+        function covFadeOut(row) {                      // fade out then remove, once
           if (!row || row.__out) return; row.__out = true;
           var i = covRows.indexOf(row); if (i >= 0) covRows.splice(i, 1);
-          row.classList.remove('is-in');
-          setTimeout(function () { if (row.parentNode) row.parentNode.removeChild(row); }, 550);
+          row.classList.remove('is-in'); row.classList.add('is-out');
+          setTimeout(function () { if (row.parentNode) row.parentNode.removeChild(row); }, 500);
         }
-        function addComment(m, mine) {
-          if (!covList) return;
-          if (!mine && !chatActive()) return;          // stop rendering when out of view / fullscreen
-          var ts = Date.now();
+        function covPush(html, join) {
+          if (!covList || !chatActive()) return;        // display only while the player is in view
           var row = document.createElement('div');
-          row.className = 'vsl-cov';
-          row.innerHTML =
-            '<img class="vsl-cov__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">' +
-            '<div class="vsl-cov__b"><span class="vsl-cov__name">' + esc(m.n) + '</span>' +
-            '<span class="vsl-cov__time"> · gerade</span>' +
-            '<span class="vsl-cov__txt">' + esc(m.t) + '</span></div>';
+          row.className = 'vsl-cov' + (join ? ' vsl-cov--join' : '');
+          row.innerHTML = html;
           covList.appendChild(row);
           covRows.push(row);
-          covTimes.push({ el: row.querySelector('.vsl-cov__time'), ts: ts });
-          while (covRows.length > 2) covFadeOut(covRows[0]);   // keep 2 visible, fade the oldest out
+          while (covRows.length > 4) covFadeOut(covRows[0]);   // keep 3-4 visible
           void row.offsetWidth;
-          row.classList.add('is-in');                  // fade in (.5s)
-          if (!RM && (mine || hasEmo(m.t))) burst(rand(1, 3));
-          setTimeout(function () { covFadeOut(row); }, 120000); // safety: never let a comment linger forever
+          row.classList.add('is-in');                  // slide-up + fade in
+          setTimeout(function () { covFadeOut(row); }, 60000); // safety: never let a row linger
         }
-        // Tick the visible timestamps every 30s (drop rows already removed).
-        setInterval(function () {
-          covTimes = covTimes.filter(function (t) { return t.el && t.el.isConnected; });
-          covTimes.forEach(function (t) { t.el.textContent = ' · ' + covTime(t.ts); });
-        }, 30000);
+        function addChatLine() {
+          var m = nextChat();
+          covPush('<span class="vsl-cov__name">' + esc(m.n) + '</span><span class="vsl-cov__txt">' + esc(m.t) + '</span>');
+        }
+        function addJoinLine() {
+          covPush('👋 <span class="vsl-cov__name">' + esc(guestName()) + '</span> ist beigetreten', true);
+        }
         if (covList) {
-          [200, 900].forEach(function (d) { setTimeout(function () { addComment(nextChat()); }, d); });
-          // calm cadence so each comment lives long enough for its timestamp to tick (and the VSL stays uncluttered)
-          (function loopChat() { setTimeout(function () { addComment(nextChat()); loopChat(); }, rand(16000, 30000)); })();
-        }
-        // Comment input — separate block in normal flow below the player. Focusing it must
-        // NEVER scroll/re-center the page or clear the field; only submit clears it. The
-        // browser keeps the focused input above the keyboard with the player still visible
-        // above it (TikTok-Live behaviour: commenting never interrupts the video).
-        var covForm = $('#vslChatForm'), covInput = $('#vslChatInput');
-        if (covForm && covInput) {
-          covForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var v = (covInput.value || '').trim();
-            if (!v) return;
-            addComment({ n: guestName(), t: v }, true);
-            covInput.value = '';
-          });
-        }
-        // Tappable live-reactions — each tap floats its emoji up the player; rapid taps stack.
-        var reactsBar = $('#vslReacts');
-        if (reactsBar) {
-          // Keep taps off the stage's pointerdown→markPlayed handler so reacting
-          // before pressing play never hides the cue / marks the video as played.
-          reactsBar.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
-          reactsBar.addEventListener('click', function (e) {
-            var b = e.target.closest && e.target.closest('button[data-emoji]');
-            if (!b) return;
-            e.stopPropagation();
-            emitReaction(b.getAttribute('data-emoji'));
-          });
+          [200, 900, 1700].forEach(function (d) { setTimeout(addChatLine, d); });   // prime the stack
+          // 3-5s randomized cadence; ~1 in 4 entries is a join notice (interspersed)
+          (function loopChat() {
+            setTimeout(function () {
+              if (Math.random() < 0.25) addJoinLine(); else addChatLine();
+              loopChat();
+            }, rand(3000, 5000));
+          })();
         }
 
         function showTyping(person, cb) {
