@@ -12,3 +12,7 @@ wrangler.jsonc
 .wrangler/**
 node_modules
 .assetsignore
+
+# Local Claude Code session/scheduling artifacts — never serve these.
+.claude
+.claude/**

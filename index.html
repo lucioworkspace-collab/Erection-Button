@@ -522,7 +522,7 @@
     }
     .cta-secure svg { width: 12px; height: 12px; flex: 0 0 auto; }
 
-    .trust { max-width: 660px; margin: 6px auto 0; padding: 0 12px; font-family: 'Open Sans', Arial, sans-serif; }
+    .trust { max-width: 660px; margin: 22px auto 0; padding: 0 12px; font-family: 'Open Sans', Arial, sans-serif; }
 
     .trust__guarantee {
       display: flex;
@@ -558,8 +558,8 @@
     }
 
     /* ===== Continuous-scroll verified reviews (premium social proof) ===== */
-    .reviews { max-width: 820px; margin: 26px auto 8px; padding: 0 4px; font-family: 'Open Sans', Arial, sans-serif; }
-    .reviews__head { text-align: center; margin-bottom: 16px; }
+    .reviews { max-width: 820px; margin: 24px auto 8px; padding: 0 4px; font-family: 'Open Sans', Arial, sans-serif; }
+    .reviews__head { text-align: center; margin-bottom: 16px; padding: 0 12px; }
 
     /* ===== Before/After transformation gallery (premium social proof) ===== */
     .reviews__stars { color: #f5a623; font-size: 22px; letter-spacing: 2px; line-height: 1; }
@@ -608,7 +608,7 @@
     .rv-card__date::before { content: "✓ "; color: var(--cta); font-weight: 800; }
     .reviews__trustline { text-align: center; font-size: 11.5px; color: #4b5563; font-weight: 600; margin: 7px 0 0; }
     .reviews__trustline b { color: var(--cta-dark); }
-    .rv-card__text { font-size: 13.5px; line-height: 1.5; color: #2d2f33; margin: 0; }
+    .rv-card__text { font-size: 13.5px; line-height: 1.6; color: #2d2f33; margin: 0; }
 
     @media (prefers-reduced-motion: reduce) { .reviews__track { animation: none; } }
 
@@ -616,7 +616,7 @@
     .proof { max-width: 520px; margin: 22px auto 0; padding: 0 10px; }
     .proof img { width: 100%; height: auto; display: block; border-radius: 14px; box-shadow: var(--shadow-soft); }
 
-    .seals-wrap { max-width: 600px; margin: 20px auto 0; padding: 0 12px; text-align: center; }
+    .seals-wrap { max-width: 600px; margin: 24px auto 0; padding: 0 12px; text-align: center; }
     .seals-wrap p { font-size: 12px; font-weight: 700; letter-spacing: .03em; color: var(--muted); text-transform: uppercase; margin: 0 0 10px; }
     .seals { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 18px; }
     .seals img { height: 72px; width: auto; }
@@ -626,14 +626,14 @@
     .mig-badge { width: 142px; height: auto; display: inline-block; }
 
     /* DTC trust USPs — minimal: black icon on top, bold black label below (offer block only) */
-    .dtc-usps { list-style: none; max-width: 640px; margin: 22px auto 6px; padding: 0 8px; display: grid; grid-template-columns: repeat(3, 1fr); font-family: 'Open Sans', Arial, sans-serif; }
+    .dtc-usps { list-style: none; max-width: 640px; margin: 24px auto 6px; padding: 0 12px; display: grid; grid-template-columns: repeat(3, 1fr); font-family: 'Open Sans', Arial, sans-serif; }
     .dtc-usps li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 11px; padding: 4px 14px; color: #111; font-size: 13px; font-weight: 700; line-height: 1.3; }
     .dtc-usps li + li { border-left: 1px solid var(--line); }
     .dtc-usps li img { width: 34px; height: 34px; flex: 0 0 auto; object-fit: contain; }
     @media (max-width: 520px) { .dtc-usps li { font-size: 11.5px; padding: 4px 7px; gap: 9px; } .dtc-usps li img { width: 30px; height: 30px; } }
 
     /* Authority logo carousel (marquee) — sits just below the VSL */
-    .auth { max-width: 820px; margin: 16px auto 4px; padding: 0 12px; }
+    .auth { max-width: 820px; margin: 20px auto 4px; padding: 0 12px; }
     .auth__label { text-align: center; font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin: 0 0 11px; font-family: 'Open Sans', Arial, sans-serif; }
     .auth__vp { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
     .auth__track { display: flex; align-items: center; width: max-content; animation: auth-scroll 34s linear infinite; }
@@ -673,7 +673,7 @@
       margin-bottom: 10px;
     }
 
-    .scarcity__stock { font-size: 17px; font-weight: 700; line-height: 1.25; }
+    .scarcity__stock { font-size: 18px; font-weight: 700; line-height: 1.3; letter-spacing: -.005em; }
     .scarcity__stock .counter_left { font-weight: 800; text-decoration: underline; }
 
     .scarcity__bar {
@@ -799,6 +799,7 @@
       padding: 12px 20px;
       border-radius: 10px;
       box-shadow: 0 6px 14px rgba(21, 128, 61, .32);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
     }
     /* Pulse glow on a pseudo-element animating opacity — GPU-composited, no repaints */
     .buybar__cta::after {
@@ -813,6 +814,9 @@
     }
     .buybar__arrow { transition: transform .25s ease; }
     .buybar:hover .buybar__arrow { transform: translateX(3px); }
+    @media (hover: hover) {
+      .buybar:hover .buybar__cta { filter: brightness(1.06); transform: translateY(-1px); box-shadow: 0 9px 22px rgba(21, 128, 61, .36); }
+    }
 
     @keyframes buybar-pulse {
       0%, 100% { opacity: 0; }
@@ -943,12 +947,11 @@
     .reactions {
       position: absolute;
       right: 6px;
-      bottom: 8px;
-      width: 96px;
-      height: 250px;
+      top: 0; bottom: 0;
+      width: 120px;
       pointer-events: none;
       z-index: 3;
-      overflow: visible;
+      overflow: hidden;            /* confine floaters to the player — never escape on short videos */
     }
 
     .reaction {
@@ -966,18 +969,18 @@
        comments, near-transparent, gentle fade in/out. Never competes with the video. */
     .vsl-chat-ov {
       position: absolute;
-      left: 0; right: 0; bottom: 8px;
-      max-height: 18%;
+      left: 0; right: 0; bottom: 11%;          /* lifted off the floor: lower third, ~11% margin-bottom */
+      max-height: 24%;
       z-index: 6;
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 8px;
       overflow: hidden;
       pointer-events: none;
     }
-    .vsl-cov-list { display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; }
+    .vsl-cov-list { display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
     .vsl-cov {
       display: flex; align-items: center; gap: 7px;
-      padding: 5px 9px;
+      padding: 8px 12px;                        /* roomier card so text breathes (+3px per side) */
       border-radius: 12px;
       background: rgba(0, 0, 0, .3);
       -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
@@ -988,11 +991,32 @@
     }
     .vsl-cov.is-in { opacity: 1; }
     .vsl-cov__av { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
-    .vsl-cov__b { min-width: 0; font-size: 12px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .vsl-cov__name { font-weight: 700; margin-right: 5px; }
-    .vsl-cov__txt { font-weight: 400; opacity: .95; }
-    .vsl-cov__react { margin-left: auto; flex: 0 0 auto; font-size: 10.5px; font-weight: 600; background: rgba(255, 255, 255, .14); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+    .vsl-cov__b { min-width: 0; font-size: 12px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .vsl-cov__name { font-weight: 700; }
+    .vsl-cov__time { font-weight: 400; opacity: .6; font-size: 10.5px; white-space: nowrap; }
+    .vsl-cov__txt { font-weight: 400; opacity: .95; margin-left: 5px; }
     body.vsl-mini .vsl-chat-ov { display: none; }
+
+    /* Tappable live-reactions rail — bottom-right of the player, TikTok-style */
+    .vsl-reacts {
+      position: absolute;
+      right: 8px; bottom: 8px;
+      z-index: 7;
+      display: flex; gap: 5px;
+      pointer-events: auto;
+    }
+    .vsl-reacts button {
+      width: 30px; height: 30px; padding: 0;
+      border: 0; border-radius: 50%; cursor: pointer;
+      background: rgba(0, 0, 0, .32);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      font-size: 15px; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .vsl-reacts button:hover { background: rgba(0, 0, 0, .45); }
+    .vsl-reacts button:active { transform: scale(1.3); }
+    body.vsl-mini .vsl-reacts { display: none; }
 
     /* Comment input — separate block in normal flow, directly below the player */
     .vsl-chat-input {
@@ -1013,9 +1037,11 @@
     .vsl-chat-input button svg { width: 16px; height: 16px; }
 
     @keyframes float-up {
-      0% { transform: translateY(0) scale(.5) rotate(0deg); opacity: 0; }
-      14% { opacity: 1; transform: translateY(-18px) scale(1.05) rotate(-4deg); }
-      100% { transform: translateY(-228px) translateX(var(--dx, -10px)) scale(1.12) rotate(6deg); opacity: 0; }
+      0%   { transform: translateY(0) scale(.5) rotate(0deg); opacity: 0; }
+      12%  { opacity: 1; transform: translateY(-40px) translateX(calc(var(--dx, -10px) * .35)) scale(1.05) rotate(-7deg); }
+      50%  { opacity: 1; transform: translateY(-210px) translateX(calc(var(--dx, -10px) * -.5)) scale(1.14) rotate(6deg); }
+      80%  { opacity: 1; transform: translateY(-330px) translateX(calc(var(--dx, -10px) * .2)) scale(1.18) rotate(-3deg); }
+      100% { opacity: 0; transform: translateY(-420px) translateX(var(--dx, -10px)) scale(1.22) rotate(5deg); }
     }
 
 
@@ -1155,8 +1181,15 @@
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
           <div class="reactions" id="reactions" aria-hidden="true"></div>
-          <!-- Live-chat overlay: subtle comments over the bottom ~15% of the VSL (whisper, not a layer) -->
+          <!-- Live-chat overlay: subtle comments over the lower third of the VSL (whisper, not a layer) -->
           <div class="vsl-chat-ov" id="vslChat" aria-live="polite" aria-label="Live-Chat"></div>
+          <!-- Tappable live-reactions: each tap floats an emoji up the player (TikTok-style) -->
+          <div class="vsl-reacts" id="vslReacts" role="group" aria-label="Reaktion senden">
+            <button type="button" data-emoji="❤️" aria-label="Herz senden">❤️</button>
+            <button type="button" data-emoji="🔥" aria-label="Feuer senden">🔥</button>
+            <button type="button" data-emoji="👏" aria-label="Applaus senden">👏</button>
+            <button type="button" data-emoji="😮" aria-label="Wow senden">😮</button>
+          </div>
         </div>
 
         <!-- Comment input OUTSIDE the player, in normal flow (so the mobile keyboard can't push the VSL out of frame) -->
@@ -1934,19 +1967,19 @@
         // real audience tapping ❤️ in real time (weighted toward hearts).
         var rlayer = $('#reactions');
         var EMOJIS = ['❤️', '❤️', '❤️', '🔥', '👏', '😍', '🙏', '💪', '🥹', '😮', '✨'];
-        function emitReaction() {
+        function emitReaction(forceEmoji) {
           if (!rlayer || RM) return;
           var e = document.createElement('span');
           e.className = 'reaction';
-          e.textContent = pick(EMOJIS);
-          var dur = (rand(26, 38) / 10);
-          e.style.setProperty('--dx', rand(-36, 10) + 'px');
+          e.textContent = forceEmoji || pick(EMOJIS);
+          var dur = (rand(30, 44) / 10);                 // a touch slower for the longer rise
+          e.style.setProperty('--dx', rand(-40, 14) + 'px');
           e.style.setProperty('--dur', dur + 's');
-          e.style.right = rand(0, 62) + 'px';
-          e.style.fontSize = rand(15, 30) + 'px';
+          e.style.right = rand(0, 70) + 'px';
+          e.style.fontSize = (forceEmoji ? rand(22, 32) : rand(15, 30)) + 'px';
           rlayer.appendChild(e);
           setTimeout(function () { e.remove(); }, dur * 1000 + 120);
-          if (rlayer.childElementCount > 14) rlayer.removeChild(rlayer.firstChild);
+          if (rlayer.childElementCount > 18) rlayer.removeChild(rlayer.firstChild);
         }
         // A little cluster of taps at once — like several people reacting together.
         function burst(n) { for (var i = 0; i < n; i++) setTimeout(emitReaction, i * (RM ? 0 : rand(120, 300))); }
@@ -2084,16 +2117,22 @@
         var EMO_MARK = ['❤️', '🥹', '💔', '😳', '😔', '😞', '🙏', '💕'];
         function hasEmo(t) { for (var i = 0; i < EMO_MARK.length; i++) { if (t.indexOf(EMO_MARK[i]) >= 0) return true; } return false; }
         function nextChat() { var m = CHAT[ci % CHAT.length]; ci++; return m; }
-        // Quiet "whisper" overlay: at most 2 comments, fade-in .5s / stay 3s / fade-out .5s.
-        // Pauses while the player is scrolled out of view or in fullscreen (focus + perf).
-        // The input lives OUTSIDE the player (normal flow) so the mobile keyboard can't
-        // push the VSL out of frame.
-        var COV_REACT = ['❤️', '🔥', '👍'];
-        function covReact() { return COV_REACT[Math.floor(Math.random() * COV_REACT.length)] + ' ' + rand(3, 47); }
+        // Quiet "whisper" overlay over the player's lower third: at most 2 comments,
+        // gentle fade in/out, each tagged with a live relative timestamp ("gerade",
+        // "vor 1 Min.", …) that ticks every 30s. Pauses while the player is scrolled
+        // out of view or in fullscreen. The input lives OUTSIDE the player (normal
+        // flow) and focusing it never scrolls/displaces the VSL.
         var GUEST = ['Zuschauer', 'Thomas', 'Stefan', 'Michael', 'Andreas', 'Markus', 'Jens', 'Frank', 'Dirk', 'Kai', 'Uwe', 'Ralf'];
         function guestName() { return GUEST[Math.floor(Math.random() * GUEST.length)]; }
         function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-        var covList = null;
+        // Relative German timestamp — new comments read "gerade", then tick up by the minute.
+        function covTime(ts) {
+          var d = Math.floor((Date.now() - ts) / 1000);
+          if (d < 45) return 'gerade';
+          if (d < 90) return 'vor 1 Min.';
+          return 'vor ' + Math.round(d / 60) + ' Min.';
+        }
+        var covTimes = [], covRows = [], covList = null;
         if (chatEl) { chatEl.innerHTML = '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>'; covList = $('#vslChatList'); }
         var stageEl = document.querySelector('.vsl-stage');
         var stageVisible = true;
@@ -2102,31 +2141,46 @@
         }
         function isFs() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
         function chatActive() { return stageVisible && !isFs(); }
+        function covFadeOut(row) {                      // fade out (.5s) then remove, once
+          if (!row || row.__out) return; row.__out = true;
+          var i = covRows.indexOf(row); if (i >= 0) covRows.splice(i, 1);
+          row.classList.remove('is-in');
+          setTimeout(function () { if (row.parentNode) row.parentNode.removeChild(row); }, 550);
+        }
         function addComment(m, mine) {
           if (!covList) return;
           if (!mine && !chatActive()) return;          // stop rendering when out of view / fullscreen
+          var ts = Date.now();
           var row = document.createElement('div');
           row.className = 'vsl-cov';
           row.innerHTML =
             '<img class="vsl-cov__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">' +
-            '<div class="vsl-cov__b"><span class="vsl-cov__name">' + esc(m.n) + '</span> ' +
-            '<span class="vsl-cov__txt">' + esc(m.t) + '</span></div>' +
-            '<span class="vsl-cov__react">' + covReact() + '</span>';
+            '<div class="vsl-cov__b"><span class="vsl-cov__name">' + esc(m.n) + '</span>' +
+            '<span class="vsl-cov__time"> · gerade</span>' +
+            '<span class="vsl-cov__txt">' + esc(m.t) + '</span></div>';
           covList.appendChild(row);
-          while (covList.childElementCount > 2) covList.removeChild(covList.firstChild);   // max 2 visible
+          covRows.push(row);
+          covTimes.push({ el: row.querySelector('.vsl-cov__time'), ts: ts });
+          while (covRows.length > 2) covFadeOut(covRows[0]);   // keep 2 visible, fade the oldest out
           void row.offsetWidth;
           row.classList.add('is-in');                  // fade in (.5s)
           if (!RM && (mine || hasEmo(m.t))) burst(rand(1, 3));
-          setTimeout(function () {                      // after 3s: fade out (.5s) then remove
-            row.classList.remove('is-in');
-            setTimeout(function () { if (row.parentNode) row.parentNode.removeChild(row); }, 550);
-          }, 3000);
+          setTimeout(function () { covFadeOut(row); }, 120000); // safety: never let a comment linger forever
         }
+        // Tick the visible timestamps every 30s (drop rows already removed).
+        setInterval(function () {
+          covTimes = covTimes.filter(function (t) { return t.el && t.el.isConnected; });
+          covTimes.forEach(function (t) { t.el.textContent = ' · ' + covTime(t.ts); });
+        }, 30000);
         if (covList) {
-          [200, 1200].forEach(function (d) { setTimeout(function () { addComment(nextChat()); }, d); });
-          (function loopChat() { setTimeout(function () { addComment(nextChat()); loopChat(); }, rand(3000, 4500)); })();
+          [200, 900].forEach(function (d) { setTimeout(function () { addComment(nextChat()); }, d); });
+          // calm cadence so each comment lives long enough for its timestamp to tick (and the VSL stays uncluttered)
+          (function loopChat() { setTimeout(function () { addComment(nextChat()); loopChat(); }, rand(16000, 30000)); })();
         }
-        // Comment input (separate block below the player, in normal flow)
+        // Comment input — separate block in normal flow below the player. Focusing it must
+        // NEVER scroll/re-center the page or clear the field; only submit clears it. The
+        // browser keeps the focused input above the keyboard with the player still visible
+        // above it (TikTok-Live behaviour: commenting never interrupts the video).
         var covForm = $('#vslChatForm'), covInput = $('#vslChatInput');
         if (covForm && covInput) {
           covForm.addEventListener('submit', function (e) {
@@ -2136,9 +2190,15 @@
             addComment({ n: guestName(), t: v }, true);
             covInput.value = '';
           });
-          // keep the VSL in frame when the mobile keyboard opens
-          covInput.addEventListener('focus', function () {
-            setTimeout(function () { if (stageEl && stageEl.scrollIntoView) stageEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 350);
+        }
+        // Tappable live-reactions — each tap floats its emoji up the player; rapid taps stack.
+        var reactsBar = $('#vslReacts');
+        if (reactsBar) {
+          reactsBar.addEventListener('click', function (e) {
+            var b = e.target.closest && e.target.closest('button[data-emoji]');
+            if (!b) return;
+            e.stopPropagation();
+            emitReaction(b.getAttribute('data-emoji'));
           });
         }
 
