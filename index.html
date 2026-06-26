@@ -478,6 +478,22 @@
       letter-spacing: -0.01em;
     }
 
+    /* Hero headline framing — phones first. The report chrome above it was removed,
+       so give it top breathing room and a comfortable measure/line-height. The #id
+       wins over the legacy `.principal h1` size so the block frames cleanly. */
+    #lpHeadline {
+      font-size: 22px;
+      line-height: 1.22;
+      margin-top: 18px;
+      margin-bottom: 10px;
+      text-wrap: balance;
+    }
+    #lpSubhead { font-size: 15px; line-height: 1.4; }
+    @media (min-width: 768px) {
+      #lpHeadline { font-size: 34px; line-height: 1.14; margin-top: 10px; }
+      #lpSubhead { font-size: 17px; }
+    }
+
     /* ===== Live presence ===== */
     .live-dot {
       position: relative;
