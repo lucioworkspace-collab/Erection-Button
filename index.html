@@ -697,6 +697,7 @@
     .trust__lock svg { width: 14px; height: 14px; }
     .trust__cards { display: inline-flex; align-items: center; }
     .trust__cards img { height: 26px; width: auto; display: block; }
+    .trust__tsbadge { height: 48px; width: 48px; display: block; flex: 0 0 auto; }
 
     @media (max-width: 480px) {
       .trust__guarantee { gap: 13px; padding: 13px; }
@@ -781,6 +782,11 @@
     .seals-wrap p { font-size: 12px; font-weight: 700; letter-spacing: .03em; color: var(--muted); text-transform: uppercase; margin: 0 0 10px; }
     .seals { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 18px; }
     .seals img { height: 72px; width: auto; }
+
+    /* DTC trust USPs — benefit strip near the offer */
+    .dtc-usps { list-style: none; max-width: 660px; margin: 18px auto 0; padding: 0 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; font-family: 'Open Sans', Arial, sans-serif; }
+    .dtc-usps li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.3; font-weight: 700; color: #1f2937; background: #f6f8fb; border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
+    .dtc-usps li svg { width: 19px; height: 19px; color: var(--cta); flex: 0 0 auto; }
 
     .label-facts { max-width: 720px; margin: 24px auto 4px; padding: 0 12px; text-align: center; }
     .label-facts h3 { font-size: 15px; font-weight: 800; color: #1f2937; margin: 0 0 4px; font-family: 'Open Sans', Arial, sans-serif; }
@@ -1783,8 +1789,17 @@
           <img src="images/seal-fda.webp" alt="FDA-registrierte Anlage" width="220" height="220" loading="lazy" decoding="async">
           <img src="images/seal-gmp.webp" alt="GMP — Gute Herstellungspraxis" width="220" height="220" loading="lazy" decoding="async">
           <img src="images/seal-usa.webp" alt="In- und ausländische Zutaten" width="220" height="220" loading="lazy" decoding="async">
+          <img src="images/seal-made-germany.webp" alt="Made in Germany" width="160" height="160" loading="lazy" decoding="async">
         </div>
       </div>
+
+      <!-- DTC trust USPs -->
+      <ul class="dtc-usps esconder">
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 17.2 4.8 12.5l1.5-1.5 3.2 3.2 8.2-8.2 1.5 1.5z"/></svg> 100 % unkomplizierte &amp; diskrete Abwicklung</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 17.2 4.8 12.5l1.5-1.5 3.2 3.2 8.2-8.2 1.5 1.5z"/></svg> Top-Qualität &amp; Service zu fairen Preisen</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 17.2 4.8 12.5l1.5-1.5 3.2 3.2 8.2-8.2 1.5 1.5z"/></svg> Blitzschnelle &amp; kostenlose Lieferung</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 17.2 4.8 12.5l1.5-1.5 3.2 3.2 8.2-8.2 1.5 1.5z"/></svg> Expertise aus führenden Institutionen weltweit</li>
+      </ul>
 
       <!-- DTC trust band: 30-day guarantee + secure checkout (affiliate-side reassurance) -->
       <div class="trust esconder">
@@ -1796,6 +1811,7 @@
           </div>
         </div>
         <div class="trust__secure">
+          <img class="trust__tsbadge" src="images/seal-trustedshops.webp" alt="Trusted Shops — geprüfter Käuferschutz" width="160" height="160" loading="lazy" decoding="async">
           <span class="trust__lock"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z"></path></svg> SSL-sicherer Checkout</span>
           <span class="trust__cards">
             <img src="images/payments.webp" alt="Visa, Mastercard, PayPal, Klarna, Apple Pay, Google Pay akzeptiert" width="505" height="48" loading="lazy" decoding="async">
