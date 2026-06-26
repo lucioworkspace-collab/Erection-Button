@@ -783,6 +783,10 @@
     .seals { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 18px; }
     .seals img { height: 72px; width: auto; }
 
+    /* "Made in Germany" trust badge inside each checkout/kit card */
+    .mig-wrap { text-align: center; margin: 2px auto 12px; }
+    .mig-badge { width: 142px; height: auto; display: inline-block; }
+
     /* DTC trust USPs — minimal: black icon on top, bold black label below (offer block only) */
     .dtc-usps { list-style: none; max-width: 640px; margin: 22px auto 6px; padding: 0 8px; display: grid; grid-template-columns: repeat(3, 1fr); font-family: 'Open Sans', Arial, sans-serif; }
     .dtc-usps li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 11px; padding: 4px 14px; color: #111; font-size: 13px; font-weight: 700; line-height: 1.3; }
@@ -1743,6 +1747,7 @@
                   <img loading="lazy" decoding="async" width="505" height="48" src="images/payments.webp" alt="Zahlungsarten" class="img-fluid">
                 </picture>
               </div>
+              <div class="mig-wrap"><img class="mig-badge" src="images/made-in-germany.webp" alt="Made in Germany — in Deutschland hergestellt" width="400" height="252" loading="lazy" decoding="async"></div>
               <p class="mb-1">GESAMT: <span class="text-decoration-line-through">€358</span>
                 <span class="fw-bold">€158</span>
               </p>
@@ -1779,6 +1784,7 @@
                   <img loading="lazy" decoding="async" width="505" height="48" src="images/payments.webp" alt="Zahlungsarten" class="img-fluid">
                 </picture>
               </div>
+              <div class="mig-wrap"><img class="mig-badge" src="images/made-in-germany.webp" alt="Made in Germany — in Deutschland hergestellt" width="400" height="252" loading="lazy" decoding="async"></div>
               <p class="mb-1">GESAMT: <span class="text-decoration-line-through">€1.074</span>
                 <span class="fw-bold">€294</span>
               </p>
@@ -1814,6 +1820,7 @@
                   <img loading="lazy" decoding="async" width="505" height="48" src="images/payments.webp" alt="Zahlungsarten" class="img-fluid">
                 </picture>
               </div>
+              <div class="mig-wrap"><img class="mig-badge" src="images/made-in-germany.webp" alt="Made in Germany — in Deutschland hergestellt" width="400" height="252" loading="lazy" decoding="async"></div>
               <p class="mb-1">GESAMT: <span class="text-decoration-line-through">€537</span>
                 <span class="fw-bold">€207</span>
               </p>
@@ -1829,8 +1836,6 @@
         <div class="seals">
           <img src="images/seal-fda.webp" alt="FDA-registrierte Anlage" width="220" height="220" loading="lazy" decoding="async">
           <img src="images/seal-gmp.webp" alt="GMP — Gute Herstellungspraxis" width="220" height="220" loading="lazy" decoding="async">
-          <img src="images/seal-usa.webp" alt="In- und ausländische Zutaten" width="220" height="220" loading="lazy" decoding="async">
-          <img src="images/seal-made-germany.webp" alt="Made in Germany" width="160" height="160" loading="lazy" decoding="async">
         </div>
       </div>
 
