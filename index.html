@@ -950,7 +950,7 @@
       top: 0; bottom: 0;
       width: 120px;
       pointer-events: none;
-      z-index: 3;
+      z-index: 7;                  /* above the comment overlay so risers stay visible the whole way up */
       overflow: hidden;            /* confine floaters to the player — never escape on short videos */
     }
 
@@ -2130,7 +2130,7 @@
           var d = Math.floor((Date.now() - ts) / 1000);
           if (d < 45) return 'gerade';
           if (d < 90) return 'vor 1 Min.';
-          return 'vor ' + Math.round(d / 60) + ' Min.';
+          return 'vor ' + Math.floor(d / 60) + ' Min.';
         }
         var covTimes = [], covRows = [], covList = null;
         if (chatEl) { chatEl.innerHTML = '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>'; covList = $('#vslChatList'); }
@@ -2194,6 +2194,9 @@
         // Tappable live-reactions — each tap floats its emoji up the player; rapid taps stack.
         var reactsBar = $('#vslReacts');
         if (reactsBar) {
+          // Keep taps off the stage's pointerdown→markPlayed handler so reacting
+          // before pressing play never hides the cue / marks the video as played.
+          reactsBar.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
           reactsBar.addEventListener('click', function (e) {
             var b = e.target.closest && e.target.closest('button[data-emoji]');
             if (!b) return;
