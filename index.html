@@ -55,7 +55,7 @@
 
 
   <!-- Critical CSS inlined (was css/app.min.css) — removes the render-blocking request -->
-  <style>@charset "UTF-8";body{font-family:Jost}.display-2{font-family:Jost,sans-serif;font-size:2.7rem;line-height:1.1}@media (max-width:768px){.display-2{font-size:2.16rem;font-size:calc( 1.595rem + (2.7 - 1.595) * ((100vw - 20rem) / (48 - 20)));line-height:calc( 1.3 * (1.595rem + (2.7 - 1.595) * ((100vw - 20rem) / (48 - 20))))}}.text-white{color:#fafafa!important}.text-black{color:#232323!important}a.text-white.active,a.text-white:focus,a.text-white:hover{color:#c7c7c7!important}a.text-black.active,a.text-black:focus,a.text-black:hover{color:#000!important}a[class*=text-]:not(.nav-link):not(.dropdown-item):not([role]):not(.navbar-caption){position:relative;background-image:transparent;background-size:10000px 2px;background-repeat:no-repeat;background-position:0 1.2em;background-position:-10000px 1.2em}a[class*=text-]:not(.nav-link):not(.dropdown-item):not([role]):not(.navbar-caption):hover{transition:background-position 2s ease-in-out;background-image:linear-gradient(currentColor 50%,currentColor 50%);background-position:0 1.2em}a,a:hover{color:#348d5a}body{overflow-x:hidden}a{transition:color .6s}:root{--new-primary:#B3001B;--new-primary-dark:#931F1D;--new-blue-light:#3977a4;--new-blue-dark:#2A324B;--new-light:#E1E5EE;--bs-light-rgb:225,229,238;--bs-font-sans-serif:'Poppins',sans-serif}.theme-border-radius{border-radius:3.125rem}.border-primary-new{border:2px solid var(--new-primary)}.btn-new{font-size:1rem;line-height:1.5;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 1px 1px rgba(0,0,0,.075);font-weight:400;color:#fff;text-align:center;text-decoration:none;text-transform:uppercase;padding:1rem 5rem;vertical-align:middle;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;border-radius:10rem;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out}.btn-primary-new{cursor:pointer;background-color:#ffd814;border:none;color:#000;border:1px solid #fcd200;font-weight:600}.btn-primary-new:hover{background-color:#f7ca00;text-decoration:none;color:#000}/*!
+  <style>@charset "UTF-8";body{font-family:Jost}.display-2{font-family:Jost,sans-serif;font-size:2.7rem;line-height:1.1}@media (max-width:768px){.display-2{font-size:2.16rem;font-size:calc( 1.595rem + (2.7 - 1.595) * ((100vw - 20rem) / (48 - 20)));line-height:calc( 1.3 * (1.595rem + (2.7 - 1.595) * ((100vw - 20rem) / (48 - 20))))}}.text-white{color:#fafafa!important}.text-black{color:#232323!important}a.text-white.active,a.text-white:focus,a.text-white:hover{color:#c7c7c7!important}a.text-black.active,a.text-black:focus,a.text-black:hover{color:#000!important}a[class*=text-]:not(.nav-link):not(.dropdown-item):not([role]):not(.navbar-caption){position:relative;background-image:transparent;background-size:10000px 2px;background-repeat:no-repeat;background-position:0 1.2em;background-position:-10000px 1.2em}a[class*=text-]:not(.nav-link):not(.dropdown-item):not([role]):not(.navbar-caption):hover{transition:background-position 2s ease-in-out;background-image:linear-gradient(currentColor 50%,currentColor 50%);background-position:0 1.2em}a,a:hover{color:#348d5a}body{overflow-x:hidden}a{transition:color .6s}:root{--new-primary:#B3001B;--bs-light-rgb:225,229,238;--bs-font-sans-serif:'Poppins',sans-serif}.theme-border-radius{border-radius:3.125rem}.border-primary-new{border:2px solid var(--new-primary)}.btn-new{font-size:1rem;line-height:1.5;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 1px 1px rgba(0,0,0,.075);font-weight:400;color:#fff;text-align:center;text-decoration:none;text-transform:uppercase;padding:1rem 5rem;vertical-align:middle;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;border-radius:10rem;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out}.btn-primary-new{cursor:pointer;background-color:#ffd814;border:none;color:#000;border:1px solid #fcd200;font-weight:600}.btn-primary-new:hover{background-color:#f7ca00;text-decoration:none;color:#000}/*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
  * Copyright 2011-2022 Twitter, Inc.
@@ -76,7 +76,6 @@
       /* Brand — masculine graphite/charcoal identity (was ARD navy) */
       --brand: #17191e;
       --brand-light: #2a2d34;
-      --brand-dark: #101216;
       --brand-darker: #0a0b0e;
       /* Action — buy CTAs (green: go / safe / buy) */
       --cta: #15803d;
@@ -84,7 +83,6 @@
       --cta-dark: #126a32;
       /* Trust & credibility (deep steel blue) */
       --trust: #2f5d8a;
-      --trust-dark: #244c73;
       /* Urgency — live / scarcity / urgent (deep crimson) */
       --urgent: #c20e30;
       /* Neutrals — high contrast on white */
@@ -131,170 +129,25 @@
     /* (content-visibility removed: it blanked sections on some Android/in-app
        webviews — visual correctness beats the ~100ms layout deferral) */
 
-    /* ===== Top chrome: header / program / nav / ticker ===== */
-    .cbs-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: #fff;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      padding: 12px 16px;
-      color: var(--ink);
-      box-shadow: 0 1px 6px rgba(20, 22, 31, .08);
-      border-bottom: 1px solid var(--line);
-    }
 
-    /* Program block */
-    .cbs-program {
-      background: #fff;
-      color: var(--ink);
-      padding: 14px 16px 16px;
-      border-bottom: 1px solid var(--line);
-    }
 
-    .cbs-program-title {
-      margin: 0;
-      font-size: 22px;
-      font-weight: 800;
-      line-height: 1.1;
-      color: var(--brand);
-      font-family: 'Open Sans', Arial, sans-serif;
-    }
 
-    .cbs-program-sched {
-      margin: 6px 0 0;
-      font-size: 13px;
-      line-height: 1.4;
-      opacity: .92;
-      font-family: 'Open Sans', Arial, sans-serif;
-    }
 
-    .cbs-program-date {
-      margin: 5px 0 0;
-      font-size: 13px;
-      font-weight: 700;
-      opacity: .95;
-      font-family: 'Open Sans', Arial, sans-serif;
-    }
 
-    .cbs-header .cbs-icon {
-      background: none;
-      border: 0;
-      color: var(--ink);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 0;
-    }
 
-    .cbs-header .cbs-icon--right { justify-self: end; }
 
-    .cbs-logo {
-      justify-self: start;
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
 
-    .cbs-logo img {
-      display: block;
-      height: 34px;
-      width: auto;
-      max-width: 62vw;
-      object-fit: contain;
-    }
 
-    /* Neutral editorial masthead (no product name on top — preserves the VSL reveal) */
-    .cbs-wordmark {
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-weight: 800;
-      font-size: 19px;
-      letter-spacing: .01em;
-      color: var(--brand);
-      line-height: 1;
-    }
-    .ljq-brand {
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-weight: 800;
-      font-size: 13px;
-      letter-spacing: .02em;
-      color: var(--brand);
-      line-height: 1;
-      white-space: nowrap;
-    }
 
-    .cbs-nav {
-      background: #fff;
-      display: flex;
-      gap: 24px;
-      padding: 12px 16px;
-      overflow-x: auto;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      border-top: 1px solid var(--line);
-    }
 
-    .cbs-nav::-webkit-scrollbar { display: none; }
 
-    .cbs-nav a {
-      color: var(--brand);
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 600;
-      font-family: 'Open Sans', Arial, sans-serif;
-      flex: 0 0 auto;
-      opacity: 1;
-    }
 
-    .cbs-nav a:hover { opacity: 1; }
 
-    .cbs-nav a.is-active {
-      opacity: 1;
-      font-weight: 800;
-      text-decoration: underline;
-      text-underline-offset: 5px;
-      text-decoration-thickness: 2px;
-    }
 
     /* Headline eyebrow: kicker + live localized date */
-    .cbs-eyebrow {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 7px;
-    }
 
-    .cbs-eyebrow__kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--brand);
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-family: 'Open Sans', Arial, sans-serif;
-    }
 
-    .cbs-eyebrow__kicker::before {
-      content: "";
-      width: 16px;
-      height: 3px;
-      border-radius: 2px;
-      background: var(--urgent);
-      flex: 0 0 auto;
-    }
 
-    .cbs-eyebrow__date {
-      color: #6e6e6e;
-      font-size: 12.5px;
-      font-weight: 500;
-      white-space: nowrap;
-    }
 
     /* AA contrast for the scientific-references gray (was #7A7A7A = 4.0:1) —
        also kinder to the senior audience reading the citations */
@@ -356,8 +209,6 @@
     }
 
     /* ===== Nav: emphasize LIVE (credibility cue) ===== */
-    .cbs-nav__live { color: var(--urgent) !important; font-weight: 800; display: inline-flex; align-items: center; gap: 7px; }
-    .cbs-nav__live .live-dot { width: 7px; height: 7px; }
 
     /* ===== DTC — clean / premium redesign (skeptical DACH audience) ===== */
     .row.dflex .theme-border-radius {
@@ -488,7 +339,7 @@
       margin-top: 8px;
       margin-bottom: 3px;
       text-align: center;
-      text-wrap: balance;
+      text-wrap: wrap;
     }
     #lpSubhead { font-size: 15px; line-height: 1.4; text-align: center; }
     @media (min-width: 768px) {
@@ -699,7 +550,8 @@
     .trust__lock svg { width: 14px; height: 14px; }
     .trust__cards { display: inline-flex; align-items: center; }
     .trust__cards img { height: 26px; width: auto; display: block; }
-    .trust__tsbadge { height: 48px; width: 48px; display: block; flex: 0 0 auto; }
+    .reviews__rating { display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .reviews__ts { height: 30px; width: auto; flex: 0 0 auto; }
 
     @media (max-width: 480px) {
       .trust__guarantee { gap: 13px; padding: 13px; }
@@ -708,23 +560,8 @@
     /* ===== Continuous-scroll verified reviews (premium social proof) ===== */
     .reviews { max-width: 820px; margin: 26px auto 8px; padding: 0 4px; font-family: 'Open Sans', Arial, sans-serif; }
     .reviews__head { text-align: center; margin-bottom: 16px; }
-    .reviews__proof { max-width: 720px; margin: 0 auto 18px; padding: 0 4px; }
-    .reviews__proof img { width: 100%; height: auto; aspect-ratio: 1600 / 913; border-radius: 16px; border: 1px solid var(--line); box-shadow: var(--shadow-soft); display: block; }
 
     /* ===== Before/After transformation gallery (premium social proof) ===== */
-    .reviews__ba-title { text-align: center; font-size: 13px; font-weight: 800; color: var(--brand); letter-spacing: .02em; text-transform: uppercase; margin: 2px 0 11px; }
-    .reviews__ba { display: flex; gap: 13px; max-width: 820px; margin: 0 auto 7px; padding: 2px 6px 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
-    .reviews__ba::-webkit-scrollbar { height: 0; }
-    @media (min-width: 760px) { .reviews__ba { justify-content: center; } }
-    .ba-card { position: relative; flex: 0 0 auto; width: 238px; scroll-snap-align: center; background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-soft); }
-    .ba-card > img { display: block; width: 100%; height: auto; }
-    .ba-card__tag { position: absolute; top: 10px; left: 10px; background: rgba(0, 21, 80, .86); color: #fff; font-size: 9.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
-    .ba-card__cap { display: flex; flex-direction: column; gap: 2px; padding: 11px 13px 13px; }
-    .ba-card__name { display: flex; align-items: center; gap: 5px; font-size: 13.5px; font-weight: 800; color: var(--ink); }
-    .ba-card__name svg { width: 13px; height: 13px; color: var(--trust); flex: 0 0 auto; }
-    .ba-card__kg { font-size: 12px; font-weight: 800; color: var(--cta-dark); }
-    .ba-card__stars { color: #f5a623; font-size: 12px; letter-spacing: 1px; margin-top: 1px; }
-    .reviews__ba-note { text-align: center; font-size: 10.5px; color: #646b78; margin: 0 0 2px; }
     .reviews__stars { color: #f5a623; font-size: 22px; letter-spacing: 2px; line-height: 1; }
     .reviews__score { font-size: 14px; color: #333; margin: 6px 0 0; }
     .reviews__score strong { font-size: 18px; color: #111; }
@@ -761,7 +598,6 @@
 
     .rv-card__top { display: flex; align-items: center; gap: 11px; }
     .rv-card__av { width: 46px; height: 46px; border-radius: 9999px; object-fit: cover; flex: 0 0 auto; }
-    .rv-card__av--ini { display: flex; align-items: center; justify-content: center; background: #17191e; color: #fff; font-weight: 800; font-size: 15px; letter-spacing: .3px; }
     .rv-card__name { font-size: 14px; font-weight: 800; color: #111; margin: 0; display: flex; align-items: center; gap: 5px; }
     .rv-card__name svg { width: 14px; height: 14px; color: var(--trust); flex: 0 0 auto; }
     .rv-card__meta { font-size: 11.5px; color: #3f4654; font-weight: 700; margin: 2px 0 0; }
@@ -809,10 +645,6 @@
       .auth__track img { margin: 8px 18px; }
     }
 
-    .label-facts { max-width: 720px; margin: 24px auto 4px; padding: 0 12px; text-align: center; }
-    .label-facts h3 { font-size: 15px; font-weight: 800; color: #1f2937; margin: 0 0 4px; font-family: 'Open Sans', Arial, sans-serif; }
-    .label-facts p { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
-    .label-facts img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-soft); }
 
     /* real money-back badge inside the guarantee box */
     .trust__guarantee > img { width: 86px; height: 86px; flex: 0 0 auto; }
@@ -1130,33 +962,60 @@
     }
 
     /* ===== Live-Chat panel below the player (prominent, premium, non-obstructive) ===== */
-    /* Live-chat overlay — one comment at a time over the bottom of the VSL (IG/TikTok live style) */
+    /* Live-chat overlay — TikTok-live-style feed over the bottom third of the VSL:
+       3-4 stacked comments (oldest top/faded via mask), slide-up, + a comment input. */
     .vsl-chat-ov {
       position: absolute;
-      left: 8px; right: 8px; bottom: 10px;
+      left: 0; right: 0; bottom: 0;
+      height: 40%;
       z-index: 6;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 8px 8px;
       pointer-events: none;
+    }
+    .vsl-cov-list {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      gap: 6px; overflow: hidden; flex: 1 1 auto; min-height: 0;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 42%, #000 100%);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 42%, #000 100%);
     }
     .vsl-cov {
       display: flex; align-items: center; gap: 8px;
-      padding: 7px 10px;
-      border-radius: 14px;
-      background: rgba(12, 15, 20, .46);
-      -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+      padding: 6px 9px;
+      border-radius: 13px;
+      background: rgba(12, 15, 20, .42);
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
       color: #fff;
-      opacity: 0; transform: translateY(8px);
-      transition: opacity .42s ease, transform .42s ease;
       font-family: 'Open Sans', Arial, sans-serif;
+      animation: cov-up .45s cubic-bezier(.2, .8, .2, 1);
     }
-    .vsl-chat-ov.is-in .vsl-cov { opacity: 1; transform: translateY(0); }
-    .vsl-cov__av { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
-    .vsl-cov__b { min-width: 0; font-size: 12.5px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    @keyframes cov-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .vsl-cov__av { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+    .vsl-cov__b { min-width: 0; font-size: 12px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .vsl-cov__name { font-weight: 800; margin-right: 5px; }
     .vsl-cov__txt { font-weight: 500; opacity: .96; }
     .vsl-cov__react { margin-left: auto; flex: 0 0 auto; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, .16); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+    .vsl-cov-input {
+      display: flex; align-items: center; gap: 7px; margin-top: 7px;
+      pointer-events: auto;
+      background: rgba(12, 15, 20, .5);
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      border-radius: 999px; padding: 4px 4px 4px 14px;
+    }
+    .vsl-cov-input input {
+      flex: 1 1 auto; min-width: 0; background: transparent; border: 0; outline: none;
+      color: #fff; font-size: 12.5px; font-family: 'Open Sans', Arial, sans-serif;
+    }
+    .vsl-cov-input input::placeholder { color: rgba(255, 255, 255, .68); }
+    .vsl-cov-send {
+      flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
+      background: rgba(255, 255, 255, .18); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vsl-cov-send svg { width: 16px; height: 16px; }
     body.vsl-mini .vsl-chat-ov { display: none; }
     @media (prefers-reduced-motion: reduce) {
-      .vsl-cov { transition: none; transform: none; }
+      .vsl-cov { animation: none; }
     }
 
     @keyframes float-up {
@@ -1187,65 +1046,7 @@
   </style>
 
   <style>
-    /* ===== Exit / back-button offer modal (injected via JS; hidden until triggered) ===== */
-    .exo-backdrop { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; padding: 18px; background: rgba(8, 11, 16, .62); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
-    .exo-backdrop.is-open { display: flex; }
-    .exo-modal { position: relative; width: 100%; max-width: 430px; background: #fff; border-radius: 18px; padding: 28px 22px 20px; text-align: center; box-shadow: 0 26px 64px rgba(8, 11, 16, .34); animation: exo-pop .24s ease-out; }
-    @keyframes exo-pop { from { transform: translateY(14px) scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }
-    .exo-close { position: absolute; top: 8px; right: 12px; background: none; border: 0; font-size: 24px; line-height: 1; color: #aab0b6; cursor: pointer; padding: 4px; }
-    .exo-badge { display: inline-block; background: var(--urgent); color: #fff; font-weight: 800; font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; }
-    .exo-h { font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 21px; line-height: 1.22; color: var(--ink); margin: 14px 0 8px; }
-    .exo-p { font-size: 14.5px; line-height: 1.5; color: var(--muted); margin: 0 0 18px; }
-    .exo-cta { display: block; background: var(--cta); color: #fff; font-weight: 800; font-size: 16px; text-decoration: none; padding: 15px 16px; border-radius: 12px; box-shadow: 0 8px 18px rgba(21, 128, 61, .26); transition: background-color .15s ease; }
-    .exo-cta:hover { background: var(--cta-dark); }
-    .exo-skip { display: inline-block; margin-top: 12px; font-size: 12.5px; color: #aab0b6; background: none; border: 0; cursor: pointer; text-decoration: underline; }
-    @media (prefers-reduced-motion: reduce) { .exo-modal { animation: none; } }
-  </style>
 
-  <style>
-    /* ===== „Personalisierte Formel“ Quiz — Back-Redirect Takeover (injected via JS) ===== */
-    .ljq-overlay { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; background: #fff; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    .ljq-overlay.is-open { display: flex; }
-    .ljq-bar { position: sticky; top: 0; display: flex; align-items: center; gap: 13px; padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--line); z-index: 2; }
-    .ljq-bar img { height: 24px; width: auto; display: block; }
-    .ljq-track { flex: 1; height: 6px; border-radius: 999px; background: #e9edf3; overflow: hidden; }
-    .ljq-fill { display: block; height: 100%; width: 0; background: var(--cta); border-radius: 999px; transition: width .45s cubic-bezier(.4, 0, .2, 1); }
-    .ljq-close { background: none; border: 0; font-size: 25px; line-height: 1; color: #aab0b6; cursor: pointer; padding: 2px 4px; }
-    .ljq-stage { flex: 1 0 auto; width: 100%; max-width: 540px; margin: 0 auto; padding: 28px 20px 44px; }
-    .ljq-step { animation: ljq-in .28s ease-out; }
-    @keyframes ljq-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-    .ljq-eyebrow { display: block; text-align: center; font-weight: 800; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--cta); margin-bottom: 10px; }
-    .ljq-q { font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.28; color: var(--ink); text-align: center; margin: 0 0 22px; }
-    .ljq-opts { display: flex; flex-direction: column; gap: 11px; }
-    .ljq-opt { display: flex; align-items: center; gap: 14px; text-align: left; width: 100%; background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px; font-size: 16px; font-weight: 600; color: var(--ink); cursor: pointer; transition: border-color .15s, box-shadow .15s, background-color .15s, transform .08s; }
-    .ljq-opt:hover { border-color: var(--cta); box-shadow: 0 6px 18px rgba(21, 128, 61, .12); }
-    .ljq-opt:active { transform: scale(.99); }
-    .ljq-opt.is-sel { border-color: var(--cta); background: #f3f9f4; }
-    .ljq-ico { flex: 0 0 auto; font-size: 22px; width: 28px; text-align: center; }
-    /* analyse / loading */
-    .ljq-load { text-align: center; padding: 54px 10px 30px; }
-    .ljq-spin { width: 54px; height: 54px; border-radius: 50%; border: 5px solid #e9edf3; border-top-color: var(--cta); margin: 0 auto 22px; animation: ljq-rot .9s linear infinite; }
-    @keyframes ljq-rot { to { transform: rotate(360deg); } }
-    .ljq-load h3 { font-size: 19px; color: var(--ink); margin: 0 0 8px; }
-    .ljq-load p { font-size: 14px; color: var(--muted); margin: 0; min-height: 20px; transition: opacity .25s; }
-    /* result */
-    .ljq-res { text-align: center; }
-    .ljq-res-badge { display: inline-block; background: var(--cta); color: #fff; font-weight: 800; font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; margin-bottom: 14px; }
-    .ljq-res h2 { font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 23px; line-height: 1.22; color: var(--ink); margin: 0 0 6px; }
-    .ljq-res .ljq-sub { font-size: 14.5px; color: var(--muted); line-height: 1.5; margin: 0 0 18px; }
-    .ljq-res-card { border: 1.5px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 14px 34px rgba(8, 11, 16, .10); text-align: left; }
-    .ljq-res-card > img { display: block; width: 100%; height: auto; }
-    .ljq-res-body { padding: 18px 18px 20px; }
-    .ljq-kit { font-weight: 800; font-size: 20px; color: var(--brand); margin: 0 0 6px; }
-    .ljq-kit-p { font-size: 14px; line-height: 1.55; color: var(--muted); margin: 0; }
-    .ljq-chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin: 16px 0 2px; }
-    .ljq-chip { font-size: 12.5px; font-weight: 700; color: var(--brand); background: #eef2f8; border-radius: 999px; padding: 5px 12px; }
-    .ljq-cta { display: block; background: #15803d !important; color: #fff !important; font-weight: 800; font-size: 17px; text-decoration: none; text-align: center; padding: 16px; border-radius: 13px; margin: 18px 0 10px; box-shadow: 0 10px 22px rgba(21, 128, 61, .28); transition: background-color .15s ease; }
-    .ljq-cta:hover { background: #126a32 !important; }
-    .ljq-guarantee { display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 12.5px; color: var(--muted); margin: 0; }
-    .ljq-skip { display: inline-block; margin-top: 18px; font-size: 12.5px; color: #aab0b6; background: none; border: 0; cursor: pointer; text-decoration: underline; }
-    @media (max-width: 480px) { .ljq-q { font-size: 20px; } .ljq-res h2 { font-size: 21px; } .ljq-opt { font-size: 15px; padding: 15px 16px; } }
-    @media (prefers-reduced-motion: reduce) { .ljq-step, .ljq-spin { animation: none; } .ljq-fill { transition: none; } }
   </style>
 </head>
 
@@ -1583,7 +1384,10 @@
       <!-- ===== Continuous-scroll verified reviews (premium social proof) ===== -->
       <section class="reviews esconder" aria-label="Kundenbewertungen">
         <div class="reviews__head">
-          <div class="reviews__stars" aria-hidden="true">★★★★★</div>
+          <div class="reviews__rating">
+            <div class="reviews__stars" aria-hidden="true">★★★★★</div>
+            <img class="reviews__ts" src="images/seal-trustedshops.webp" alt="Trusted Shops — geprüfter Käuferschutz" width="160" height="160" loading="lazy" decoding="async">
+          </div>
           <p class="reviews__score"><strong>4.8</strong>/5 · <span>12,418 verifizierte Bewertungen</span></p>
           <p class="reviews__sub">Echte Ergebnisse, in eigenen Worten</p>
           <p class="reviews__trustline">Alle Bewertungen von <b>verifizierten Käufern</b> &middot; nach Lieferung erfasst</p>
@@ -1801,7 +1605,6 @@
           </div>
         </div>
         <div class="trust__secure">
-          <img class="trust__tsbadge" src="images/seal-trustedshops.webp" alt="Trusted Shops — geprüfter Käuferschutz" width="160" height="160" loading="lazy" decoding="async">
           <span class="trust__lock"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z"></path></svg> SSL-sicherer Checkout</span>
           <span class="trust__cards">
             <img src="images/payments.webp" alt="Visa, Mastercard, PayPal, Klarna, Apple Pay, Google Pay akzeptiert" width="505" height="48" loading="lazy" decoding="async">
@@ -2281,32 +2084,48 @@
         var EMO_MARK = ['❤️', '🥹', '💔', '😳', '😔', '😞', '🙏', '💕'];
         function hasEmo(t) { for (var i = 0; i < EMO_MARK.length; i++) { if (t.indexOf(EMO_MARK[i]) >= 0) return true; } return false; }
         function nextChat() { var m = CHAT[ci % CHAT.length]; ci++; return m; }
-        // ONE comment at a time, overlaid on the bottom of the VSL: fade-in, hold ~3.5s,
-        // fade-out, next. Compact: avatar + name + message + a small reaction count.
+        // TikTok-live-style feed: stacked comments slide up from the bottom, oldest
+        // fades out the top (mask). A local input lets the viewer post too (anonymous).
         var COV_REACT = ['❤️', '🔥', '👍'];
         function covReact() { return COV_REACT[Math.floor(Math.random() * COV_REACT.length)] + ' ' + rand(3, 47); }
-        function showChat(m) {
+        var GUEST = ['Zuschauer', 'Thomas', 'Stefan', 'Michael', 'Andreas', 'Markus', 'Jens', 'Frank', 'Dirk', 'Kai', 'Uwe', 'Ralf'];
+        function guestName() { return GUEST[Math.floor(Math.random() * GUEST.length)]; }
+        function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+        var covList = null;
+        if (chatEl) {
           chatEl.innerHTML =
-            '<div class="vsl-cov">' +
-              '<img class="vsl-cov__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">' +
-              '<div class="vsl-cov__b"><span class="vsl-cov__name">' + m.n + '</span> ' +
-              '<span class="vsl-cov__txt">' + m.t + '</span></div>' +
-              '<span class="vsl-cov__react">' + covReact() + '</span>' +
-            '</div>';
-          // force reflow so the fade-in transition runs on the freshly-set node
-          void chatEl.offsetWidth;
-          chatEl.classList.add('is-in');
-          if (!RM && hasEmo(m.t)) burst(rand(1, 3));
+            '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>' +
+            '<form class="vsl-cov-input" id="vslChatForm" autocomplete="off">' +
+              '<input type="text" id="vslChatInput" maxlength="140" placeholder="Kommentar schreiben…" aria-label="Kommentar schreiben">' +
+              '<button class="vsl-cov-send" type="submit" aria-label="Senden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>' +
+            '</form>';
+          covList = $('#vslChatList');
         }
-        (function cycleChat() {
-          if (!chatEl) return;
-          showChat(nextChat());
-          var hold = RM ? 4000 : rand(3200, 4200);
-          setTimeout(function () {
-            chatEl.classList.remove('is-in');           // fade out
-            setTimeout(cycleChat, RM ? 250 : 520);      // next after fade-out
-          }, hold);
-        })();
+        function addComment(m, mine) {
+          if (!covList) return;
+          var row = document.createElement('div');
+          row.className = 'vsl-cov';
+          row.innerHTML =
+            '<img class="vsl-cov__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">' +
+            '<div class="vsl-cov__b"><span class="vsl-cov__name">' + esc(m.n) + '</span> ' +
+            '<span class="vsl-cov__txt">' + esc(m.t) + '</span></div>' +
+            '<span class="vsl-cov__react">' + covReact() + '</span>';
+          covList.appendChild(row);
+          while (covList.childElementCount > 5) covList.removeChild(covList.firstChild);
+          if (!RM && (mine || hasEmo(m.t))) burst(rand(1, 3));
+        }
+        if (covList) {
+          [150, 950, 1750].forEach(function (d) { setTimeout(function () { addComment(nextChat()); }, d); });
+          (function loopChat() { setTimeout(function () { addComment(nextChat()); loopChat(); }, rand(2600, 4200)); })();
+          var covForm = $('#vslChatForm'), covInput = $('#vslChatInput');
+          if (covForm) covForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var v = (covInput.value || '').trim();
+            if (!v) return;
+            addComment({ n: guestName(), t: v }, true);
+            covInput.value = '';
+          });
+        }
 
         function showTyping(person, cb) {
           if (!list || RM) { cb(person); return; }
@@ -2397,9 +2216,7 @@
         // Place the TOP of the (tall, vertical) player just below the sticky header,
         // keeping a sliver of the headline above and the play button comfortably in reach.
         // Centering a vertical video would bury the headline and push the frame too far.
-        var header = document.querySelector('.cbs-header');
-        var hh = header ? Math.round(header.getBoundingClientRect().height) : 0;
-        var y = Math.max(0, window.pageYOffset + r.top - hh - 12);
+        var y = Math.max(0, window.pageYOffset + r.top - 12);   // no sticky header to offset
         try { window.scrollTo({ top: y, behavior: 'smooth' }); }
         catch (e) { window.scrollTo(0, y); }
       }
@@ -2417,173 +2234,7 @@
 
 
 
-  <script>
-    /* ============================================================
-       „Personalisierte Formel“ — Back-Redirect Quiz (post-DTC).
-       Self-contained full-screen takeover, injected via JS. Triggered by the
-       exit/back handler below ONLY after the offer is revealed; abandoners get a
-       short, premium ARD-styled assessment aligned to Dr. Adlers Protokoll
-       (Hafer/Ingwer/Berberin → GLP-1/GIP, Stoffwechsel) that ends in a personal
-       3- or 6-Monats-Kur recommendation + reservierter Vorzugspreis + checkout.
-       Exposes window.__ljQuiz.open(). Does not touch the page layout/structure.
-       ============================================================ */
-    (function () {
-      'use strict';
-      var CHECKOUT = {
-        3: 'https://forcevital.site/ck/checkout-3.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5=',
-        6: 'https://forcevital.site/ck/checkout-6.html?cid={clickid}&aff=ICARVSGROUP&subid5=&sid5='
-      };
-      var RESULT_IMG = ['images/result-2.webp', 'images/result-1.webp', 'images/result-4.webp'];
-
-      // Each option carries a `score` for "needs the longer protocol" (higher → 6-Monats-Kur).
-      var QUESTIONS = [
-        { key: 'zone', q: 'Wo stört Sie Ihr Gewicht am meisten?', opts: [
-          { ico: '🎯', label: 'Am Bauch', chip: 'Bauchfett', score: 1 },
-          { ico: '🍑', label: 'Hüften &amp; Oberschenkel', chip: 'Hüften', score: 1 },
-          { ico: '💪', label: 'Arme &amp; Rücken', chip: 'Arme &amp; Rücken', score: 0 },
-          { ico: '✨', label: 'Am ganzen Körper', chip: 'Ganzkörper', score: 2 }
-        ]},
-        { key: 'amount', q: 'Wie viel möchten Sie idealerweise abnehmen?', opts: [
-          { ico: '🌱', label: 'Bis 7 kg', chip: 'bis 7 kg', score: 0 },
-          { ico: '⚖️', label: '7 – 15 kg', chip: '7–15 kg', score: 1 },
-          { ico: '🔥', label: '15 – 25 kg', chip: '15–25 kg', score: 2 },
-          { ico: '🚀', label: 'Mehr als 25 kg', chip: '25 kg+', score: 3 }
-        ]},
-        { key: 'block', q: 'Was bremst Sie bisher am meisten aus?', opts: [
-          { ico: '🍫', label: 'Heißhunger am Nachmittag', chip: 'Heißhunger', score: 1 },
-          { ico: '🐌', label: 'Ein langsamer Stoffwechsel', chip: 'Stoffwechsel', score: 1 },
-          { ico: '🎈', label: 'Ständiges Blähgefühl', chip: 'Blähbauch', score: 1 },
-          { ico: '🔄', label: 'Der Jo-Jo-Effekt nach jeder Diät', chip: 'Jo-Jo-Effekt', score: 2 }
-        ]},
-        { key: 'age', q: 'In welcher Lebensphase befinden Sie sich?', opts: [
-          { ico: '🙂', label: '25 – 39 Jahre', chip: '25–39 J.', score: 0 },
-          { ico: '🌸', label: '40 – 54 Jahre', chip: '40–54 J.', score: 1 },
-          { ico: '🌼', label: '55 – 64 Jahre', chip: '55–64 J.', score: 2 },
-          { ico: '🌷', label: '65 Jahre und älter', chip: '65+ J.', score: 2 }
-        ]},
-        { key: 'goal', q: 'Was ist Ihnen bei Ihrem Ergebnis am wichtigsten?', opts: [
-          { ico: '🌿', label: 'Eine natürliche, sanfte Methode', chip: 'natürlich', score: 2 },
-          { ico: '📈', label: 'Stetige, dauerhafte Ergebnisse', chip: 'dauerhaft', score: 1 },
-          { ico: '⚡', label: 'Möglichst schnell sichtbar', chip: 'schnell', score: 0 }
-        ]}
-      ];
-
-      var KEY = 'exoShown';
-      var el = null, idx = 0, answers = [], score = 0;
-
-      function build() {
-        if (el) return;
-        el = document.createElement('div');
-        el.className = 'ljq-overlay';
-        el.setAttribute('role', 'dialog');
-        el.setAttribute('aria-modal', 'true');
-        el.setAttribute('aria-label', 'Personalisierte Formel');
-        el.innerHTML =
-          '<div class="ljq-bar">' +
-            '<span class="ljq-track"><span class="ljq-fill" id="ljqFill"></span></span>' +
-            '<button class="ljq-close" type="button" aria-label="Schließen">&times;</button>' +
-          '</div>' +
-          '<div class="ljq-stage" id="ljqStage"></div>';
-        document.body.appendChild(el);
-        el.querySelector('.ljq-close').addEventListener('click', close);
-      }
-      function setFill(pct) {
-        var f = document.getElementById('ljqFill'); if (f) f.style.width = pct + '%';
-      }
-      function renderQuestion() {
-        var Q = QUESTIONS[idx];
-        var html = '<div class="ljq-step">' +
-          '<span class="ljq-eyebrow">Schritt ' + (idx + 1) + ' von ' + QUESTIONS.length + '</span>' +
-          '<h2 class="ljq-q">' + Q.q + '</h2>' +
-          '<div class="ljq-opts">';
-        Q.opts.forEach(function (o, i) {
-          html += '<button class="ljq-opt" type="button" data-i="' + i + '">' +
-            '<span class="ljq-ico">' + o.ico + '</span><span>' + o.label + '</span></button>';
-        });
-        html += '</div></div>';
-        var stage = document.getElementById('ljqStage');
-        stage.innerHTML = html;
-        stage.scrollTop = 0;
-        setFill(Math.round((idx) / QUESTIONS.length * 100));
-        Array.prototype.forEach.call(stage.querySelectorAll('.ljq-opt'), function (btn) {
-          btn.addEventListener('click', function () {
-            var o = Q.opts[+btn.getAttribute('data-i')];
-            btn.classList.add('is-sel');
-            answers.push({ key: Q.key, chip: o.chip });
-            score += o.score;
-            setTimeout(next, 230);
-          });
-        });
-      }
-      function next() {
-        idx++;
-        if (idx < QUESTIONS.length) { renderQuestion(); }
-        else { renderLoading(); }
-      }
-      function renderLoading() {
-        setFill(100);
-        var msgs = ['Analysiere Ihre Antworten…', 'Gleiche mit Dr. Adlers Protokoll ab…', 'Stelle Ihre persönliche Kur zusammen…'];
-        var stage = document.getElementById('ljqStage');
-        stage.innerHTML = '<div class="ljq-step ljq-load"><div class="ljq-spin"></div>' +
-          '<h3>Ihre persönliche Formel wird erstellt</h3><p id="ljqMsg">' + msgs[0] + '</p></div>';
-        var i = 0, p = document.getElementById('ljqMsg');
-        var t = setInterval(function () {
-          i++; if (i >= msgs.length) { clearInterval(t); return; }
-          if (p) { p.style.opacity = 0; setTimeout(function () { p.textContent = msgs[i]; p.style.opacity = 1; }, 220); }
-        }, 1050);
-        setTimeout(renderResult, 3300);
-      }
-      function renderResult() {
-        var six = score >= 4;
-        var url = six ? CHECKOUT[6] : CHECKOUT[3];
-        var img = RESULT_IMG[Math.floor(Math.random() * RESULT_IMG.length)];
-        var kit = six ? 'Die 6-Monats-Kur' : 'Die 3-Monats-Kur';
-        var kitP = six
-          ? 'Damit die ruhenden L-Zellen in Ihrem Darm wieder ausreichend GLP-1 und GIP bilden, braucht Ihr Stoffwechsel Zeit. Die 6-Monats-Kur deckt den vollständigen Zyklus ab — für ein dauerhaftes Ergebnis ohne Jo-Jo-Effekt.'
-          : 'Ein idealer Einstieg, um Ihren Stoffwechsel anzustoßen und mit Hafer, Ingwer und Berberin die ersten sichtbaren Veränderungen zu erreichen.';
-        // chips from the visitor's own answers → feels truly personalised
-        var chips = '';
-        answers.forEach(function (a) { chips += '<span class="ljq-chip">' + a.chip + '</span>'; });
-        var stage = document.getElementById('ljqStage');
-        stage.innerHTML = '<div class="ljq-step ljq-res">' +
-          '<span class="ljq-res-badge">Ihr persönliches Ergebnis</span>' +
-          '<h2>Ihre Lipo&nbsp;Jaro-Formel steht fest</h2>' +
-          '<p class="ljq-sub">Auf Basis Ihrer Antworten empfehlen wir Ihnen:</p>' +
-          '<div class="ljq-chips">' + chips + '</div>' +
-          '<div class="ljq-res-card" style="margin-top:16px">' +
-            '<img src="' + img + '" width="760" height="700" loading="lazy" decoding="async" alt="Vorher / Nachher mit ForceVital">' +
-            '<div class="ljq-res-body">' +
-              '<p class="ljq-kit">' + kit + '</p>' +
-              '<p class="ljq-kit-p">' + kitP + '</p>' +
-            '</div>' +
-          '</div>' +
-          '<a class="ljq-cta" id="ljqCta" target="_self" rel="nofollow" href="' + url + '">' +
-            (six ? 'Meine 6-Monats-Kur sichern' : 'Meine 3-Monats-Kur sichern') + '</a>' +
-          '<p class="ljq-guarantee">🔒 Kostenloser Versand · 30 Tage Geld-zurück-Garantie</p>' +
-          '<button class="ljq-skip" type="button" id="ljqSkip">Nein danke, Seite verlassen</button>' +
-        '</div>';
-        stage.scrollTop = 0;
-        var cta = document.getElementById('ljqCta');
-        cta.addEventListener('click', function () {
-          if (window.__djSidSweep) { try { window.__djSidSweep(); } catch (x) {} }
-        });
-        document.getElementById('ljqSkip').addEventListener('click', leave);
-      }
-      function open() {
-        build();
-        idx = 0; answers = []; score = 0;
-        renderQuestion();
-        el.classList.add('is-open');
-        document.documentElement.style.overflow = 'hidden';
-      }
-      function close() {
-        if (el) { el.classList.remove('is-open'); }
-        document.documentElement.style.overflow = '';
-      }
-      function leave() { close(); try { history.back(); } catch (e) {} }
-      window.__ljQuiz = { open: open };
-    })();
-  </script>
+<!-- Personalisierte-Formel quiz removed (dead: never triggered) -->
 
   <!-- Exit / back-button warning removed: the back-button trap + exit-intent popup read as malware/error. No exit interception. -->
 </body>
