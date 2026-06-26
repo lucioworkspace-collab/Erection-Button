@@ -788,6 +788,19 @@
     .dtc-usps li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.3; font-weight: 700; color: #1f2937; background: #f6f8fb; border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
     .dtc-usps li svg { width: 19px; height: 19px; color: var(--cta); flex: 0 0 auto; }
 
+    /* Authority logo carousel (marquee) — sits just below the VSL */
+    .auth { max-width: 820px; margin: 16px auto 4px; padding: 0 12px; }
+    .auth__label { text-align: center; font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin: 0 0 11px; font-family: 'Open Sans', Arial, sans-serif; }
+    .auth__vp { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+    .auth__track { display: flex; align-items: center; width: max-content; animation: auth-scroll 34s linear infinite; }
+    .auth__track img { height: 32px; width: auto; flex: 0 0 auto; margin-right: 46px; opacity: .62; filter: grayscale(100%); }
+    @keyframes auth-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (hover: hover) { .auth__vp:hover .auth__track { animation-play-state: paused; } }
+    @media (prefers-reduced-motion: reduce) {
+      .auth__track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; }
+      .auth__track img { margin: 8px 18px; }
+    }
+
     .label-facts { max-width: 720px; margin: 24px auto 4px; padding: 0 12px; text-align: center; }
     .label-facts h3 { font-size: 15px; font-weight: 800; color: #1f2937; margin: 0 0 4px; font-family: 'Open Sans', Arial, sans-serif; }
     .label-facts p { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
@@ -1402,6 +1415,32 @@
           </div>
           <div class="vsl-lc__list" id="vslChat" aria-live="polite"></div>
         </aside>
+
+        <!-- Authority logo carousel — research-institution credibility, just below the VSL -->
+        <section class="auth" aria-label="Forschung führender Institutionen">
+          <p class="auth__label">Gestützt auf Forschung führender Institutionen weltweit</p>
+          <div class="auth__vp">
+            <div class="auth__track">
+              <img src="images/logo-harvard.webp" alt="Harvard University" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-oxford.webp" alt="University of Oxford" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-stanford.webp" alt="Stanford University" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-cambridge.webp" alt="University of Cambridge" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-charite.webp" alt="Charité — Universitätsmedizin Berlin" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-wuerzburg.webp" alt="Universität Würzburg" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-utrecht.webp" alt="Utrecht University" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-lshtm.webp" alt="London School of Hygiene &amp; Tropical Medicine" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-harvard.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-oxford.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-stanford.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-cambridge.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-charite.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-wuerzburg.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-utrecht.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-lshtm.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </section>
+
         <!-- Invisible "warm" sentinel: VTurb reveals it ~10 min before the pitch -->
         <div id="ljWarmGate" class="lj-warm" aria-hidden="true"></div>
         <script type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/13e4d193-3f66-46ab-8eb0-6e6da4bd133b/players/6a3a04211fa755ae788e8e00/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
