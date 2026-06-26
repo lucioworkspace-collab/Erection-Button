@@ -783,10 +783,12 @@
     .seals { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 18px; }
     .seals img { height: 72px; width: auto; }
 
-    /* DTC trust USPs — dark, high-contrast benefit panel (lives in the offer block only) */
-    .dtc-usps { list-style: none; max-width: 680px; margin: 18px auto 0; padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; border-radius: 16px; background: linear-gradient(135deg, #1b2128 0%, #21384e 100%); box-shadow: 0 14px 30px rgba(15, 23, 33, .18); font-family: 'Open Sans', Arial, sans-serif; }
-    .dtc-usps li { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 12px; background: rgba(255, 255, 255, .055); border: 1px solid rgba(255, 255, 255, .10); color: #e9eef4; font-size: 13px; font-weight: 700; line-height: 1.28; }
-    .dtc-usps li svg, .dtc-usps li img { width: 28px; height: 28px; color: #8fc0e8; flex: 0 0 auto; object-fit: contain; }
+    /* DTC trust USPs — minimal: black icon on top, bold black label below (offer block only) */
+    .dtc-usps { list-style: none; max-width: 640px; margin: 22px auto 6px; padding: 0 8px; display: grid; grid-template-columns: repeat(3, 1fr); font-family: 'Open Sans', Arial, sans-serif; }
+    .dtc-usps li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 11px; padding: 4px 14px; color: #111; font-size: 13px; font-weight: 700; line-height: 1.3; }
+    .dtc-usps li + li { border-left: 1px solid var(--line); }
+    .dtc-usps li img { width: 34px; height: 34px; flex: 0 0 auto; object-fit: contain; }
+    @media (max-width: 520px) { .dtc-usps li { font-size: 11.5px; padding: 4px 7px; gap: 9px; } .dtc-usps li img { width: 30px; height: 30px; } }
 
     /* Authority logo carousel (marquee) — sits just below the VSL */
     .auth { max-width: 820px; margin: 16px auto 4px; padding: 0 12px; }
@@ -1834,9 +1836,9 @@
 
       <!-- DTC trust USPs (offer block only) -->
       <ul class="dtc-usps esconder">
-        <li><img src="images/icon-incognito.webp" alt="" aria-hidden="true" width="28" height="28" loading="lazy" decoding="async"> 100 % unkomplizierte &amp; diskrete Abwicklung.</li>
-        <li><img src="images/icon-verify.webp" alt="" aria-hidden="true" width="28" height="28" loading="lazy" decoding="async"> Top-Qualität &amp; Service zu fairen Preisen.</li>
-        <li><img src="images/icon-truck.webp" alt="" aria-hidden="true" width="28" height="28" loading="lazy" decoding="async"> Blitzschnelle &amp; kostenlose Lieferung.</li>
+        <li><img src="images/ic-discreet.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> 100 % unkomplizierte &amp; diskrete Abwicklung.</li>
+        <li><img src="images/ic-quality.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> Top-Qualität &amp; Service zu fairen Preisen.</li>
+        <li><img src="images/ic-delivery.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> Blitzschnelle &amp; kostenlose Lieferung.</li>
       </ul>
 
       <!-- DTC trust band: 30-day guarantee + secure checkout (affiliate-side reassurance) -->
