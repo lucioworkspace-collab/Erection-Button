@@ -962,61 +962,55 @@
     }
 
     /* ===== Live-Chat panel below the player (prominent, premium, non-obstructive) ===== */
-    /* Live-chat overlay — TikTok-live-style feed over the bottom third of the VSL:
-       3-4 stacked comments (oldest top/faded via mask), slide-up, + a comment input. */
+    /* Live-chat overlay — a quiet "whisper" over the bottom ~15% of the VSL: at most 2
+       comments, near-transparent, gentle fade in/out. Never competes with the video. */
     .vsl-chat-ov {
       position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 40%;
+      left: 0; right: 0; bottom: 8px;
+      max-height: 18%;
       z-index: 6;
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 8px 8px;
+      padding: 0 8px;
+      overflow: hidden;
       pointer-events: none;
     }
-    .vsl-cov-list {
-      display: flex; flex-direction: column; justify-content: flex-end;
-      gap: 6px; overflow: hidden; flex: 1 1 auto; min-height: 0;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 42%, #000 100%);
-      mask-image: linear-gradient(to bottom, transparent 0, #000 42%, #000 100%);
-    }
+    .vsl-cov-list { display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; }
     .vsl-cov {
-      display: flex; align-items: center; gap: 8px;
-      padding: 6px 9px;
-      border-radius: 13px;
-      background: rgba(12, 15, 20, .42);
-      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      display: flex; align-items: center; gap: 7px;
+      padding: 5px 9px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, .3);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
       color: #fff;
       font-family: 'Open Sans', Arial, sans-serif;
-      animation: cov-up .45s cubic-bezier(.2, .8, .2, 1);
+      opacity: 0;
+      transition: opacity .5s ease;
     }
-    @keyframes cov-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    .vsl-cov__av { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+    .vsl-cov.is-in { opacity: 1; }
+    .vsl-cov__av { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
     .vsl-cov__b { min-width: 0; font-size: 12px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .vsl-cov__name { font-weight: 800; margin-right: 5px; }
-    .vsl-cov__txt { font-weight: 500; opacity: .96; }
-    .vsl-cov__react { margin-left: auto; flex: 0 0 auto; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, .16); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
-    .vsl-cov-input {
-      display: flex; align-items: center; gap: 7px; margin-top: 7px;
-      pointer-events: auto;
-      background: rgba(12, 15, 20, .5);
-      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-      border-radius: 999px; padding: 4px 4px 4px 14px;
-    }
-    .vsl-cov-input input {
-      flex: 1 1 auto; min-width: 0; background: transparent; border: 0; outline: none;
-      color: #fff; font-size: 12.5px; font-family: 'Open Sans', Arial, sans-serif;
-    }
-    .vsl-cov-input input::placeholder { color: rgba(255, 255, 255, .68); }
-    .vsl-cov-send {
-      flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
-      background: rgba(255, 255, 255, .18); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .vsl-cov-send svg { width: 16px; height: 16px; }
+    .vsl-cov__name { font-weight: 700; margin-right: 5px; }
+    .vsl-cov__txt { font-weight: 400; opacity: .95; }
+    .vsl-cov__react { margin-left: auto; flex: 0 0 auto; font-size: 10.5px; font-weight: 600; background: rgba(255, 255, 255, .14); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
     body.vsl-mini .vsl-chat-ov { display: none; }
-    @media (prefers-reduced-motion: reduce) {
-      .vsl-cov { animation: none; }
+
+    /* Comment input — separate block in normal flow, directly below the player */
+    .vsl-chat-input {
+      display: flex; align-items: center; gap: 8px;
+      width: 100%; max-width: 400px; margin: 10px auto 0;
+      padding: 4px 4px 4px 14px;
+      background: #fff; border: 1px solid var(--line); border-radius: 999px;
     }
+    .vsl-chat-input input {
+      flex: 1 1 auto; min-width: 0; background: transparent; border: 0; outline: none;
+      color: var(--ink); font-size: 13px; font-family: 'Open Sans', Arial, sans-serif;
+    }
+    .vsl-chat-input input::placeholder { color: #9aa3b0; }
+    .vsl-chat-input button {
+      flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; border: 0; cursor: pointer;
+      background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center;
+    }
+    .vsl-chat-input button svg { width: 16px; height: 16px; }
 
     @keyframes float-up {
       0% { transform: translateY(0) scale(.5) rotate(0deg); opacity: 0; }
@@ -1161,9 +1155,15 @@
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
           <div class="reactions" id="reactions" aria-hidden="true"></div>
-          <!-- Live-chat overlay: one comment at a time over the bottom of the VSL (IG/TikTok live style) -->
+          <!-- Live-chat overlay: subtle comments over the bottom ~15% of the VSL (whisper, not a layer) -->
           <div class="vsl-chat-ov" id="vslChat" aria-live="polite" aria-label="Live-Chat"></div>
         </div>
+
+        <!-- Comment input OUTSIDE the player, in normal flow (so the mobile keyboard can't push the VSL out of frame) -->
+        <form class="vsl-chat-input" id="vslChatForm" autocomplete="off">
+          <input type="text" id="vslChatInput" maxlength="140" placeholder="Kommentar schreiben…" aria-label="Kommentar schreiben">
+          <button type="submit" aria-label="Senden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+        </form>
 
         <!-- Authority logo carousel — research-institution credibility, just below the VSL -->
         <section class="auth" aria-label="Forschung führender Institutionen">
@@ -2084,25 +2084,27 @@
         var EMO_MARK = ['❤️', '🥹', '💔', '😳', '😔', '😞', '🙏', '💕'];
         function hasEmo(t) { for (var i = 0; i < EMO_MARK.length; i++) { if (t.indexOf(EMO_MARK[i]) >= 0) return true; } return false; }
         function nextChat() { var m = CHAT[ci % CHAT.length]; ci++; return m; }
-        // TikTok-live-style feed: stacked comments slide up from the bottom, oldest
-        // fades out the top (mask). A local input lets the viewer post too (anonymous).
+        // Quiet "whisper" overlay: at most 2 comments, fade-in .5s / stay 3s / fade-out .5s.
+        // Pauses while the player is scrolled out of view or in fullscreen (focus + perf).
+        // The input lives OUTSIDE the player (normal flow) so the mobile keyboard can't
+        // push the VSL out of frame.
         var COV_REACT = ['❤️', '🔥', '👍'];
         function covReact() { return COV_REACT[Math.floor(Math.random() * COV_REACT.length)] + ' ' + rand(3, 47); }
         var GUEST = ['Zuschauer', 'Thomas', 'Stefan', 'Michael', 'Andreas', 'Markus', 'Jens', 'Frank', 'Dirk', 'Kai', 'Uwe', 'Ralf'];
         function guestName() { return GUEST[Math.floor(Math.random() * GUEST.length)]; }
         function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
         var covList = null;
-        if (chatEl) {
-          chatEl.innerHTML =
-            '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>' +
-            '<form class="vsl-cov-input" id="vslChatForm" autocomplete="off">' +
-              '<input type="text" id="vslChatInput" maxlength="140" placeholder="Kommentar schreiben…" aria-label="Kommentar schreiben">' +
-              '<button class="vsl-cov-send" type="submit" aria-label="Senden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>' +
-            '</form>';
-          covList = $('#vslChatList');
+        if (chatEl) { chatEl.innerHTML = '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>'; covList = $('#vslChatList'); }
+        var stageEl = document.querySelector('.vsl-stage');
+        var stageVisible = true;
+        if (stageEl && 'IntersectionObserver' in window) {
+          new IntersectionObserver(function (es) { stageVisible = es[0].isIntersecting; }, { threshold: 0.25 }).observe(stageEl);
         }
+        function isFs() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+        function chatActive() { return stageVisible && !isFs(); }
         function addComment(m, mine) {
           if (!covList) return;
+          if (!mine && !chatActive()) return;          // stop rendering when out of view / fullscreen
           var row = document.createElement('div');
           row.className = 'vsl-cov';
           row.innerHTML =
@@ -2111,19 +2113,32 @@
             '<span class="vsl-cov__txt">' + esc(m.t) + '</span></div>' +
             '<span class="vsl-cov__react">' + covReact() + '</span>';
           covList.appendChild(row);
-          while (covList.childElementCount > 5) covList.removeChild(covList.firstChild);
+          while (covList.childElementCount > 2) covList.removeChild(covList.firstChild);   // max 2 visible
+          void row.offsetWidth;
+          row.classList.add('is-in');                  // fade in (.5s)
           if (!RM && (mine || hasEmo(m.t))) burst(rand(1, 3));
+          setTimeout(function () {                      // after 3s: fade out (.5s) then remove
+            row.classList.remove('is-in');
+            setTimeout(function () { if (row.parentNode) row.parentNode.removeChild(row); }, 550);
+          }, 3000);
         }
         if (covList) {
-          [150, 950, 1750].forEach(function (d) { setTimeout(function () { addComment(nextChat()); }, d); });
-          (function loopChat() { setTimeout(function () { addComment(nextChat()); loopChat(); }, rand(2600, 4200)); })();
-          var covForm = $('#vslChatForm'), covInput = $('#vslChatInput');
-          if (covForm) covForm.addEventListener('submit', function (e) {
+          [200, 1200].forEach(function (d) { setTimeout(function () { addComment(nextChat()); }, d); });
+          (function loopChat() { setTimeout(function () { addComment(nextChat()); loopChat(); }, rand(3000, 4500)); })();
+        }
+        // Comment input (separate block below the player, in normal flow)
+        var covForm = $('#vslChatForm'), covInput = $('#vslChatInput');
+        if (covForm && covInput) {
+          covForm.addEventListener('submit', function (e) {
             e.preventDefault();
             var v = (covInput.value || '').trim();
             if (!v) return;
             addComment({ n: guestName(), t: v }, true);
             covInput.value = '';
+          });
+          // keep the VSL in frame when the mobile keyboard opens
+          covInput.addEventListener('focus', function () {
+            setTimeout(function () { if (stageEl && stageEl.scrollIntoView) stageEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 350);
           });
         }
 
