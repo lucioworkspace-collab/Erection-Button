@@ -1834,12 +1834,15 @@
         </div>
       </div>
 
-      <!-- DTC trust USPs (offer block only) -->
-      <ul class="dtc-usps esconder">
-        <li><img src="images/ic-discreet.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> 100 % unkomplizierte &amp; diskrete Abwicklung.</li>
-        <li><img src="images/ic-quality.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> Top-Qualität &amp; Service zu fairen Preisen.</li>
-        <li><img src="images/ic-delivery.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> Blitzschnelle &amp; kostenlose Lieferung.</li>
-      </ul>
+      <!-- DTC trust USPs — wrapped in .esconder so the gate works (the ul sets display:grid,
+           which would otherwise override .esconder's display:none). Reveals with the pitch/DTC. -->
+      <div class="esconder">
+        <ul class="dtc-usps">
+          <li><img src="images/ic-discreet.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> 100 % unkomplizierte &amp; diskrete Abwicklung.</li>
+          <li><img src="images/ic-quality.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> Top-Qualität &amp; Service zu fairen Preisen.</li>
+          <li><img src="images/ic-delivery.webp" alt="" aria-hidden="true" width="34" height="34" loading="lazy" decoding="async"> Blitzschnelle &amp; kostenlose Lieferung.</li>
+        </ul>
+      </div>
 
       <!-- DTC trust band: 30-day guarantee + secure checkout (affiliate-side reassurance) -->
       <div class="trust esconder">
