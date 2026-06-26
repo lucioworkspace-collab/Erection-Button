@@ -1266,10 +1266,8 @@
   <main id="container">
     <!-- Header -->
     <header class="cbs-header">
-      <!-- Neutral editorial masthead (ARD logo removed; product name kept off the top) -->
-      <a href="#" class="cbs-logo" aria-label="Gesundheit Heute">
-        <span class="cbs-wordmark">Gesundheit Heute</span>
-      </a>
+      <!-- Masthead intentionally empty (no logo, no name on top) — holds the grid column so the menu stays right -->
+      <a href="#" class="cbs-logo" aria-label="Startseite"></a>
 
       <!-- Menü -->
       <button type="button" class="cbs-icon cbs-icon--right" aria-label="Menü">
@@ -2509,7 +2507,6 @@
         el.setAttribute('aria-label', 'Personalisierte Formel');
         el.innerHTML =
           '<div class="ljq-bar">' +
-            '<span class="ljq-brand">Gesundheit Heute</span>' +
             '<span class="ljq-track"><span class="ljq-fill" id="ljqFill"></span></span>' +
             '<button class="ljq-close" type="button" aria-label="Schließen">&times;</button>' +
           '</div>' +
