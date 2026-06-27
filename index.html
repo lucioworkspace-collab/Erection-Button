@@ -1762,13 +1762,22 @@
           // Shrink the player into a still-playing sticky mini, so the closing pitch keeps
           // running in view while the offer is shown (the node is NOT moved → no reload).
           document.body.classList.add('vsl-mini');
-          // Bring the offer into view — but only if it isn't already (never yank an engaged
-          // visitor) and honour reduced-motion (instant instead of animated).
-          var top = document.querySelector('.cbs-deals') || document.getElementById('kit6') || offerEl;
-          if (top && !isMostlyInView(top, 0.5)) {
-            try { top.scrollIntoView({ behavior: RMScroll ? 'auto' : 'smooth', block: 'start' }); }
-            catch (e) { top.scrollIntoView(); }
-          }
+          // Bring the offer to the top. Defer two frames so the vsl-mini reflow (the player
+          // leaves normal flow → content shifts up) settles first; otherwise the target is
+          // measured against a stale layout and the scroll lands short (or is skipped because
+          // the freed space makes the header look "in view"). Skip only if the header is
+          // already at the top (don't yank a visitor already there). Honour reduced-motion.
+          var bringOfferIntoView = function () {
+            var t0 = document.querySelector('.cbs-deals') || document.getElementById('kit6') || offerEl;
+            if (!t0) return;
+            var t = t0.getBoundingClientRect().top;
+            if (t > 80 || t < -40) {
+              try { t0.scrollIntoView({ behavior: RMScroll ? 'auto' : 'smooth', block: 'start' }); }
+              catch (e) { t0.scrollIntoView(); }
+            }
+          };
+          if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(bringOfferIntoView); });
+          else setTimeout(bringOfferIntoView, 50);
         }
         window.CBSLive = window.CBSLive || {};
         window.CBSLive.onOfferReveal = function () {};  // real trigger is the visibility watcher below
@@ -2182,7 +2191,10 @@
         catch (e) { window.scrollTo(0, y); }
       }
 
-      function go() { if (fired) return; fired = true; setTimeout(nudge, 1200); }
+      // Fire once after load; a second corrective pass 700ms later re-aligns if async layout
+      // (fonts, images, the player defining itself) drifted the target. Each pass bails if the
+      // player is already mostly in view or the visitor has interacted (cancelled).
+      function go() { if (fired) return; fired = true; setTimeout(function () { nudge(); setTimeout(nudge, 700); }, 1200); }
       if (document.readyState === 'complete') go();
       else window.addEventListener('load', go);
       setTimeout(go, 2500);                          // fallback if 3rd-party scripts delay load
