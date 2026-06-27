@@ -1061,17 +1061,17 @@
             // Map each TikTok Ad ID AND its Ad Group ID -> angle, so the right headline
             // shows whether the tracker forwards __CID__ (ad) or __AID__ (ad group).
             var AID_MAP = {
-              '1869004771545234': 'ad01', '1869004771545218': 'ad01',  // AD01 (ad / adgroup)
-              '1869006242025874': 'ad02', '1869006242025858': 'ad02',  // AD02 (ad / adgroup)
-              '1869006242025906': 'ad03', '1869006242025890': 'ad03',  // AD03 (ad / adgroup)
-              '1869006242026514': 'ad04', '1869006242026498': 'ad04'   // AD04 (ad / adgroup)
+              '1869103624847489': 'ad01', '1869103624846385': 'ad01',  // AD01 (ad / adgroup)
+              '1869103624846369': 'ad02', '1869103624846353': 'ad02',  // AD02 (ad / adgroup)
+              '1869103624846337': 'ad03', '1869103624844337': 'ad03',  // AD03 (ad / adgroup)
+              '1869103624844321': 'ad04', '1869103624844305': 'ad04'   // AD04 (ad / adgroup)
             };
             try {
               var qs = new URLSearchParams(location.search);
               var k = (qs.get('hl') || '').toLowerCase();           // manual override wins
               if (!k) {
                 // TikTok's real Ad ID (__CID__) often arrives only inside utm_content
-                // (e.g. utm_content=AdName|1869004771545234). Collect every id-ish value
+                // (e.g. utm_content=AdName|1869103624847489). Collect every id-ish value
                 // — plain params AND the pieces around a "|" — then match the map, so it
                 // works whether the id lands clean or pipe-encoded.
                 var cands = [];
