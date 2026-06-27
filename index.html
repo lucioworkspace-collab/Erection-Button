@@ -374,29 +374,7 @@
       100% { transform: scale(2.6); opacity: 0; }
     }
 
-    .livebar {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      width: max-content;
-      max-width: 100%;
-      margin: 14px auto 6px;            /* sits just below the player */
-      padding: 9px 18px;
-      background: #f7f8fa;              /* subtle, flat card — not a button */
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      font-size: 13px;
-      color: #333;
-      font-family: 'Open Sans', Arial, sans-serif;
-      pointer-events: none;            /* decorative indicator — never steals taps from the player */
-    }
-
-    .livebar__label { font-weight: 800; color: #e0103a; letter-spacing: .08em; }
-    .livebar__count { color: #555; font-weight: 600; }
-    .livebar__count #liveViewers { color: #111; font-weight: 800; font-size: 14px; }
-    .livebar__faces { display: inline-flex; align-items: center; }
-    .livebar__faces img { width: 22px; height: 22px; border-radius: 9999px; object-fit: cover; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(8, 11, 16, .18); margin-left: -6px; }
-    .livebar__faces img:first-child { margin-left: 0; }
+    /* external .livebar dissolved — merged into the player-top live strip (.vsl-live) */
 
     /* ===== Scarcity widget ===== */
     /* Featured offer — premium 'official offer' seal, connected to the scarcity card */
@@ -911,31 +889,48 @@
     }
     body.vsl-mini.has-buybar .vsl-stage { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
     body.vsl-mini .vsl-stage vturb-smartplayer { border-radius: 12px; box-shadow: none; }
-    body.vsl-mini .vsl-badge { top: 5px; left: 5px; font-size: 9px; padding: 3px 7px; gap: 4px; }
+    body.vsl-mini .vsl-live { padding: 4px 5px; background: none; }
+    body.vsl-mini .vsl-live__viewers { display: none; }   /* mini player: keep only ● LIVE + timer */
+    body.vsl-mini .vsl-live__badge { font-size: 9px; padding: 3px 6px; gap: 4px; }
     @keyframes vsl-mini-in { from { opacity: 0; transform: translateY(12px) scale(.9); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) { body.vsl-mini .vsl-stage { animation: none; } }
 
-    .vsl-badge {
+    /* Merged native-live strip overlaid on the player top: ● LIVE + timer (left),
+       viewer faces + dynamic count (right). One cohesive bar — replaces both the old
+       .vsl-badge and the external .livebar. pointer-events:none on the strip AND every
+       child so 100% of taps pass through to the player (tap-to-play / tap-to-unmute). */
+    .vsl-live {
       position: absolute;
-      top: 8px;
-      left: 8px;
+      top: 0; left: 0; right: 0;
       z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, .62);
-      color: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
       font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .06em;
-      padding: 4px 9px;
-      border-radius: 6px;
+      color: #fff;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .45), rgba(0, 0, 0, 0));
       pointer-events: none;
     }
-
-    .vsl-badge .live-dot { background: #fff; }
-    .vsl-badge #vslClock { font-variant-numeric: tabular-nums; opacity: .9; font-weight: 700; }
+    .vsl-live * { pointer-events: none; }
+    .vsl-live__badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0, 0, 0, .42);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      padding: 4px 9px; border-radius: 6px;
+      font-size: 11px; font-weight: 800; letter-spacing: .06em;
+    }
+    .vsl-live__badge #vslClock { font-variant-numeric: tabular-nums; opacity: .9; font-weight: 700; letter-spacing: 0; }
+    .vsl-live__viewers {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0, 0, 0, .42);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      padding: 3px 10px 3px 6px; border-radius: 999px;
+      font-size: 11.5px;
+    }
+    .vsl-live__faces { display: inline-flex; align-items: center; }
+    .vsl-live__faces img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, .85); margin-left: -5px; }
+    .vsl-live__faces img:first-child { margin-left: 0; }
+    .vsl-live__count { font-weight: 800; font-variant-numeric: tabular-nums; }
 
     /* ===== Live-chat overlay — passive, synced to the VSL: comments stacked bottom-left
        over the video as subtle semi-transparent cards (avatar + name + message). Display
@@ -1129,26 +1124,24 @@
           <span>Tippen Sie auf das Video, um es <b>mit Ton</b> zu starten</span>
         </div>
         <div class="vsl-stage">
-          <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
+          <!-- Merged live strip (overlay, pointer-events:none): ● LIVE + timer (left), faces + viewer count (right) -->
+          <div class="vsl-live" aria-hidden="true">
+            <span class="vsl-live__badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></span>
+            <span class="vsl-live__viewers">
+              <span class="vsl-live__faces">
+                <img src="images/mann1.webp" width="120" height="120" alt="" loading="lazy">
+                <img src="images/mann2.webp" width="120" height="120" alt="" loading="lazy">
+                <img src="images/mann3.webp" width="120" height="120" alt="" loading="lazy">
+              </span>
+              <span class="vsl-live__count"><span id="liveViewers">1.247</span></span>
+            </span>
+          </div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
           <!-- Live-chat overlay: passive comments synced to the VSL, stacked bottom-left (display only) -->
           <div class="vsl-chat-ov" id="vslChat" aria-live="polite" aria-label="Live-Chat"></div>
           <!-- Floating reactions: passive, automatic — no interaction -->
           <div class="vsl-reacts-fx" id="vslReactsFx" aria-hidden="true"></div>
         </div>
-
-        <!-- Live presence strip — moved BELOW the player as deliberate social proof (was above, stealing taps from play) -->
-        <div class="livebar" aria-hidden="true">
-          <span class="live-dot"></span>
-          <span class="livebar__label">LIVE</span>
-          <span class="livebar__faces">
-            <img src="images/mann1.webp" width="120" height="120" alt="" loading="lazy">
-            <img src="images/mann2.webp" width="120" height="120" alt="" loading="lazy">
-            <img src="images/mann3.webp" width="120" height="120" alt="" loading="lazy">
-          </span>
-          <span class="livebar__count"><span id="liveViewers">1.247</span> sehen gerade zu</span>
-        </div>
-
 
         <!-- Invisible "warm" sentinel: VTurb reveals it ~10 min before the pitch -->
         <div id="ljWarmGate" class="lj-warm" aria-hidden="true"></div>
