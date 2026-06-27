@@ -891,7 +891,7 @@
     body.vsl-mini .vsl-stage vturb-smartplayer { border-radius: 12px; box-shadow: none; }
     body.vsl-mini .vsl-live { padding: 4px 5px; background: none; }
     body.vsl-mini .vsl-live__viewers { display: none; }   /* mini player: keep only ● LIVE + timer */
-    body.vsl-mini .vsl-live__badge { font-size: 9px; padding: 3px 6px; gap: 4px; }
+    body.vsl-mini .vsl-live__badge { height: auto; font-size: 9px; padding: 3px 6px; gap: 4px; }
     @keyframes vsl-mini-in { from { opacity: 0; transform: translateY(12px) scale(.9); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) { body.vsl-mini .vsl-stage { animation: none; } }
 
@@ -905,32 +905,30 @@
       z-index: 3;
       display: flex; align-items: center; justify-content: space-between;
       gap: 8px;
-      padding: 8px 10px;
+      padding: 11px 12px;               /* float ~11px from the top & sides — not glued to the frame */
       font-family: 'Open Sans', Arial, sans-serif;
       color: #fff;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, .45), rgba(0, 0, 0, 0));
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .40), rgba(0, 0, 0, 0));
       pointer-events: none;
     }
     .vsl-live * { pointer-events: none; }
-    .vsl-live__badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0, 0, 0, .42);
-      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
-      padding: 4px 9px; border-radius: 6px;
-      font-size: 11px; font-weight: 800; letter-spacing: .06em;
+    /* Both pills are a matched pair: identical height, bg opacity, radius and blur. */
+    .vsl-live__badge, .vsl-live__viewers {
+      display: inline-flex; align-items: center;
+      height: 23px; box-sizing: border-box;
+      background: rgba(0, 0, 0, .30);   /* lighter — lets the video breathe behind it */
+      -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+      border-radius: 999px;
+      font-size: 10.5px; font-weight: 800; letter-spacing: .04em;
     }
-    .vsl-live__badge #vslClock { font-variant-numeric: tabular-nums; opacity: .9; font-weight: 700; letter-spacing: 0; }
-    .vsl-live__viewers {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0, 0, 0, .42);
-      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
-      padding: 3px 10px 3px 6px; border-radius: 999px;
-      font-size: 11.5px;
-    }
+    .vsl-live__badge { gap: 5px; padding: 0 9px; }
+    .vsl-live__badge #vslClock { font-variant-numeric: tabular-nums; opacity: .92; font-weight: 700; letter-spacing: 0; }
+    .vsl-live__viewers { gap: 6px; padding: 0 9px 0 6px; }
+    .vsl-live__eye { width: 13px; height: 13px; flex: 0 0 auto; opacity: .9; }
     .vsl-live__faces { display: inline-flex; align-items: center; }
-    .vsl-live__faces img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, .85); margin-left: -5px; }
+    .vsl-live__faces img { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, .9); margin-left: -7px; }
     .vsl-live__faces img:first-child { margin-left: 0; }
-    .vsl-live__count { font-weight: 800; font-variant-numeric: tabular-nums; }
+    .vsl-live__count { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-variant-numeric: tabular-nums; }
 
     /* ===== Live-chat overlay — passive, synced to the VSL: comments stacked bottom-left
        over the video as subtle semi-transparent cards (avatar + name + message). Display
@@ -1133,7 +1131,7 @@
                 <img src="images/mann2.webp" width="120" height="120" alt="" loading="lazy">
                 <img src="images/mann3.webp" width="120" height="120" alt="" loading="lazy">
               </span>
-              <span class="vsl-live__count"><span id="liveViewers">1.247</span></span>
+              <span class="vsl-live__count"><svg class="vsl-live__eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span id="liveViewers">1.247</span></span>
             </span>
           </div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
