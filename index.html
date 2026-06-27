@@ -943,39 +943,50 @@
     .vsl-badge .live-dot { background: #fff; }
     .vsl-badge #vslClock { font-variant-numeric: tabular-nums; opacity: .9; font-weight: 700; }
 
-    /* ===== Live-chat overlay — passive TikTok-Live style: 3-4 comments stacked in the
-       bottom-left over the video, text-only (no cards) with a text-shadow for legibility
-       and a subtle base gradient. Slide-up + fade in, fade out. Display only — no input,
-       no reactions; the lead's only interactive element is the buy CTA. ===== */
+    /* ===== Live-chat overlay — passive, synced to the VSL: comments stacked bottom-left
+       over the video as subtle semi-transparent cards (avatar + name + message). Display
+       only — no input, no interactive reactions; the lead's only control is the buy CTA. */
     .vsl-chat-ov {
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      max-height: 42%;
+      max-height: 46%;
       z-index: 6;
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 22% 14px 12px;                /* bottom-left; right gutter keeps text off the controls */
+      padding: 0 26% 14px 12px;                /* bottom-left; right gutter clears the float reactions */
       overflow: hidden;
       pointer-events: none;
       background: linear-gradient(to top, rgba(0, 0, 0, .45) 0%, rgba(0, 0, 0, .12) 55%, transparent 100%);
     }
     .vsl-cov-list { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 7px; }
     .vsl-cov {
+      display: flex; align-items: center; gap: 8px;
       max-width: 100%;
+      padding: 6px 10px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, .35);          /* subtle card — presence without polluting the video */
       color: #fff;
       font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 13px; line-height: 1.3;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, .95), 0 0 2px rgba(0, 0, 0, .6);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, .9);
       opacity: 0; transform: translateY(14px);
       transition: opacity .45s ease, transform .45s ease;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
     .vsl-cov.is-in { opacity: 1; transform: translateY(0); }     /* slide-up + fade in */
     .vsl-cov.is-out { opacity: 0; transform: translateY(0); }    /* fade out (no move) */
+    .vsl-cov__av { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
+    .vsl-cov__av--anon { background: #6b7280 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='9' r='4' fill='%23d1d5db'/%3E%3Cpath d='M4 21c0-4.4 3.6-7.2 8-7.2s8 2.8 8 7.2z' fill='%23d1d5db'/%3E%3C/svg%3E") center/100% no-repeat; }
+    .vsl-cov__bd { min-width: 0; font-size: 13px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .vsl-cov__name { font-weight: 700; margin-right: 6px; }
     .vsl-cov__txt { font-weight: 400; }
-    .vsl-cov--join { font-style: italic; opacity: .92; font-size: 12.5px; }
-    .vsl-cov--join .vsl-cov__name { font-style: normal; }
     body.vsl-mini .vsl-chat-ov { display: none; }
+
+    /* Floating reactions — passive/automatic, bottom-right of the player (no interaction) */
+    .vsl-reacts-fx { position: absolute; right: 8px; bottom: 8px; width: 84px; height: 210px; z-index: 5; pointer-events: none; overflow: hidden; }
+    .vfx { position: absolute; bottom: 0; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .4)); will-change: transform, opacity; animation: vfx-rise 1.8s ease-out forwards; }
+    @keyframes vfx-rise {
+      0%   { transform: translateY(0) translateX(0); opacity: 1; }
+      50%  { transform: translateY(-90px) translateX(var(--ox, 12px)); opacity: 1; }
+      100% { transform: translateY(-180px) translateX(calc(var(--ox, 12px) * -1)); opacity: 0; }
+    }
 
 
     /* ===== "Someone is typing…" indicator ===== */
@@ -992,7 +1003,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .live-dot, .cm-row.cm-new, .cm-typing .dot, .buybar__cta::after { animation: none; }
+      .live-dot, .cm-row.cm-new, .cm-typing .dot, .buybar__cta::after, .vfx { animation: none; }
       .lvt { transition: opacity .3s; }
       .vsl-cov, .vsl-cov.is-in, .vsl-cov.is-out { transform: none; }   /* fade only, no slide */
       .theme-border-radius, .btn-primary-new, .btn-new.btn-primary-new, .cta.btn-primary-new { transition: none; transform: none !important; }
@@ -1114,8 +1125,10 @@
         <div class="vsl-stage">
           <div class="vsl-badge"><span class="live-dot"></span> LIVE <span id="vslClock">0:00</span></div>
           <vturb-smartplayer id="vid-6a3a04211fa755ae788e8e00" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
-          <!-- Live-chat overlay: passive auto-comments stacked bottom-left over the video (display only) -->
+          <!-- Live-chat overlay: passive comments synced to the VSL, stacked bottom-left (display only) -->
           <div class="vsl-chat-ov" id="vslChat" aria-live="polite" aria-label="Live-Chat"></div>
+          <!-- Floating reactions: passive, automatic — no interaction -->
+          <div class="vsl-reacts-fx" id="vslReactsFx" aria-hidden="true"></div>
         </div>
 
         <!-- Authority logo carousel — research-institution credibility, just below the VSL -->
@@ -1885,124 +1898,119 @@
                  live timeline so the room reacts beat-by-beat with the video. ---- */
         var chatEl = $('#vslChat');
         var CHAT = [
-          // FASE 1 — Hook / Curiosidade inicial (00:00–03:00)
-          { n: "Klaus_H", t: "das hab ich schon mal gehört aber nie geglaubt 🤔" },
-          { n: "Anonym", t: "über 20 cm? klingt zu schön um wahr zu sein..." },
-          { n: "Wolfgang_M", t: "endlich jemand der die Wahrheit sagt 👀" },
-          { n: "Hans-Peter", t: "ich höre genau zu, bin gespannt" },
-          { n: "Manfred", t: "ich brauch das ehrlich. seit jahren nichts mehr im bett" },
-          { n: "Brigitte", t: "ich höre für meinen Mann zu, er traut sich nicht 💕" },
-          { n: "Dieter", t: "pornodarsteller machen das wirklich?? 🤯" },
-          { n: "Bernd_H", t: "Hamburg hier. interessiert mich brennend" },
-          { n: "Anonym", t: "mein selbstwert ist seit jahren im keller..." },
-          { n: "Holger", t: "bitte sag dass es echt ist 🙏" },
-          { n: "Werner", t: "12 Tage... wäre ein Wunder" },
-          { n: "Günther", t: "bin 58, hat jemand mit meinem Alter Erfahrung damit?" },
-          { n: "Stefan", t: "wenn das stimmt kaufe ich heute noch" },
-          // FASE 2 — Mick Blue Story / Sabotage (03:00–08:00)
-          { n: "Karl-Heinz", t: "Mick Blue?! der pornostar?? wahnsinn 🤯" },
-          { n: "Ute", t: "meine Schwester hat mir das geschickt. mein Mann ist genauso betroffen" },
-          { n: "Heinz", t: "16 cm am Anfang. das gibt mir Hoffnung mit 60 ehrlich" },
-          { n: "Anonym", t: "Dr. Weigel kenne ich nicht aber wenn er das gefunden hat..." },
-          { n: "Helmut_F", t: "sabotiert. genau das richtige Wort 💯" },
-          { n: "Andreas", t: "die Industrie verdient an unserer Scham. typisch." },
-          { n: "Bernhard", t: "70er Jahre? Mein Vater hatte auch immer Probleme. Jetzt verstehe ich" },
-          { n: "Sepp_W (Wien)", t: "Toxine sind überall. macht alles Sinn" },
-          { n: "Anonym", t: "8,5 cm Wachstum?? bei einem erwachsenen Mann??" },
-          { n: "Christa", t: "ich höre zu für meinen Schatz. das wird unsere Ehe retten 🙏" },
-          { n: "Frank", t: "Erektionsknopf. nie davon gehört, aber klingt logisch" },
-          { n: "Ulrich", t: "Wenn das nicht funktioniert weiß ich auch nicht mehr" },
-          { n: "Anonym", t: "krass! Hollywood-Stars nutzen das auch?? 😳" },
-          { n: "Hartmut", t: "Monster in der Badehose... ich kann mir das vorstellen 😂" },
-          { n: "Jürgen", t: "ich hab schon alles probiert. zum letzten Mal höre ich zu, ich verspreche" },
-          // FASE 3 — Mick Blue pessoal / ED (08:00–13:00)
-          { n: "Renate", t: "Mick erzählt das so offen. ich respektiere das sehr" },
-          { n: "Thomas", t: "48 Jahre und 25 Jahre Karriere. Hut ab vor dem Mann" },
-          { n: "Anonym", t: "5700 Szenen?? der Typ hat alles gesehen 🤯" },
-          { n: "Martin_S", t: "Annika Altmaid! der Name kommt mir bekannt vor" },
-          { n: "Christian", t: "selbst Pornostars haben ED. das beruhigt mich ehrlich" },
-          { n: "Anonym", t: "Herzinfarkt fast in Szene... krass wie weit es geht" },
-          { n: "Peter", t: "Mick hatte alles probiert... wie ich" },
-          { n: "Helmut_F", t: "die blauen Pillen sind echt Mist. immer das gleiche" },
-          { n: "Wolfgang_M", t: "Mick wurde fast gefeuert?? unglaublich" },
-          { n: "Anonym", t: "wenn ein Pornostar das brauchte, brauche ich es erst recht 😅" },
-          { n: "Andreas", t: "Mick beschreibt mein Leben ehrlich..." },
-          { n: "Stefan", t: "die Wahrheit hört man hier endlich. kein Marketing-Quatsch" },
-          // FASE 4 — Dr. Weigel / Mecanismo Xenotoxine (13:00–20:00)
-          { n: "Hans-Peter", t: "9 von 12 Männern aus demselben Grund?? wahnsinn" },
-          { n: "Anonym", t: "die Pharmaindustrie weiß bescheid und schweigt. typisch." },
-          { n: "Bernhard", t: "Dr. Weigel sieht seriös aus 👌" },
-          { n: "Karl-Heinz", t: "endlich ein Arzt der die Wahrheit sagt" },
-          { n: "Anonym", t: "glatter Muskel? noch nie gehört, mache aber Notizen 📝" },
-          { n: "Manfred", t: "die Erektionstür... was für ein Bild. macht aber Sinn" },
-          { n: "Holger", t: "Philadelphia Studie 2023? echte Wissenschaft also" },
-          { n: "Frank", t: "Xenotoxine. das ist überall. Luft, Wasser, Essen..." },
-          { n: "Anonym", t: "ich esse seit jahren Mist und wundere mich warum nichts mehr geht 😞" },
-          { n: "Werner", t: "Viagra zerstört die Tür statt sie zu öffnen?? das wusste ich nicht" },
-          { n: "Hartmut", t: "Schlaganfälle und Herzinfarkte von Viagra... das hat mein Arzt nie gesagt" },
-          { n: "Anonym", t: "diese Nebenwirkungen kenne ich. Herzklopfen ist real" },
-          { n: "Peter", t: "halbe Erektion. der berühmte Kummer. ja, kenne ich gut" },
-          { n: "Christian", t: "ich antworte auf alle 3 Fragen mit JA 😬" },
-          { n: "Brigitte", t: "mein Mann hat genau diese Symptome. jetzt weiß ich was los ist" },
-          { n: "Anonym", t: "Dr. Weigel ich glaube dir. wo bestellen??" },
-          { n: "Klaus_H", t: "das erklärt warum nichts geholfen hat. wir behandelten das falsche Problem" },
-          // FASE 5 — 5 Ingredientes / Heidelberg (20:00–26:00)
-          { n: "Sepp_W (Wien)", t: "Boxhorn-Klee? noch nie gehört. aus Ägypten? interessant" },
-          { n: "Helmut_F", t: "kein GMO. genau das ist das Wichtige" },
-          { n: "Bernhard", t: "1589 Männer, 89% Erfolg in Oxford... das sind harte Zahlen 💪" },
-          { n: "Anonym", t: "L-Arginin kenne ich aus Bodybuilding Foren, jetzt verstehe ich warum" },
-          { n: "Karl-Heinz", t: "Harvard, Oxford, Heidelberg... das ist nicht irgendwas" },
-          { n: "Frank", t: "Taurin?? wie in Red Bull??? ich trinke das jeden Tag 🤯" },
-          { n: "Werner", t: "97,6% mehr Testosteron... unglaublich" },
-          { n: "Anonym", t: "Kollagen hatte ich auch nicht erwartet. aber GHO/IGF1... das ist Pubertätsmodus!" },
-          { n: "Hans-Peter", t: "3 bis 5 cm Wachstum durch Kollagen?? das ist krass" },
-          { n: "Wolfgang_M", t: "Bohr verzögert die Ejakulation 92%. genau was ich brauche" },
-          { n: "Anonym", t: "30-40-50 Minuten ohne Pause... meine Frau wird sterben 😂" },
-          { n: "Renate", t: "weisses Pulver, leicht salzig. unauffällig. perfekt 👍" },
-          { n: "Andreas", t: "endlich kein Apothekengang mehr 🙏" },
-          { n: "Manfred", t: "das ist die Mischung die wirklich Sinn macht. nicht ein einziger Inhaltsstoff" },
-          // FASE 6 — Thomas testemunho + estudo 220 homens (26:00–30:00)
-          { n: "Anonym", t: "Thomas Geschichte gibt mir Gänsehaut. das könnte ich sein" },
-          { n: "Heinz", t: "4 Mal hintereinander am 8 Tag?? 🤯" },
-          { n: "Christian", t: "viermal? selbst mit 30 hatte ich das nicht!" },
-          { n: "Anonym", t: "Stamm wie Baumstamm. genau das brauche ich für meine Frau" },
-          { n: "Ute", t: "220 Männer 12 Wochen kontrolliert. das ist ECHTE Forschung. nicht Marketing" },
-          { n: "Hartmut", t: "91% in 8 Tagen, 9% in 15 Tagen. 100% gesamt. krass! 💪" },
-          { n: "Peter", t: "Prostata Reduzierung als Bonus? ich habe genau dieses Problem!" },
-          { n: "Anonym", t: "6 cm Länge und 4 cm Umfang? bei 76% der Männer??" },
-          { n: "Bernd_H", t: "Dr. Spitzbart von der Uni Heidelberg sagt das?? das ist nicht irgendwer" },
-          { n: "Stefan", t: 'natürliche Heilung. das ist das Wort. nicht "Behandlung"' },
-          // FASE 7 — ForceVital apresentação (30:00–33:00)
-          { n: "Anonym", t: "ForceVital... der Name den ich gesucht habe" },
-          { n: "Frank", t: "BfArM Zulassung. das ist offiziell. kein Schwarzmarkt-Quatsch" },
-          { n: "Helmut_F", t: "deutsches Labor zertifiziert. das vertraue ich" },
-          { n: "Wolfgang_M", t: "Kapseln statt Pulver. praktisch, diskret 👌" },
-          { n: "Anonym", t: "keine Nebenwirkungen, keine Sucht, keine Toleranz. unfassbar" },
-          { n: "Karl-Heinz", t: "100% natürlich, kein GVO. besser geht nicht" },
-          { n: "Bernhard", t: "erhöhtes Testosteron, Muskelaufbau, Fettverbrennung... das ist ALLES" },
-          { n: "Manfred", t: "Spermavolumen erhöht?? meine Frau wird das lieben 😏" },
-          { n: "Anonym", t: "wenn das stimmt ist Viagra tot 💀" },
-          { n: "Christa", t: "ich werde 6 Flaschen für meinen Mann bestellen. das wird unsere Ehe retten" },
-          // FASE 8 — Oferta + CTA final (33:00–36:00)
-          { n: "Anonym", t: "wo bestelle ich?? bitte den Link! 🙏" },
-          { n: "Hans-Peter", t: "30 Tage Garantie? was kann ich verlieren?" },
-          { n: "Werner", t: "ich nehme das 6er Paket. für mich, Bruder, Schwager — alle" },
-          { n: "Anonym", t: "gerade bestellt 💪 update in 14 Tagen!" },
-          { n: "Andreas", t: "3 Flaschen für mich, 3 für meinen Bruder. heute ist ein guter Tag" },
-          { n: "Sepp_W (Wien)", t: "liefert auch nach Österreich. perfekt — bestellt! 🇦🇹" },
-          { n: "Heinz", t: "mit 60 endlich Hoffnung. bestellt. ich werde wieder ein Mann sein 🙏" },
-          { n: "Anonym", t: "vor 5 Minuten bestellt, fast ausverkauft schon? krass 😳" },
-          { n: "Stefan", t: "keine Frage. ich bin dabei. heute beginnt mein neues Leben 💪" }
+          { at: 8, n: 'Klaus_H', t: 'das hab ich schon mal gehört aber nie geglaubt 🤔' },
+          { at: 14, n: 'Zuschauer', t: 'über 20 cm? klingt zu schön um wahr zu sein...', x: 1 },
+          { at: 22, n: 'Wolfgang_M', t: 'endlich jemand der die Wahrheit sagt 👀' },
+          { at: 31, n: 'Hans-Peter', t: 'ich höre genau zu, bin gespannt' },
+          { at: 42, n: 'Manfred', t: 'ich brauch das ehrlich. seit jahren nichts mehr im bett' },
+          { at: 55, n: 'Friedrich', t: 'ich höre für meinen Mann zu, er traut sich nicht 💕' },
+          { at: 68, n: 'Dieter', t: 'pornodarsteller machen das wirklich?? 🤯' },
+          { at: 78, n: 'Bernd_H', t: 'Hamburg hier. interessiert mich brennend' },
+          { at: 92, n: 'Zuschauer', t: 'mein selbstwert ist seit jahren im keller...', x: 1 },
+          { at: 108, n: 'Holger', t: 'bitte sag dass es echt ist 🙏' },
+          { at: 125, n: 'Werner', t: '12 Tage... wäre ein Wunder' },
+          { at: 145, n: 'Günther', t: 'bin 58, hat jemand mit meinem Alter Erfahrung damit?' },
+          { at: 170, n: 'Stefan', t: 'wenn das stimmt kaufe ich heute noch' },
+          { at: 190, n: 'Karl-Heinz', t: 'Mick Blue?! der pornostar?? wahnsinn 🤯' },
+          { at: 208, n: 'Rainer', t: 'meine Schwester hat mir das geschickt. mein Mann ist genauso betroffen' },
+          { at: 225, n: 'Heinz', t: '16 cm am Anfang. das gibt mir Hoffnung mit 60 ehrlich' },
+          { at: 240, n: 'Zuschauer', t: 'Dr. Weigel kenne ich nicht aber wenn er das gefunden hat...', x: 1 },
+          { at: 258, n: 'Helmut_F', t: 'sabotiert. genau das richtige Wort 💯' },
+          { at: 275, n: 'Andreas', t: 'die Industrie verdient an unserer Scham. typisch.' },
+          { at: 295, n: 'Bernhard', t: '70er Jahre? Mein Vater hatte auch immer Probleme. Jetzt verstehe ich' },
+          { at: 315, n: 'Sepp_W (Wien)', t: 'Toxine sind überall. macht alles Sinn' },
+          { at: 332, n: 'Zuschauer', t: '8,5 cm Wachstum?? bei einem erwachsenen Mann??', x: 1 },
+          { at: 350, n: 'Norbert', t: 'ich höre zu für meinen Schatz. das wird unsere Ehe retten 🙏' },
+          { at: 370, n: 'Frank', t: 'Erektionsknopf. nie davon gehört, aber klingt logisch' },
+          { at: 390, n: 'Ulrich', t: 'Wenn das nicht funktioniert weiß ich auch nicht mehr' },
+          { at: 410, n: 'Zuschauer', t: 'krass! Hollywood-Stars nutzen das auch?? 😳', x: 1 },
+          { at: 435, n: 'Hartmut', t: 'Monster in der Badehose... ich kann mir das vorstellen 😂' },
+          { at: 465, n: 'Jürgen', t: 'ich hab schon alles probiert. zum letzten Mal höre ich zu, ich verspreche' },
+          { at: 490, n: 'Lothar', t: 'Mick erzählt das so offen. ich respektiere das sehr' },
+          { at: 515, n: 'Thomas', t: '48 Jahre und 25 Jahre Karriere. Hut ab vor dem Mann' },
+          { at: 540, n: 'Zuschauer', t: '5700 Szenen?? der Typ hat alles gesehen 🤯', x: 1 },
+          { at: 562, n: 'Martin_S', t: 'Annika Altmaid! der Name kommt mir bekannt vor' },
+          { at: 590, n: 'Christian', t: 'selbst Pornostars haben ED. das beruhigt mich ehrlich' },
+          { at: 615, n: 'Zuschauer', t: 'Herzinfarkt fast in Szene... krass wie weit es geht', x: 1 },
+          { at: 640, n: 'Peter', t: 'Mick hatte alles probiert... wie ich' },
+          { at: 665, n: 'Helmut_F', t: 'die blauen Pillen sind echt Mist. immer das gleiche' },
+          { at: 690, n: 'Wolfgang_M', t: 'Mick wurde fast gefeuert?? unglaublich' },
+          { at: 715, n: 'Zuschauer', t: 'wenn ein Pornostar das brauchte, brauche ich es erst recht 😅', x: 1 },
+          { at: 740, n: 'Andreas', t: 'Mick beschreibt mein Leben ehrlich...' },
+          { at: 770, n: 'Stefan', t: 'die Wahrheit hört man hier endlich. kein Marketing-Quatsch' },
+          { at: 795, n: 'Hans-Peter', t: '9 von 12 Männern aus demselben Grund?? wahnsinn' },
+          { at: 818, n: 'Zuschauer', t: 'die Pharmaindustrie weiß bescheid und schweigt. typisch.', x: 1 },
+          { at: 840, n: 'Bernhard', t: 'Dr. Weigel sieht seriös aus 👌' },
+          { at: 865, n: 'Karl-Heinz', t: 'endlich ein Arzt der die Wahrheit sagt' },
+          { at: 890, n: 'Zuschauer', t: 'glatter Muskel? noch nie gehört, mache aber Notizen 📝', x: 1 },
+          { at: 915, n: 'Manfred', t: 'die Erektionstür... was für ein Bild. macht aber Sinn' },
+          { at: 940, n: 'Holger', t: 'Philadelphia Studie 2023? echte Wissenschaft also' },
+          { at: 960, n: 'Frank', t: 'Xenotoxine. das ist überall. Luft, Wasser, Essen...' },
+          { at: 980, n: 'Zuschauer', t: 'ich esse seit jahren Mist und wundere mich warum nichts mehr geht 😞', x: 1 },
+          { at: 1005, n: 'Werner', t: 'Viagra zerstört die Tür statt sie zu öffnen?? das wusste ich nicht' },
+          { at: 1030, n: 'Hartmut', t: 'Schlaganfälle und Herzinfarkte von Viagra... das hat mein Arzt nie gesagt' },
+          { at: 1055, n: 'Zuschauer', t: 'diese Nebenwirkungen kenne ich. Herzklopfen ist real', x: 1 },
+          { at: 1080, n: 'Peter', t: 'halbe Erektion. der berühmte Kummer. ja, kenne ich gut' },
+          { at: 1110, n: 'Christian', t: 'ich antworte auf alle 3 Fragen mit JA 😬' },
+          { at: 1140, n: 'Friedrich', t: 'mein Mann hat genau diese Symptome. jetzt weiß ich was los ist' },
+          { at: 1170, n: 'Zuschauer', t: 'Dr. Weigel ich glaube dir. wo bestellen??', x: 1 },
+          { at: 1190, n: 'Klaus_H', t: 'das erklärt warum nichts geholfen hat. wir behandelten das falsche Problem' },
+          { at: 1215, n: 'Sepp_W (Wien)', t: 'Boxhorn-Klee? noch nie gehört. aus Ägypten? interessant' },
+          { at: 1240, n: 'Helmut_F', t: 'kein GMO. genau das ist das Wichtige' },
+          { at: 1260, n: 'Bernhard', t: '1589 Männer, 89% Erfolg in Oxford... das sind harte Zahlen 💪' },
+          { at: 1285, n: 'Zuschauer', t: 'L-Arginin kenne ich aus Bodybuilding Foren, jetzt verstehe ich warum', x: 1 },
+          { at: 1315, n: 'Karl-Heinz', t: 'Harvard, Oxford, Heidelberg... das ist nicht irgendwas' },
+          { at: 1340, n: 'Frank', t: 'Taurin?? wie in Red Bull??? ich trinke das jeden Tag 🤯' },
+          { at: 1365, n: 'Werner', t: '97,6% mehr Testosteron... unglaublich' },
+          { at: 1390, n: 'Zuschauer', t: 'Kollagen hatte ich auch nicht erwartet. aber GHO/IGF1... das ist Pubertätsmodus!', x: 1 },
+          { at: 1415, n: 'Hans-Peter', t: '3 bis 5 cm Wachstum durch Kollagen?? das ist krass' },
+          { at: 1440, n: 'Wolfgang_M', t: 'Bohr verzögert die Ejakulation 92%. genau was ich brauche' },
+          { at: 1470, n: 'Zuschauer', t: '30-40-50 Minuten ohne Pause... meine Frau wird sterben 😂', x: 1 },
+          { at: 1495, n: 'Lothar', t: 'weisses Pulver, leicht salzig. unauffällig. perfekt 👍' },
+          { at: 1520, n: 'Andreas', t: 'endlich kein Apothekengang mehr 🙏' },
+          { at: 1545, n: 'Manfred', t: 'das ist die Mischung die wirklich Sinn macht. nicht ein einziger Inhaltsstoff' },
+          { at: 1575, n: 'Zuschauer', t: 'Thomas Geschichte gibt mir Gänsehaut. das könnte ich sein', x: 1 },
+          { at: 1600, n: 'Heinz', t: '4 Mal hintereinander am 8 Tag?? 🤯' },
+          { at: 1620, n: 'Christian', t: 'viermal? selbst mit 30 hatte ich das nicht!' },
+          { at: 1645, n: 'Zuschauer', t: 'Stamm wie Baumstamm. genau das brauche ich für meine Frau', x: 1 },
+          { at: 1670, n: 'Rainer', t: '220 Männer 12 Wochen kontrolliert. das ist ECHTE Forschung. nicht Marketing' },
+          { at: 1695, n: 'Hartmut', t: '91% in 8 Tagen, 9% in 15 Tagen. 100% gesamt. krass! 💪' },
+          { at: 1720, n: 'Peter', t: 'Prostata Reduzierung als Bonus? ich habe genau dieses Problem!' },
+          { at: 1745, n: 'Zuschauer', t: '6 cm Länge und 4 cm Umfang? bei 76% der Männer??', x: 1 },
+          { at: 1770, n: 'Bernd_H', t: 'Dr. Spitzbart von der Uni Heidelberg sagt das?? das ist nicht irgendwer' },
+          { at: 1795, n: 'Stefan', t: 'natürliche Heilung. das ist das Wort. nicht "Behandlung"' },
+          { at: 1810, n: 'Zuschauer', t: 'FORSVITAL... der Name den ich gesucht habe', x: 1 },
+          { at: 1825, n: 'Frank', t: 'BfArM Zulassung. das ist offiziell. kein Schwarzmarkt-Quatsch' },
+          { at: 1845, n: 'Helmut_F', t: 'deutsches Labor zertifiziert. das vertraue ich' },
+          { at: 1860, n: 'Wolfgang_M', t: 'Kapseln statt Pulver. praktisch, diskret 👌' },
+          { at: 1880, n: 'Zuschauer', t: 'keine Nebenwirkungen, keine Sucht, keine Toleranz. unfassbar', x: 1 },
+          { at: 1900, n: 'Karl-Heinz', t: '100% natürlich, kein GVO. besser geht nicht' },
+          { at: 1920, n: 'Bernhard', t: 'erhöhtes Testosteron, Muskelaufbau, Fettverbrennung... das ist ALLES' },
+          { at: 1940, n: 'Manfred', t: 'Spermavolumen erhöht?? meine Frau wird das lieben 😏' },
+          { at: 1960, n: 'Zuschauer', t: 'wenn das stimmt ist Viagra tot 💀', x: 1 },
+          { at: 1975, n: 'Norbert', t: 'ich werde 6 Flaschen für meinen Mann bestellen. das wird unsere Ehe retten' },
+          { at: 1995, n: 'Zuschauer', t: 'wo bestelle ich?? bitte den Link! 🙏', x: 1 },
+          { at: 2015, n: 'Hans-Peter', t: '60 Tage Garantie? was kann ich verlieren?' },
+          { at: 2035, n: 'Werner', t: 'ich nehme das 6er Paket. für mich, Bruder, Schwager — alle' },
+          { at: 2055, n: 'Zuschauer', t: 'gerade bestellt 💪 update in 14 Tagen!', x: 1 },
+          { at: 2070, n: 'Andreas', t: '3 Flaschen für mich, 3 für meinen Bruder. heute ist ein guter Tag' },
+          { at: 2090, n: 'Sepp_W (Wien)', t: 'liefert auch nach Österreich. perfekt — bestellt! 🇦🇹' },
+          { at: 2110, n: 'Heinz', t: 'mit 60 endlich Hoffnung. bestellt. ich werde wieder ein Mann sein 🙏' },
+          { at: 2130, n: 'Zuschauer', t: 'vor 5 Minuten bestellt, fast ausverkauft schon? krass 😳', x: 1 },
+          { at: 2150, n: 'Stefan', t: 'keine Frage. ich bin dabei. heute beginnt mein neues Leben 💪' }
         ];
-        var ci = 0;
-        function nextChat() { var m = CHAT[ci % CHAT.length]; ci++; return m; }
-        // Passive TikTok-Live overlay: 3-4 comments stacked bottom-left, text-only with a
-        // text-shadow over the video, slide-up + fade in / fade out, join notices
-        // interspersed. Display only — no viewer interaction. Pauses while the player is
-        // scrolled out of view or in fullscreen.
-        var GUEST = ['Zuschauer', 'Thomas', 'Stefan', 'Michael', 'Andreas', 'Markus', 'Jens', 'Frank', 'Dirk', 'Kai', 'Uwe', 'Ralf'];
-        function guestName() { return GUEST[Math.floor(Math.random() * GUEST.length)]; }
+        // Live-chat overlay — synced to the VSL timeline. Each comment fires when the
+        // video's currentTime reaches its `at` (seconds); if VTurb doesn't expose
+        // currentTime, a local timer started on play is the fallback. Comments are subtle
+        // cards (avatar + name + message) stacked bottom-left. Display only — no viewer
+        // interaction. Renders only while the player is in view (not fullscreen).
         function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+        // Avatar pool — DISJOINT from the reviews section (reviews use mann1,3,4,5,6,7,8,10,11,12).
+        var CHAT_AV = ['images/mann2.webp', 'images/mann9.webp'];
+        function avatarFor(name) {
+          var h = 0; for (var i = 0; i < name.length; i++) { h = (h * 31 + name.charCodeAt(i)) >>> 0; }
+          return CHAT_AV[h % CHAT_AV.length];
+        }
         var covRows = [], covList = null;
         if (chatEl) { chatEl.innerHTML = '<div class="vsl-cov-list" id="vslChatList" aria-live="polite"></div>'; covList = $('#vslChatList'); }
         var stageEl = document.querySelector('.vsl-stage');
@@ -2018,35 +2026,61 @@
           row.classList.remove('is-in'); row.classList.add('is-out');
           setTimeout(function () { if (row.parentNode) row.parentNode.removeChild(row); }, 500);
         }
-        function covPush(html, join) {
-          if (!covList || !chatActive()) return;        // display only while the player is in view
+        function showComment(m) {
+          if (!covList || !chatActive()) return;
+          var av = m.x
+            ? '<span class="vsl-cov__av vsl-cov__av--anon" aria-hidden="true"></span>'
+            : '<img class="vsl-cov__av" src="' + avatarFor(m.n) + '" alt="" loading="lazy" decoding="async">';
           var row = document.createElement('div');
-          row.className = 'vsl-cov' + (join ? ' vsl-cov--join' : '');
-          row.innerHTML = html;
+          row.className = 'vsl-cov';
+          row.innerHTML = av + '<div class="vsl-cov__bd"><span class="vsl-cov__name">' + esc(m.n) + '</span><span class="vsl-cov__txt">' + esc(m.t) + '</span></div>';
           covList.appendChild(row);
           covRows.push(row);
-          while (covRows.length > 4) covFadeOut(covRows[0]);   // keep 3-4 visible
+          while (covRows.length > 4) covFadeOut(covRows[0]);   // keep up to 4 visible
           void row.offsetWidth;
-          row.classList.add('is-in');                  // slide-up + fade in
-          setTimeout(function () { covFadeOut(row); }, 60000); // safety: never let a row linger
+          row.classList.add('is-in');
+          setTimeout(function () { covFadeOut(row); }, 60000);
         }
-        function addChatLine() {
-          var m = nextChat();
-          covPush('<span class="vsl-cov__name">' + esc(m.n) + '</span><span class="vsl-cov__txt">' + esc(m.t) + '</span>');
+        // --- VSL timeline sync ---------------------------------------------------------
+        var vtPlayer = document.querySelector('vturb-smartplayer');
+        var tlStarted = false, tlStart = 0, ti = 0;
+        function tlElapsed() {                          // prefer VTurb currentTime, else local timer
+          try { if (vtPlayer && typeof vtPlayer.getCurrentTime === 'function') { var t = vtPlayer.getCurrentTime(); if (typeof t === 'number' && isFinite(t) && t >= 0) return t; } } catch (e) {}
+          return tlStarted ? (Date.now() - tlStart) / 1000 : 0;
         }
-        function addJoinLine() {
-          covPush('👋 <span class="vsl-cov__name">' + esc(guestName()) + '</span> ist beigetreten', true);
-        }
+        function tlStartOnce() { if (!tlStarted) { tlStarted = true; tlStart = Date.now(); } }
+        if (vtPlayer) { ['play', 'player:play', 'playing', 'player:start'].forEach(function (ev) { try { vtPlayer.addEventListener(ev, tlStartOnce); } catch (e) {} }); }
         if (covList) {
-          [200, 900, 1700].forEach(function (d) { setTimeout(addChatLine, d); });   // prime the stack
-          // 3-5s randomized cadence; ~1 in 4 entries is a join notice (interspersed)
-          (function loopChat() {
-            setTimeout(function () {
-              if (Math.random() < 0.25) addJoinLine(); else addChatLine();
-              loopChat();
-            }, rand(3000, 5000));
+          (function tlTick() {
+            if (!tlStarted && window.__ljPlayed) tlStartOnce();   // cue/stage tap also starts the timeline
+            if (tlStarted) {
+              var e = tlElapsed();
+              while (ti < CHAT.length && CHAT[ti].at <= e) { if (chatActive()) showComment(CHAT[ti]); ti++; }
+            }
+            setTimeout(tlTick, 500);
           })();
         }
+        // --- Floating reactions — passive, automatic (no interaction) ------------------
+        var fxLayer = $('#vslReactsFx'), FX = ['❤️', '🔥', '👏', '💪'];
+        function fxBurst() {
+          if (!fxLayer || RM || !chatActive()) return;
+          var n = rand(1, 3);
+          for (var i = 0; i < n; i++) {
+            (function (k) {
+              setTimeout(function () {
+                var s = document.createElement('span');
+                s.className = 'vfx';
+                s.textContent = FX[Math.floor(Math.random() * FX.length)];
+                s.style.right = rand(4, 44) + 'px';
+                s.style.fontSize = rand(18, 26) + 'px';
+                s.style.setProperty('--ox', (Math.random() < 0.5 ? -12 : 12) + 'px');
+                fxLayer.appendChild(s);
+                setTimeout(function () { if (s.parentNode) s.parentNode.removeChild(s); }, 1850);
+              }, k * rand(120, 280));
+            })(i);
+          }
+        }
+        (function fxLoop() { setTimeout(function () { fxBurst(); fxLoop(); }, rand(8000, 15000)); })();
 
         function showTyping(person, cb) {
           if (!list || RM) { cb(person); return; }
