@@ -553,8 +553,9 @@
     /* Compact Trusted Shops verification seal (pill) — badge + stars + rating, nothing else */
     .ts-badge { display: inline-flex; align-items: center; gap: 9px; background: #1a1a2e; border-radius: 8px; padding: 8px 14px; }
     .ts-badge__seal { width: 32px; height: 32px; flex: 0 0 auto; border-radius: 50%; object-fit: contain; }
-    .ts-badge__info { display: flex; flex-direction: column; gap: 3px; line-height: 1; text-align: left; }
-    .ts-badge__stars { color: #f5a623; font-size: 15px; letter-spacing: 1px; line-height: 1; }
+    .ts-badge__info { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; line-height: 1; text-align: left; }
+    .ts-badge__stars { display: inline-flex; align-items: center; gap: 1px; }
+    .ts-star { width: 15px; height: 15px; display: block; flex: 0 0 auto; fill: #f5a623; }   /* original gold, unchanged */
     .ts-badge__rating { font-size: 13px; color: #e6e7ee; line-height: 1; font-family: 'Open Sans', Arial, sans-serif; }
     .ts-badge__rating b { font-weight: 700; color: #fff; }
 
@@ -1351,7 +1352,13 @@
           <div class="ts-badge">
             <img class="ts-badge__seal" src="images/seal-trustedshops.webp" alt="Trusted Shops" width="32" height="32" loading="lazy" decoding="async">
             <div class="ts-badge__info">
-              <div class="ts-badge__stars" aria-hidden="true">★★★★★</div>
+              <div class="ts-badge__stars" role="img" aria-label="4,7 von 5 Sternen">
+                <svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="tsStar70"><stop offset="70%" stop-color="#f5a623"/><stop offset="70%" stop-color="#ffffff" stop-opacity="0.25"/></linearGradient></defs><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="url(#tsStar70)"/></svg>
+              </div>
               <div class="ts-badge__rating">Bewertung <b>4.7</b> / 5</div>
             </div>
           </div>
