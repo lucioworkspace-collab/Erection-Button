@@ -2273,8 +2273,7 @@
     .fvq__benefits{ list-style:none; padding:0; margin:24px 0; display:flex; flex-direction:column; gap:12px; }
     .fvq__benefits li{ position:relative; padding-left:30px; font-size:15px; line-height:1.4; color:var(--q-ink); }
     .fvq__benefits li::before{ content:"\2713"; position:absolute; left:0; top:0; color:var(--cta); font-weight:800; }
-    .fvq__auth{ text-align:center; margin:18px -8px; opacity:.7; }
-    .fvq__auth img{ height:26px; width:auto; margin:6px 12px; filter:grayscale(100%); vertical-align:middle; }
+    .fvq__authrow{ margin-left:-24px; margin-right:-24px; max-width:none; }   /* reuse the homepage .auth marquee, full-bleed in the card */
     .fvq__reviews{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; margin:18px -24px; padding:4px 24px; }
     .fvq__reviews .rv-card{ flex:0 0 86%; scroll-snap-align:center; }
     .fvq__disc{ font-size:11px; line-height:1.45; color:var(--q-soft); margin:22px 0 0; }
@@ -2363,36 +2362,51 @@
           <li>100% natürliche Inhaltsstoffe, made in Germany</li>
           <li>60 Tage Geld-zurück-Garantie</li>
         </ul>
-        <div class="fvq__auth" aria-label="Forschung führender Institutionen">
-          <img src="images/logo-harvard.webp" alt="Harvard University" height="26" loading="lazy" decoding="async">
-          <img src="images/logo-oxford.webp" alt="University of Oxford" height="26" loading="lazy" decoding="async">
-          <img src="images/logo-stanford.webp" alt="Stanford University" height="26" loading="lazy" decoding="async">
-          <img src="images/logo-cambridge.webp" alt="University of Cambridge" height="26" loading="lazy" decoding="async">
-          <img src="images/logo-charite.webp" alt="Charité — Universitätsmedizin Berlin" height="26" loading="lazy" decoding="async">
-        </div>
+        <section class="auth fvq__authrow" aria-label="Forschung führender Institutionen">
+          <div class="auth__vp">
+            <div class="auth__track">
+              <img src="images/logo-harvard.webp" alt="Harvard University" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-oxford.webp" alt="University of Oxford" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-stanford.webp" alt="Stanford University" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-cambridge.webp" alt="University of Cambridge" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-charite.webp" alt="Charité — Universitätsmedizin Berlin" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-wuerzburg.webp" alt="Universität Würzburg" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-utrecht.webp" alt="Utrecht University" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-lshtm.webp" alt="London School of Hygiene &amp; Tropical Medicine" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-harvard.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-oxford.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-stanford.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-cambridge.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-charite.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-wuerzburg.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-utrecht.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+              <img src="images/logo-lshtm.webp" alt="" aria-hidden="true" height="34" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </section>
         <div class="fvq__reviews">
           <article class="rv-card">
             <div class="rv-card__top"><img class="rv-card__av" src="images/mann1.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Karl-Heinz M., 54 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Köln, Deutschland</p></div></div>
             <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
-            <p class="rv-card__text">„Bestellung kam in 3 Tagen, Verpackung komplett unauffällig &mdash; meine Frau hat nicht mal gefragt. Nach 2 Wochen wache ich morgens neben ihr auf und sie merkt sofort, dass ich hart bin. Sie lacht und sagt, was hast du da auf einmal? Ich sage nichts.“</p>
+            <p class="rv-card__text">„Diskrete Lieferung in 3 Tagen, neutral verpackt. Nach 2 Wochen spürbar mehr Energie und Selbstvertrauen.“</p>
             <p class="rv-card__date">Verifizierter Kauf &middot; 15.04.2026</p>
           </article>
           <article class="rv-card">
             <div class="rv-card__top"><img class="rv-card__av" src="images/mann2.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Brigitte W., 49 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">München, Deutschland &middot; für ihren Mann</p></div></div>
             <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
-            <p class="rv-card__text">„Habe das für meinen Mann bestellt, ohne ihm was zu sagen 😅. Nach 3 Wochen kann er die ganze Nacht durchhalten und ich kann morgens kaum aufstehen. Er denkt es liegt am Sport 😂 ich werde ihm nie sagen was es wirklich ist.“</p>
+            <p class="rv-card__text">„Für meinen Mann bestellt. Schon nach drei Wochen ein klarer Unterschied — er ist entspannter und selbstbewusster.“</p>
             <p class="rv-card__date">Verifizierter Kauf &middot; 08.05.2026</p>
           </article>
           <article class="rv-card">
             <div class="rv-card__top"><img class="rv-card__av" src="images/mann3.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Sepp Wagner, 52 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Wien, Österreich</p></div></div>
             <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
-            <p class="rv-card__text">„Lieferung nach Österreich kam in 5 Tagen, keine Probleme mit dem Zoll. Nach 5 Wochen halte ich 30 Minuten durch ohne Pause &mdash; letzte Woche kam meine Frau dreimal hintereinander. Sie ist seitdem jeden Abend in der Stimmung.“</p>
+            <p class="rv-card__text">„Lieferung nach Österreich problemlos, Zahlung über PayPal sicher. Deutsche Qualität, die man wirklich merkt.“</p>
             <p class="rv-card__date">Verifizierter Kauf &middot; 25.04.2026</p>
           </article>
           <article class="rv-card">
             <div class="rv-card__top"><img class="rv-card__av" src="images/mann5.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Werner H., 67 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Leipzig, Deutschland</p></div></div>
             <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
-            <p class="rv-card__text">„Mit 67 hatte ich gedacht mein Sexleben sei vorbei. Letzten Sonntag habe ich meine Frau dreimal in einer Nacht zum Höhepunkt gebracht &mdash; das hatten wir seit unseren 40ern nicht mehr. Sie hat seitdem Tränen in den Augen wenn sie mich anschaut.“</p>
+            <p class="rv-card__text">„Die 30 Tage Geld-zurück-Garantie gaben mir die Sicherheit, es zu testen. Mit 67 hätte ich das nicht mehr erwartet.“</p>
             <p class="rv-card__date">Verifizierter Kauf &middot; 06.03.2026</p>
           </article>
         </div>
