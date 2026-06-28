@@ -2428,12 +2428,26 @@
         } catch (e) {}
       }
 
+      // Real VTurb playback position, or null if the API isn't available yet.
+      function vtTime() { try { if (vt && typeof vt.getCurrentTime === 'function') { var t = vt.getCurrentTime(); if (typeof t === 'number' && isFinite(t) && t >= 0) return t; } } catch (e) {} return null; }
       // D3: replicate tlElapsed locally (prefer VTurb currentTime, else a play-anchored timer).
-      function elapsed() {
-        try { if (vt && typeof vt.getCurrentTime === 'function') { var t = vt.getCurrentTime(); if (typeof t === 'number' && isFinite(t) && t >= 0) return t; } } catch (e) {}
-        return playAnchor ? (Date.now() - playAnchor) / 1000 : 0;
-      }
-      setInterval(function () { if (!playAnchor && window.__ljPlayed) playAnchor = Date.now(); armTrap(); }, 1000);
+      function elapsed() { var t = vtTime(); if (t !== null) return t; return playAnchor ? (Date.now() - playAnchor) / 1000 : 0; }
+      var lastT = -1, stall = 0;
+      setInterval(function () {
+        if (!playAnchor && window.__ljPlayed) playAnchor = Date.now();
+        armTrap();
+        // Trigger 4 — in-window DISENGAGEMENT: if real playback stalls (paused) for ~4s
+        // anywhere inside [WIN_LO, WIN_HI], open proactively — so the quiz fires DURING the
+        // interval, not only on exit. Only when VTurb exposes a real time (no false stalls).
+        if (!isOpen && !shown() && !miniOn() && window.__ljPlayed) {
+          var t = vtTime();
+          if (t !== null && t >= WIN_LO && t <= WIN_HI) {
+            if (lastT >= 0 && Math.abs(t - lastT) < 0.4) stall++; else stall = 0;
+            if (stall >= 4) { stall = 0; open(); }
+          } else { stall = 0; }
+          if (t !== null) lastT = t;
+        }
+      }, 1000);
 
       function shown() { try { var t = parseInt(localStorage.getItem(SHOW_KEY), 10); return !isNaN(t) && (Date.now() - t) < TTL; } catch (e) { return false; } }
       function markShown() { try { localStorage.setItem(SHOW_KEY, Date.now()); } catch (e) {} }
@@ -2571,7 +2585,8 @@
         return '<div class="theme-border-radius border border-2 border-gray text-center p-4">' +
           '<h3 class="mb-0 fw-bold">Einmal ausprobieren</h3>' +
           '<p class="small mb-0">60 Tage · 2 Flaschen</p>' +
-          '<div class="d-flex justify-content-center align-items-center" style="margin-top:14px;"><h4 class="display-2 fw-bold">€79</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
+          '<div class="col-9 mx-auto py-3"><picture><img loading="lazy" decoding="async" width="600" height="400" src="images/forcevital-2.webp" alt="ForceVital — 2 Flaschen" class="img-fluid"></picture></div>' +
+          '<div class="d-flex justify-content-center align-items-center"><h4 class="display-2 fw-bold">€79</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
           '<p class="fw-bold mb-2">SIE SPAREN €200</p>' +
           TSBADGE +
           '<div class="col-12 text-center mb-4"><a class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a></div>' +
@@ -2588,7 +2603,8 @@
         return '<div class="theme-border-radius border border-2 border-gray text-center p-4">' +
           (showBadge ? '<h3 class="mb-0 fw-bold">Am Beliebtesten</h3>' : '') +
           '<p class="small mb-0">90 Tage · 3 Flaschen</p>' +
-          '<div class="d-flex justify-content-center align-items-center" style="margin-top:14px;"><h4 class="display-2 fw-bold">€69</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
+          '<div class="col-9 mx-auto py-3"><picture><img loading="lazy" decoding="async" width="600" height="400" src="images/forcevital-3.webp" alt="ForceVital — 3 Flaschen" class="img-fluid"></picture></div>' +
+          '<div class="d-flex justify-content-center align-items-center"><h4 class="display-2 fw-bold">€69</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
           '<p class="fw-bold mb-2">SIE SPAREN €330</p>' +
           TSBADGE +
           '<div class="col-12 text-center mb-4"><a class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a></div>' +
