@@ -2412,7 +2412,7 @@
       var WIN_LO = V - 900, WIN_HI = V - 300;            // [-15min, -5min] from the pitch
       var vt = document.querySelector('vturb-smartplayer');
       var playAnchor = 0, isOpen = false, armed = false, checkoutGo = false, currentProfile = null;
-      var trapArmed = false, histOpen = false, selfPop = false;
+      var histSentinel = false, selfPop = false;   // exactly one extra history entry at a time
       var current = 'intro';
       var answers = { duration: null, frequency: null, attempts: [] };
       var ORDER = ['intro', 'q1', 'q2', 'q3', 'validation', 'loading', 'result'];
@@ -2459,7 +2459,7 @@
         markShown();                                       // D2: player is NOT paused — audio keeps playing behind.
         modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
         lock();
-        try { history.pushState({ fvq: 'open' }, '', location.href); histOpen = true; } catch (e) { histOpen = false; }  // a Back while open closes the modal
+        pushSentinel();                                    // a Back while open closes the modal (single sentinel)
         requestAnimationFrame(function () { requestAnimationFrame(function () { modal.classList.add('is-anim'); }); });
         fvqTrack('quiz_modal_opened');
         show('intro');
@@ -2473,8 +2473,8 @@
         modal.classList.remove('is-anim'); modal.setAttribute('aria-hidden', 'true');
         var done = function () { modal.classList.remove('is-open'); unlock(); };
         if (rm()) done(); else setTimeout(done, 320);     // closed = display:none → taps reach the player again.
-        if (!fromPop && histOpen) { histOpen = false; selfPop = true; try { history.back(); } catch (e) { selfPop = false; } }  // consume our open-sentinel
-        else { histOpen = false; }
+        if (!fromPop && histSentinel) { histSentinel = false; selfPop = true; try { history.back(); } catch (e) { selfPop = false; } }  // consume our sentinel
+        else { histSentinel = false; }
       }
 
       // Trigger 1 — tab/app RETURN: arm on hide (eligible), open on the return.
@@ -2493,15 +2493,13 @@
       // Trigger 3 — BACK button: keep one sentinel history entry while eligible, so the first
       // Back opens the quiz (mobile + desktop) instead of leaving. One per session — after the
       // quiz has shown (shown()===true) it never re-traps, so a later Back leaves normally.
-      function armTrap() {
-        if (trapArmed || isOpen || shown() || !eligible()) return;
-        try { history.pushState({ fvq: 'arm' }, '', location.href); trapArmed = true; } catch (e) {}
-      }
+      function pushSentinel() { if (histSentinel) return; try { history.pushState({ fvq: 1 }, '', location.href); histSentinel = true; } catch (e) {} }
+      function armTrap() { if (isOpen || shown() || !eligible()) return; pushSentinel(); }
       window.addEventListener('popstate', function () {
         if (selfPop) { selfPop = false; return; }      // our own cleanup pop — ignore
+        histSentinel = false;                           // the user's Back consumed our entry
         if (isOpen) { close(true); return; }            // Back while open → close the modal (stay on page)
-        trapArmed = false;
-        if (!shown() && eligible()) open();              // Back while eligible → open the quiz
+        if (!shown() && eligible()) open();              // Back while eligible → open the quiz (re-pushes its own sentinel)
       });
 
       // ---- scoring (verbatim v3 tables; A,B,C) ----
