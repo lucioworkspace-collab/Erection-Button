@@ -2412,6 +2412,7 @@
       var WIN_LO = V - 900, WIN_HI = V - 300;            // [-15min, -5min] from the pitch
       var vt = document.querySelector('vturb-smartplayer');
       var playAnchor = 0, isOpen = false, armed = false, checkoutGo = false, currentProfile = null;
+      var trapArmed = false, histOpen = false, selfPop = false;
       var current = 'intro';
       var answers = { duration: null, frequency: null, attempts: [] };
       var ORDER = ['intro', 'q1', 'q2', 'q3', 'validation', 'loading', 'result'];
@@ -2430,7 +2431,7 @@
         try { if (vt && typeof vt.getCurrentTime === 'function') { var t = vt.getCurrentTime(); if (typeof t === 'number' && isFinite(t) && t >= 0) return t; } } catch (e) {}
         return playAnchor ? (Date.now() - playAnchor) / 1000 : 0;
       }
-      setInterval(function () { if (!playAnchor && window.__ljPlayed) playAnchor = Date.now(); }, 1000);
+      setInterval(function () { if (!playAnchor && window.__ljPlayed) playAnchor = Date.now(); armTrap(); }, 1000);
 
       function shown() { try { var t = parseInt(localStorage.getItem(SHOW_KEY), 10); return !isNaN(t) && (Date.now() - t) < TTL; } catch (e) { return false; } }
       function markShown() { try { localStorage.setItem(SHOW_KEY, Date.now()); } catch (e) {} }
@@ -2458,25 +2459,49 @@
         markShown();                                       // D2: player is NOT paused — audio keeps playing behind.
         modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
         lock();
+        try { history.pushState({ fvq: 'open' }, '', location.href); histOpen = true; } catch (e) { histOpen = false; }  // a Back while open closes the modal
         requestAnimationFrame(function () { requestAnimationFrame(function () { modal.classList.add('is-anim'); }); });
         fvqTrack('quiz_modal_opened');
         show('intro');
         fvqTrack('quiz_start');
       }
       function completedQuestions() { return (answers.duration ? 1 : 0) + (answers.frequency ? 1 : 0) + (answers.attempts.length ? 1 : 0); }
-      function close() {
+      function close(fromPop) {
         if (!isOpen) return;
         isOpen = false;
         if (!checkoutGo) fvqTrack('quiz_abandoned', { last_screen: current, completed_questions: completedQuestions() });
         modal.classList.remove('is-anim'); modal.setAttribute('aria-hidden', 'true');
         var done = function () { modal.classList.remove('is-open'); unlock(); };
         if (rm()) done(); else setTimeout(done, 320);     // closed = display:none → taps reach the player again.
+        if (!fromPop && histOpen) { histOpen = false; selfPop = true; try { history.back(); } catch (e) { selfPop = false; } }  // consume our open-sentinel
+        else { histOpen = false; }
       }
 
-      // D1: open ONLY on tab return, when eligible at hide-time and still not shown/not in DTC.
+      // Trigger 1 — tab/app RETURN: arm on hide (eligible), open on the return.
       document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'hidden') { armed = eligible(); }
         else { if (armed && !isOpen && !shown() && !miniOn()) open(); armed = false; }
+      });
+      // Trigger 2 — desktop EXIT-INTENT: pointer leaves the viewport top (toward tab bar / close).
+      document.addEventListener('mouseout', function (e) {
+        if (isOpen || shown()) return;
+        if (e.clientY > 0) return;                                  // only the top edge
+        if (e.relatedTarget || e.toElement) return;                 // truly left the window
+        if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;  // skip touch devices
+        if (eligible()) open();
+      });
+      // Trigger 3 — BACK button: keep one sentinel history entry while eligible, so the first
+      // Back opens the quiz (mobile + desktop) instead of leaving. One per session — after the
+      // quiz has shown (shown()===true) it never re-traps, so a later Back leaves normally.
+      function armTrap() {
+        if (trapArmed || isOpen || shown() || !eligible()) return;
+        try { history.pushState({ fvq: 'arm' }, '', location.href); trapArmed = true; } catch (e) {}
+      }
+      window.addEventListener('popstate', function () {
+        if (selfPop) { selfPop = false; return; }      // our own cleanup pop — ignore
+        if (isOpen) { close(true); return; }            // Back while open → close the modal (stay on page)
+        trapArmed = false;
+        if (!shown() && eligible()) open();              // Back while eligible → open the quiz
       });
 
       // ---- scoring (verbatim v3 tables; A,B,C) ----
@@ -2593,7 +2618,7 @@
       // ---- single delegated click handler ----
       modal.addEventListener('click', function (e) {
         var t = e.target; if (!t.closest) return;
-        if (t.closest('[data-fvq="close"]')) { close(); return; }
+        if (t.closest('[data-fvq="close"]')) { close(false); return; }
         if (t.closest('[data-fvq="commit"]')) { fvqTrack('quiz_committed'); show('q1'); return; }
         if (t.closest('[data-fvq="q3next"]')) { if (!answers.attempts.length) return; fvqTrack('question_3_answered', { attempts: answers.attempts.slice() }); show('validation'); renderValidation(); return; }
         if (t.closest('[data-fvq="toLoading"]')) { runLoading(); return; }
@@ -2622,7 +2647,7 @@
         }
       });
 
-      document.addEventListener('keydown', function (e) { if (isOpen && (e.key === 'Escape' || e.key === 'Esc')) close(); });
+      document.addEventListener('keydown', function (e) { if (isOpen && (e.key === 'Escape' || e.key === 'Esc')) close(false); });
     })();
   </script>
 </body>
