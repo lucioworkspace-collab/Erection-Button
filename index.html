@@ -2214,6 +2214,417 @@
 <!-- Personalisierte-Formel quiz removed (dead: never triggered) -->
 
   <!-- Exit / back-button warning removed: the back-button trap + exit-intent popup read as malware/error. No exit interception. -->
+
+  <!-- ============================================================================
+       FV-QUIZ — Lead-recovery quiz. PARALLEL route; does NOT touch the DTC.
+       Trigger: tab-RETURN (visibilitychange→visible after hidden) while playback is
+       inside the final-third window [SECONDS_TO_DISPLAY-15min, -5min]. One chance per
+       session (localStorage fv_quiz_shown, 7d TTL). Closed = display:none, so 100% of
+       taps reach the VTURB player. No coupon, no countdown, no price change. Checkout
+       links are byte-for-byte copies of the DTC cards (the existing forcevital.site
+       sweep injects subid5/sid5 + cid on click).
+       ============================================================================ -->
+  <style>
+    .fvq{ position:fixed; inset:0; z-index:10000; display:none; font-family:'Open Sans',Arial,sans-serif;
+      --q-bg:#FAF8F5; --q-terra:#C97B5C; --q-ink:#1A1A1A; --q-border:#E5E0D8; --q-sel:#FBF7F2; }
+    .fvq.is-open{ display:block; }
+    .fvq__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.75);
+      -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); opacity:0; transition:opacity .25s ease; }
+    .fvq.is-anim .fvq__backdrop{ opacity:1; }
+    .fvq__card{ position:absolute; left:0; right:0; bottom:0; margin:0 auto; width:100%; max-width:520px;
+      max-height:92vh; overflow-y:auto; -webkit-overflow-scrolling:touch; background:var(--q-bg); color:var(--q-ink);
+      border-radius:24px 24px 0 0; box-shadow:0 -10px 40px rgba(0,0,0,.3);
+      transform:translateY(100%); transition:transform .3s cubic-bezier(.2,.8,.2,1);
+      padding:0 24px calc(28px + env(safe-area-inset-bottom,0px)); }
+    .fvq.is-anim .fvq__card{ transform:translateY(0); }
+    @media (min-width:768px){
+      .fvq__card{ bottom:auto; top:50%; transform:translateY(-46%) scale(.98); opacity:0;
+        border-radius:20px; max-height:88vh; transition:opacity .3s ease, transform .3s ease; box-shadow:0 24px 60px rgba(0,0,0,.4); }
+      .fvq.is-anim .fvq__card{ transform:translateY(-50%) scale(1); opacity:1; }
+    }
+    .fvq__bar{ position:sticky; top:0; height:4px; background:var(--q-border); margin:0 -24px; border-radius:24px 24px 0 0; overflow:hidden; z-index:3; }
+    .fvq__bar i{ display:block; height:100%; width:0; background:var(--q-terra); transition:width .35s ease; }
+    .fvq__head{ position:sticky; top:4px; background:var(--q-bg); display:flex; align-items:center; justify-content:space-between; padding:16px 0 8px; z-index:2; }
+    .fvq__logo{ font-weight:800; font-size:15px; color:var(--q-terra); letter-spacing:.01em; }
+    .fvq__x{ width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:0; background:transparent; color:#8a8378; cursor:pointer; }
+    .fvq__x svg{ width:18px; height:18px; }
+    .fvq__screen{ display:none; padding:24px 0 8px; }
+    .fvq__screen.is-on{ display:block; animation:fvq-fade .35s ease; }
+    @keyframes fvq-fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+    .fvq__eyebrow{ font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a9384; margin:0 0 14px; }
+    .fvq__h{ font-weight:800; font-size:32px; line-height:1.15; margin:0 0 16px; color:var(--q-ink); overflow-wrap:break-word; word-break:break-word; -webkit-hyphens:auto; hyphens:auto; }
+    .fvq__h--terra{ color:var(--q-terra); }
+    #fvqResProg{ font-size:24px; line-height:1.22; }   /* long DE compound program names */
+    .fvq__sub{ font-size:16px; line-height:1.5; color:#5a554c; margin:0 0 28px; font-weight:400; }
+    .fvq__opts{ display:flex; flex-direction:column; gap:14px; margin-top:40px; }
+    .fvq__opt{ display:flex; align-items:center; text-align:left; width:100%; min-height:66px; padding:14px 22px;
+      border:1px solid var(--q-border); border-radius:12px; background:#fff; color:var(--q-ink);
+      font-size:16px; font-weight:400; line-height:1.35; cursor:pointer; transition:transform .15s ease, border-color .15s ease, background .15s ease; }
+    .fvq__opt.is-sel{ border-color:var(--q-terra); background:var(--q-sel); }
+    .fvq__opt.is-tap{ transform:scale(.98); }
+    .fvq__cta{ display:block; width:100%; height:56px; border:0; border-radius:28px; background:var(--q-ink); color:#fff;
+      font-size:17px; font-weight:600; cursor:pointer; margin-top:32px; }
+    .fvq__cta--hidden{ display:none; }
+    .fvq__load-bar{ height:6px; background:var(--q-border); border-radius:999px; overflow:hidden; margin:36px 0 22px; }
+    .fvq__load-bar i{ display:block; height:100%; width:0; background:var(--q-terra); }
+    .fvq__load-msg{ font-size:15px; color:#5a554c; min-height:44px; transition:opacity .3s ease; text-align:center; }
+    .fvq__benefits{ list-style:none; padding:0; margin:24px 0; display:flex; flex-direction:column; gap:12px; }
+    .fvq__benefits li{ position:relative; padding-left:30px; font-size:15px; line-height:1.4; color:var(--q-ink); }
+    .fvq__benefits li::before{ content:"\2713"; position:absolute; left:0; top:0; color:var(--cta); font-weight:800; }
+    .fvq__auth{ text-align:center; margin:18px -8px; opacity:.7; }
+    .fvq__auth img{ height:26px; width:auto; margin:6px 12px; filter:grayscale(100%); vertical-align:middle; }
+    .fvq__reviews{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; margin:18px -24px; padding:4px 24px; }
+    .fvq__reviews .rv-card{ flex:0 0 86%; scroll-snap-align:center; }
+    .fvq__disc{ font-size:11px; line-height:1.45; color:#9a9384; margin:22px 0 0; }
+    @media (prefers-reduced-motion: reduce){
+      .fvq__backdrop,.fvq__card,.fvq__bar i,.fvq__opt,.fvq__screen,.fvq__load-msg{ transition:none; animation:none; }
+      .fvq__card{ transform:none; opacity:1; }
+    }
+  </style>
+
+  <div class="fvq" id="fvQuiz" role="dialog" aria-modal="true" aria-label="ForceVital Programm-Quiz" aria-hidden="true">
+    <div class="fvq__backdrop" data-fvq="backdrop"></div>
+    <div class="fvq__card" role="document">
+      <div class="fvq__bar"><i id="fvqBar"></i></div>
+      <div class="fvq__head">
+        <span class="fvq__logo">ForceVital</span>
+        <button class="fvq__x" type="button" data-fvq="close" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+
+      <!-- Screen 1 — Reconciliation -->
+      <section class="fvq__screen" data-screen="intro">
+        <h2 class="fvq__h fvq__h--terra">Du warst gerade dabei, dein persönliches Programm zu sehen.</h2>
+        <p class="fvq__sub">Lass uns das in 60 Sekunden abschließen — ohne das ganze Video nochmal anzusehen.</p>
+        <button class="fvq__cta" type="button" data-fvq="commit">Mein Programm finden →</button>
+      </section>
+
+      <!-- Screen 2 — Frage 1: Zeit -->
+      <section class="fvq__screen" data-screen="q1">
+        <p class="fvq__eyebrow">Frage 1 von 3</p>
+        <h2 class="fvq__h">Seit wann bemerkst du, dass etwas nicht mehr so funktioniert wie früher?</h2>
+        <div class="fvq__opts" data-q="duration" data-mode="single">
+          <button class="fvq__opt" type="button" data-val="less_6m">Seit weniger als 6 Monaten</button>
+          <button class="fvq__opt" type="button" data-val="6m_2y">Zwischen 6 Monaten und 2 Jahren</button>
+          <button class="fvq__opt" type="button" data-val="2_5y">Zwischen 2 und 5 Jahren</button>
+          <button class="fvq__opt" type="button" data-val="more_5y">Seit mehr als 5 Jahren</button>
+        </div>
+      </section>
+
+      <!-- Screen 3 — Frage 2: Häufigkeit -->
+      <section class="fvq__screen" data-screen="q2">
+        <p class="fvq__eyebrow">Frage 2 von 3</p>
+        <h2 class="fvq__h">Wie oft kommt es vor, dass dein Körper im entscheidenden Moment nicht mitspielt?</h2>
+        <div class="fvq__opts" data-q="frequency" data-mode="single">
+          <button class="fvq__opt" type="button" data-val="occasional">Gelegentlich</button>
+          <button class="fvq__opt" type="button" data-val="monthly">Mehrmals im Monat</button>
+          <button class="fvq__opt" type="button" data-val="weekly">Mehrmals pro Woche</button>
+        </div>
+      </section>
+
+      <!-- Screen 4 — Frage 3: Versuche (multi) -->
+      <section class="fvq__screen" data-screen="q3">
+        <p class="fvq__eyebrow">Frage 3 von 3</p>
+        <h2 class="fvq__h">Was hast du bisher versucht, um das zu lösen?</h2>
+        <p class="fvq__sub" style="margin-bottom:6px;">(Mehrere Antworten möglich)</p>
+        <div class="fvq__opts" data-q="attempts" data-mode="multi" style="margin-top:18px;">
+          <button class="fvq__opt" type="button" data-val="viagra_cialis">Verschreibungspflichtige Pillen (Viagra, Cialis, Levitra)</button>
+          <button class="fvq__opt" type="button" data-val="supplements">Frei verkäufliche Mittel oder Supplements</button>
+          <button class="fvq__opt" type="button" data-val="doctor_consult">Beratung beim Arzt oder Urologen</button>
+          <button class="fvq__opt" type="button" data-val="lifestyle">Veränderungen im Lebensstil (Sport, Ernährung)</button>
+          <button class="fvq__opt" type="button" data-val="nothing">Bisher nichts — ich wollte das nicht über Apotheken lösen</button>
+        </div>
+        <button class="fvq__cta fvq__cta--hidden" type="button" data-fvq="q3next">Weiter →</button>
+      </section>
+
+      <!-- Screen 5 — Micro-validation -->
+      <section class="fvq__screen" data-screen="validation">
+        <h2 class="fvq__h fvq__h--terra" id="fvqValHead"></h2>
+        <p class="fvq__sub" id="fvqValText"></p>
+        <button class="fvq__cta" type="button" data-fvq="toLoading">Weiter zu meinem Ergebnis →</button>
+      </section>
+
+      <!-- Screen 6 — Loading ritual (5000ms) -->
+      <section class="fvq__screen" data-screen="loading">
+        <h2 class="fvq__h" style="text-align:center;">Wir erstellen dein Programm...</h2>
+        <div class="fvq__load-bar"><i id="fvqLoadBar"></i></div>
+        <p class="fvq__load-msg" id="fvqLoadMsg"></p>
+      </section>
+
+      <!-- Screen 7 — Result + offer (DTC card replicated verbatim) -->
+      <section class="fvq__screen" data-screen="result">
+        <p class="fvq__eyebrow" id="fvqResType"></p>
+        <h2 class="fvq__h fvq__h--terra" id="fvqResProg"></h2>
+        <p class="fvq__sub" id="fvqResSub" style="margin-bottom:18px;"></p>
+        <div id="fvqOffer"></div>
+        <ul class="fvq__benefits">
+          <li>Aktiviert deinen Erektionsknopf — natürlich und nachhaltig</li>
+          <li>100% natürliche Inhaltsstoffe, made in Germany</li>
+          <li>60 Tage Geld-zurück-Garantie</li>
+        </ul>
+        <div class="fvq__auth" aria-label="Forschung führender Institutionen">
+          <img src="images/logo-harvard.webp" alt="Harvard University" height="26" loading="lazy" decoding="async">
+          <img src="images/logo-oxford.webp" alt="University of Oxford" height="26" loading="lazy" decoding="async">
+          <img src="images/logo-stanford.webp" alt="Stanford University" height="26" loading="lazy" decoding="async">
+          <img src="images/logo-cambridge.webp" alt="University of Cambridge" height="26" loading="lazy" decoding="async">
+          <img src="images/logo-charite.webp" alt="Charité — Universitätsmedizin Berlin" height="26" loading="lazy" decoding="async">
+        </div>
+        <div class="fvq__reviews">
+          <article class="rv-card">
+            <div class="rv-card__top"><img class="rv-card__av" src="images/mann1.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Karl-Heinz M., 54 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Köln, Deutschland</p></div></div>
+            <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
+            <p class="rv-card__text">„Bestellung kam in 3 Tagen, Verpackung komplett unauffällig &mdash; meine Frau hat nicht mal gefragt. Nach 2 Wochen wache ich morgens neben ihr auf und sie merkt sofort, dass ich hart bin. Sie lacht und sagt, was hast du da auf einmal? Ich sage nichts.“</p>
+            <p class="rv-card__date">Verifizierter Kauf &middot; 15.04.2026</p>
+          </article>
+          <article class="rv-card">
+            <div class="rv-card__top"><img class="rv-card__av" src="images/mann2.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Brigitte W., 49 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">München, Deutschland &middot; für ihren Mann</p></div></div>
+            <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
+            <p class="rv-card__text">„Habe das für meinen Mann bestellt, ohne ihm was zu sagen 😅. Nach 3 Wochen kann er die ganze Nacht durchhalten und ich kann morgens kaum aufstehen. Er denkt es liegt am Sport 😂 ich werde ihm nie sagen was es wirklich ist.“</p>
+            <p class="rv-card__date">Verifizierter Kauf &middot; 08.05.2026</p>
+          </article>
+          <article class="rv-card">
+            <div class="rv-card__top"><img class="rv-card__av" src="images/mann3.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Sepp Wagner, 52 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Wien, Österreich</p></div></div>
+            <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
+            <p class="rv-card__text">„Lieferung nach Österreich kam in 5 Tagen, keine Probleme mit dem Zoll. Nach 5 Wochen halte ich 30 Minuten durch ohne Pause &mdash; letzte Woche kam meine Frau dreimal hintereinander. Sie ist seitdem jeden Abend in der Stimmung.“</p>
+            <p class="rv-card__date">Verifizierter Kauf &middot; 25.04.2026</p>
+          </article>
+          <article class="rv-card">
+            <div class="rv-card__top"><img class="rv-card__av" src="images/mann5.webp" width="200" height="200" alt="" loading="lazy" decoding="async"><div><p class="rv-card__name">Werner H., 67 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.6 2 3.3.2.9 3.1 2.4 2.3-1.1 3.1 1.1 3.1-2.4 2.3-.9 3.1-3.3.2-2.6 2-2.6-2-3.3-.2-.9-3.1L3.3 17l1.1-3.1L3.3 10.8l2.4-2.3.9-3.1 3.3-.2z"></path><path d="M10.4 14.6l-2.1-2.1-1.4 1.4 3.5 3.5L17 11.3l-1.4-1.4z" fill="#fff"></path></svg></p><p class="rv-card__meta">Leipzig, Deutschland</p></div></div>
+            <div class="rv-card__stars" aria-hidden="true">★★★★★ <span class="rv-card__score">(5,0/5)</span></div>
+            <p class="rv-card__text">„Mit 67 hatte ich gedacht mein Sexleben sei vorbei. Letzten Sonntag habe ich meine Frau dreimal in einer Nacht zum Höhepunkt gebracht &mdash; das hatten wir seit unseren 40ern nicht mehr. Sie hat seitdem Tränen in den Augen wenn sie mich anschaut.“</p>
+            <p class="rv-card__date">Verifizierter Kauf &middot; 06.03.2026</p>
+          </article>
+        </div>
+        <p class="fvq__disc">*Individuelle Ergebnisse können variieren. ForceVital ist ein Nahrungsergänzungsmittel und ersetzt keine ausgewogene Ernährung oder ärztliche Behandlung.</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    /* FV-QUIZ controller — self-contained, parallel to the DTC. */
+    (function () {
+      'use strict';
+      var modal = document.getElementById('fvQuiz');
+      if (!modal) return;
+      var card = modal.querySelector('.fvq__card');
+      var bar = document.getElementById('fvqBar');
+      var SHOW_KEY = 'fv_quiz_shown', TTL = 7 * 24 * 60 * 60 * 1000;
+      var V = (typeof SECONDS_TO_DISPLAY === 'number' && SECONDS_TO_DISPLAY > 0) ? SECONDS_TO_DISPLAY : 2175;
+      var WIN_LO = V - 900, WIN_HI = V - 300;            // [-15min, -5min] from the pitch
+      var vt = document.querySelector('vturb-smartplayer');
+      var playAnchor = 0, isOpen = false, armed = false, checkoutGo = false, currentProfile = null;
+      var current = 'intro';
+      var answers = { duration: null, frequency: null, attempts: [] };
+      var ORDER = ['intro', 'q1', 'q2', 'q3', 'validation', 'loading', 'result'];
+
+      function fvqTrack(ev, payload) {
+        try {
+          window.dataLayer = window.dataLayer || [];
+          var o = { event: ev };
+          if (payload) for (var k in payload) if (payload.hasOwnProperty(k)) o[k] = payload[k];
+          window.dataLayer.push(o);
+        } catch (e) {}
+      }
+
+      // D3: replicate tlElapsed locally (prefer VTurb currentTime, else a play-anchored timer).
+      function elapsed() {
+        try { if (vt && typeof vt.getCurrentTime === 'function') { var t = vt.getCurrentTime(); if (typeof t === 'number' && isFinite(t) && t >= 0) return t; } } catch (e) {}
+        return playAnchor ? (Date.now() - playAnchor) / 1000 : 0;
+      }
+      setInterval(function () { if (!playAnchor && window.__ljPlayed) playAnchor = Date.now(); }, 1000);
+
+      function shown() { try { var t = parseInt(localStorage.getItem(SHOW_KEY), 10); return !isNaN(t) && (Date.now() - t) < TTL; } catch (e) { return false; } }
+      function markShown() { try { localStorage.setItem(SHOW_KEY, Date.now()); } catch (e) {} }
+      function miniOn() { return document.body.classList.contains('vsl-mini'); }
+      function eligible() { var e = elapsed(); return window.__ljPlayed === true && !miniOn() && !shown() && e >= WIN_LO && e <= WIN_HI; }
+      function rm() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+
+      function setBar() { var i = ORDER.indexOf(current); if (bar) bar.style.width = Math.round((i + 1) / ORDER.length * 100) + '%'; }
+      function show(screen) {
+        current = screen;
+        var secs = modal.querySelectorAll('.fvq__screen');
+        for (var i = 0; i < secs.length; i++) secs[i].classList.toggle('is-on', secs[i].getAttribute('data-screen') === screen);
+        if (card) card.scrollTop = 0;
+        setBar();
+      }
+      function lock() { var sw = window.innerWidth - document.documentElement.clientWidth; document.body.style.overflow = 'hidden'; if (sw > 0) document.body.style.paddingRight = sw + 'px'; }
+      function unlock() { document.body.style.overflow = ''; document.body.style.paddingRight = ''; }
+
+      function open() {
+        if (isOpen || shown()) return;
+        isOpen = true; checkoutGo = false;
+        answers = { duration: null, frequency: null, attempts: [] };
+        modal.querySelectorAll('.fvq__opt.is-sel').forEach(function (o) { o.classList.remove('is-sel'); });
+        var nx = modal.querySelector('[data-fvq="q3next"]'); if (nx) nx.classList.add('fvq__cta--hidden');
+        markShown();                                       // D2: player is NOT paused — audio keeps playing behind.
+        modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
+        lock();
+        requestAnimationFrame(function () { requestAnimationFrame(function () { modal.classList.add('is-anim'); }); });
+        fvqTrack('quiz_modal_opened');
+        show('intro');
+        fvqTrack('quiz_start');
+      }
+      function completedQuestions() { return (answers.duration ? 1 : 0) + (answers.frequency ? 1 : 0) + (answers.attempts.length ? 1 : 0); }
+      function close() {
+        if (!isOpen) return;
+        isOpen = false;
+        if (!checkoutGo) fvqTrack('quiz_abandoned', { last_screen: current, completed_questions: completedQuestions() });
+        modal.classList.remove('is-anim'); modal.setAttribute('aria-hidden', 'true');
+        var done = function () { modal.classList.remove('is-open'); unlock(); };
+        if (rm()) done(); else setTimeout(done, 320);     // closed = display:none → taps reach the player again.
+      }
+
+      // D1: open ONLY on tab return, when eligible at hide-time and still not shown/not in DTC.
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') { armed = eligible(); }
+        else { if (armed && !isOpen && !shown() && !miniOn()) open(); armed = false; }
+      });
+
+      // ---- scoring (verbatim v3 tables; A,B,C) ----
+      var DUR = { less_6m: [3, 1, 0], '6m_2y': [1, 3, 1], '2_5y': [0, 1, 2], more_5y: [0, 1, 3] };
+      var FRQ = { occasional: [3, 1, 0], monthly: [1, 3, 1], weekly: [0, 1, 3] };
+      var ATT = { viagra_cialis: [0, 2, 3], supplements: [1, 3, 1], doctor_consult: [0, 1, 3], lifestyle: [2, 2, 1], nothing: [3, 1, 0] };
+      function computeProfile() {
+        var s = [0, 0, 0];
+        function add(a) { if (a) { s[0] += a[0]; s[1] += a[1]; s[2] += a[2]; } }
+        add(DUR[answers.duration]); add(FRQ[answers.frequency]);
+        answers.attempts.forEach(function (k) { add(ATT[k]); });
+        var order = [['B', s[1]], ['C', s[2]], ['A', s[0]]];   // tie-break priority B > C > A
+        var win = order[0];
+        for (var i = 1; i < order.length; i++) if (order[i][1] > win[1]) win = order[i];
+        return win[0];
+      }
+
+      // ---- micro-validation (priority Arzt > Viagra > Supplements > Lifestyle > Nichts) ----
+      var VAL = {
+        arzt: { h: 'Du hast den schwierigsten Schritt schon gemacht.', t: 'Die meisten Männer trauen sich nie zum Arzt. Du schon — und du bist vermutlich mit wenig zufriedenstellenden Antworten rausgegangen. Genau das wollen wir jetzt ändern.' },
+        viagra: { h: 'Viagra und Cialis behandeln das Symptom — nicht die Ursache.', t: 'Deshalb hält die Wirkung nur Stunden. Dein Erektionsknopf bleibt deaktiviert. Was du brauchst, ist die Reaktivierung selbst — nicht eine weitere Pille.' },
+        supplements: { h: 'Die meisten frei verkäuflichen Mittel scheitern aus einem Grund.', t: 'Sie enthalten nur einen einzigen Wirkstoff. Die Reaktivierung deines Erektionsknopfs braucht die präzise Kombination aus fünf — im richtigen Verhältnis. Das ist der entscheidende Unterschied.' },
+        lifestyle: { h: 'Du machst bereits vieles richtig.', t: 'Lebensstil ist die Basis. Aber wenn dein Körper durch Xenotoxine sabotiert wird, reicht das allein nicht. Du brauchst die fehlende Komponente — die deinen Erektionsknopf direkt reaktiviert.' },
+        nichts: { h: 'Das war klug.', t: 'Du hast deinen Körper nicht mit verschreibungspflichtigen Pillen belastet oder mit billigen Supplements verschwendet. Das gibt uns die beste Ausgangslage — dein System ist noch sauber.' }
+      };
+      function valVariant() {
+        var a = answers.attempts;
+        if (a.indexOf('doctor_consult') >= 0) return 'arzt';
+        if (a.indexOf('viagra_cialis') >= 0) return 'viagra';
+        if (a.indexOf('supplements') >= 0) return 'supplements';
+        if (a.indexOf('lifestyle') >= 0) return 'lifestyle';
+        return 'nichts';
+      }
+      function renderValidation() {
+        var v = valVariant(), d = VAL[v];
+        document.getElementById('fvqValHead').textContent = d.h;
+        document.getElementById('fvqValText').textContent = d.t;
+        fvqTrack('validation_displayed', { variant: v });
+      }
+
+      // ---- loading ritual ----
+      var LOAD_MSGS = ['Wir vergleichen deine Antworten mit über 220 verifizierten Profilen...', 'Wir berechnen die optimale Inhaltsstoff-Kombination für dich...'];
+      function runLoading() {
+        show('loading'); fvqTrack('loading_started');
+        var reduced = rm(), lb = document.getElementById('fvqLoadBar'), msg = document.getElementById('fvqLoadMsg');
+        if (lb) { lb.style.transition = reduced ? 'none' : 'width 5s linear'; lb.style.width = '0%'; if (reduced) lb.style.width = '100%'; else requestAnimationFrame(function () { lb.style.width = '100%'; }); }
+        var idx = 0; if (msg) { msg.textContent = LOAD_MSGS[0]; msg.style.opacity = '1'; }
+        var rot = setInterval(function () {
+          idx = (idx + 1) % LOAD_MSGS.length; if (!msg) return;
+          if (reduced) msg.textContent = LOAD_MSGS[idx];
+          else { msg.style.opacity = '0'; setTimeout(function () { msg.textContent = LOAD_MSGS[idx]; msg.style.opacity = '1'; }, 300); }
+        }, 1500);
+        setTimeout(function () { clearInterval(rot); fvqTrack('loading_completed'); renderResult(); show('result'); }, 5000); // D9: 5000ms kept under reduced-motion
+      }
+
+      // ---- result + offer card (DTC card replicated verbatim; only id dropped + .ts-badge added) ----
+      var NAME = { A: 'Aktivierungsprogramm — 2 Flaschen · 60 Tage', B: 'Wiederherstellungsprogramm — 3 Flaschen · 90 Tage', C: 'Intensiv-Wiederaktivierung — 3 Flaschen · 90 Tage' };
+      var SUB = { A: 'Frühphase — die beste Ausgangslage für schnelle Ergebnisse.', B: 'Aktive Phase — du bist im richtigen Moment, um aktiv zu werden.', C: 'Intensiv-Phase — dein Körper braucht jetzt die vollständige Reaktivierung.' };
+      var SSL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"></path></svg>';
+      var STAR = '<svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+      var TSBADGE = '<div style="text-align:center;margin:8px 0 4px;"><div class="ts-badge">' +
+        '<img class="ts-badge__seal" src="images/seal-trustedshops.webp" alt="Trusted Shops" width="32" height="32" loading="lazy" decoding="async">' +
+        '<div class="ts-badge__info"><div class="ts-badge__stars" role="img" aria-label="4,7 von 5 Sternen">' + STAR + STAR + STAR + STAR +
+        '<svg class="ts-star" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="tsStar70q"><stop offset="70%" stop-color="#f5a623"/><stop offset="70%" stop-color="#ffffff" stop-opacity="0.25"/></linearGradient></defs><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="url(#tsStar70q)"/></svg>' +
+        '</div><div class="ts-badge__rating">Bewertung <b>4.7</b> / 5</div></div></div></div>';
+      function cardKit2() {
+        return '<div class="theme-border-radius border border-2 border-gray text-center p-4">' +
+          '<h3 class="mb-0 fw-bold">Einmal ausprobieren</h3>' +
+          '<p class="small mb-0">60 Tage · 2 Flaschen</p>' +
+          '<div class="col-9 mx-auto py-3"><picture><img loading="lazy" decoding="async" width="600" height="400" src="images/forcevital-2.webp" alt="ForceVital — 2 Flaschen" class="img-fluid"></picture></div>' +
+          '<div class="d-flex justify-content-center align-items-center"><h4 class="display-2 fw-bold">€79</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
+          '<p class="fw-bold mb-2">SIE SPAREN €200</p>' +
+          TSBADGE +
+          '<div class="col-12 text-center mb-4"><a class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a></div>' +
+          '<p class="cta-note">Einmalkauf · kein Abo</p>' +
+          '<p class="cta-secure">' + SSL + '256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>' +
+          '<p class="small mb-3">30 Tage Geld-zurück-Garantie</p>' +
+          '<div class="col-7 mx-auto mb-3"><picture><img loading="lazy" decoding="async" width="505" height="48" src="images/payments.webp" alt="Zahlungsarten" class="img-fluid"></picture></div>' +
+          '<div class="mig-wrap"><img class="mig-badge" src="images/made-in-germany.webp" alt="Made in Germany — in Deutschland hergestellt" width="400" height="252" loading="lazy" decoding="async"></div>' +
+          '<p class="mb-1">GESAMT: <span class="text-decoration-line-through">€358</span> <span class="fw-bold">€158</span></p>' +
+          '<p class="fw-bold mb-0">+ €9,99 Versand</p>' +
+          '</div>';
+      }
+      function cardKit3(showBadge) {
+        return '<div class="theme-border-radius border border-2 border-gray text-center p-4">' +
+          (showBadge ? '<h3 class="mb-0 fw-bold">Am Beliebtesten</h3>' : '') +
+          '<p class="small mb-0">90 Tage · 3 Flaschen</p>' +
+          '<div class="col-9 mx-auto py-3"><picture><img loading="lazy" decoding="async" width="600" height="400" src="images/forcevital-3.webp" alt="ForceVital — 3 Flaschen" class="img-fluid"></picture></div>' +
+          '<div class="d-flex justify-content-center align-items-center"><h4 class="display-2 fw-bold">€69</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
+          '<p class="fw-bold mb-2">SIE SPAREN €330</p>' +
+          TSBADGE +
+          '<div class="col-12 text-center mb-4"><a class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a></div>' +
+          '<p class="cta-note">Einmalkauf · kein Abo</p>' +
+          '<p class="cta-secure">' + SSL + '256-Bit-SSL-sicherer Checkout &middot; Express-Versand</p>' +
+          '<p class="small mb-3">30 Tage Geld-zurück-Garantie</p>' +
+          '<div class="col-7 mx-auto mb-3"><picture><img loading="lazy" decoding="async" width="505" height="48" src="images/payments.webp" alt="Zahlungsarten" class="img-fluid"></picture></div>' +
+          '<div class="mig-wrap"><img class="mig-badge" src="images/made-in-germany.webp" alt="Made in Germany — in Deutschland hergestellt" width="400" height="252" loading="lazy" decoding="async"></div>' +
+          '<p class="mb-1">GESAMT: <span class="text-decoration-line-through">€537</span> <span class="fw-bold">€207</span></p>' +
+          '<p class="fw-bold mb-0">+ Kostenloser Versand</p>' +
+          '</div>';
+      }
+      function renderResult() {
+        var p = computeProfile(); currentProfile = p;
+        document.getElementById('fvqResType').textContent = 'Dein Ergebnis: Du bist Typ ' + p;
+        document.getElementById('fvqResProg').textContent = NAME[p];
+        document.getElementById('fvqResSub').textContent = SUB[p];
+        var offer = document.getElementById('fvqOffer');
+        offer.innerHTML = (p === 'A') ? cardKit2() : cardKit3(p === 'B');   // B keeps "Am Beliebtesten"; C no badge
+        var a = offer.querySelector('a.addToCart');
+        if (a) a.addEventListener('click', function () { checkoutGo = true; fvqTrack('offer_clicked', { profile: p }); fvqTrack('checkout_redirect'); });
+        fvqTrack('result_displayed', { profile: p });
+      }
+
+      // ---- single delegated click handler ----
+      modal.addEventListener('click', function (e) {
+        var t = e.target; if (!t.closest) return;
+        if (t.closest('[data-fvq="close"]')) { close(); return; }
+        if (t.closest('[data-fvq="commit"]')) { fvqTrack('quiz_committed'); show('q1'); return; }
+        if (t.closest('[data-fvq="q3next"]')) { if (!answers.attempts.length) return; fvqTrack('question_3_answered', { attempts: answers.attempts.slice() }); show('validation'); renderValidation(); return; }
+        if (t.closest('[data-fvq="toLoading"]')) { runLoading(); return; }
+        var opt = t.closest('.fvq__opt'); if (!opt) return;
+        var group = opt.closest('.fvq__opts'), mode = group.getAttribute('data-mode'), q = group.getAttribute('data-q'), val = opt.getAttribute('data-val');
+        opt.classList.add('is-tap'); setTimeout(function () { opt.classList.remove('is-tap'); }, 150);
+        if (mode === 'single') {
+          group.querySelectorAll('.fvq__opt').forEach(function (o) { o.classList.remove('is-sel'); });
+          opt.classList.add('is-sel');
+          answers[q] = val;
+          if (q === 'duration') fvqTrack('question_1_answered', { duration: val });
+          else if (q === 'frequency') fvqTrack('question_2_answered', { frequency: val });
+          setTimeout(function () { show(q === 'duration' ? 'q2' : 'q3'); }, 300);
+        } else {
+          if (val === 'nothing') {
+            var willSel = !opt.classList.contains('is-sel');
+            group.querySelectorAll('.fvq__opt').forEach(function (o) { o.classList.remove('is-sel'); });
+            if (willSel) opt.classList.add('is-sel');
+          } else {
+            opt.classList.toggle('is-sel');
+            var n = group.querySelector('.fvq__opt[data-val="nothing"]'); if (n) n.classList.remove('is-sel');
+          }
+          answers.attempts = [];
+          group.querySelectorAll('.fvq__opt.is-sel').forEach(function (o) { answers.attempts.push(o.getAttribute('data-val')); });
+          var nx = modal.querySelector('[data-fvq="q3next"]'); if (nx) nx.classList.toggle('fvq__cta--hidden', answers.attempts.length === 0);
+        }
+      });
+
+      document.addEventListener('keydown', function (e) { if (isOpen && (e.key === 'Escape' || e.key === 'Esc')) close(); });
+    })();
+  </script>
 </body>
 
 </html>
