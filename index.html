@@ -2226,7 +2226,9 @@
        ============================================================================ -->
   <style>
     .fvq{ position:fixed; inset:0; z-index:10000; display:none; font-family:'Open Sans',Arial,sans-serif;
-      --q-bg:#FAF8F5; --q-terra:#C97B5C; --q-ink:#1A1A1A; --q-border:#E5E0D8; --q-sel:#FBF7F2; }
+      /* Inherits the site identity (graphite + green CTA + neutral lines); off-white card. */
+      --q-bg:#ffffff; --q-ink:var(--ink); --q-muted:var(--muted); --q-soft:#6b7280;
+      --q-border:var(--line); --q-accent:var(--cta); --q-sel:#eef6f0; --q-cta:var(--brand); }
     .fvq.is-open{ display:block; }
     .fvq__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.75);
       -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); opacity:0; transition:opacity .25s ease; }
@@ -2243,31 +2245,31 @@
       .fvq.is-anim .fvq__card{ transform:translateY(-50%) scale(1); opacity:1; }
     }
     .fvq__bar{ position:sticky; top:0; height:4px; background:var(--q-border); margin:0 -24px; border-radius:24px 24px 0 0; overflow:hidden; z-index:3; }
-    .fvq__bar i{ display:block; height:100%; width:0; background:var(--q-terra); transition:width .35s ease; }
+    .fvq__bar i{ display:block; height:100%; width:0; background:var(--q-accent); transition:width .35s ease; }
     .fvq__head{ position:sticky; top:4px; background:var(--q-bg); display:flex; align-items:center; justify-content:space-between; padding:16px 0 8px; z-index:2; }
-    .fvq__logo{ font-weight:800; font-size:15px; color:var(--q-terra); letter-spacing:.01em; }
-    .fvq__x{ width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:0; background:transparent; color:#8a8378; cursor:pointer; }
+    .fvq__logo{ font-weight:800; font-size:15px; color:var(--q-ink); letter-spacing:.01em; }
+    .fvq__x{ width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:0; background:transparent; color:var(--q-soft); cursor:pointer; }
     .fvq__x svg{ width:18px; height:18px; }
     .fvq__screen{ display:none; padding:24px 0 8px; }
     .fvq__screen.is-on{ display:block; animation:fvq-fade .35s ease; }
     @keyframes fvq-fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
-    .fvq__eyebrow{ font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a9384; margin:0 0 14px; }
+    .fvq__eyebrow{ font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--q-soft); margin:0 0 14px; }
     .fvq__h{ font-weight:800; font-size:32px; line-height:1.15; margin:0 0 16px; color:var(--q-ink); overflow-wrap:break-word; word-break:break-word; -webkit-hyphens:auto; hyphens:auto; }
-    .fvq__h--terra{ color:var(--q-terra); }
+    .fvq__h--terra{ color:var(--q-ink); }   /* aspirational headlines now in site graphite */
     #fvqResProg{ font-size:24px; line-height:1.22; }   /* long DE compound program names */
-    .fvq__sub{ font-size:16px; line-height:1.5; color:#5a554c; margin:0 0 28px; font-weight:400; }
+    .fvq__sub{ font-size:16px; line-height:1.5; color:var(--q-muted); margin:0 0 28px; font-weight:400; }
     .fvq__opts{ display:flex; flex-direction:column; gap:14px; margin-top:40px; }
     .fvq__opt{ display:flex; align-items:center; text-align:left; width:100%; min-height:66px; padding:14px 22px;
       border:1px solid var(--q-border); border-radius:12px; background:#fff; color:var(--q-ink);
       font-size:16px; font-weight:400; line-height:1.35; cursor:pointer; transition:transform .15s ease, border-color .15s ease, background .15s ease; }
-    .fvq__opt.is-sel{ border-color:var(--q-terra); background:var(--q-sel); }
+    .fvq__opt.is-sel{ border-color:var(--q-accent); background:var(--q-sel); }
     .fvq__opt.is-tap{ transform:scale(.98); }
-    .fvq__cta{ display:block; width:100%; height:56px; border:0; border-radius:28px; background:var(--q-ink); color:#fff;
+    .fvq__cta{ display:block; width:100%; height:56px; border:0; border-radius:28px; background:var(--q-cta); color:#fff;
       font-size:17px; font-weight:600; cursor:pointer; margin-top:32px; }
     .fvq__cta--hidden{ display:none; }
     .fvq__load-bar{ height:6px; background:var(--q-border); border-radius:999px; overflow:hidden; margin:36px 0 22px; }
-    .fvq__load-bar i{ display:block; height:100%; width:0; background:var(--q-terra); }
-    .fvq__load-msg{ font-size:15px; color:#5a554c; min-height:44px; transition:opacity .3s ease; text-align:center; }
+    .fvq__load-bar i{ display:block; height:100%; width:0; background:var(--q-accent); }
+    .fvq__load-msg{ font-size:15px; color:var(--q-muted); min-height:44px; transition:opacity .3s ease; text-align:center; }
     .fvq__benefits{ list-style:none; padding:0; margin:24px 0; display:flex; flex-direction:column; gap:12px; }
     .fvq__benefits li{ position:relative; padding-left:30px; font-size:15px; line-height:1.4; color:var(--q-ink); }
     .fvq__benefits li::before{ content:"\2713"; position:absolute; left:0; top:0; color:var(--cta); font-weight:800; }
@@ -2275,19 +2277,19 @@
     .fvq__auth img{ height:26px; width:auto; margin:6px 12px; filter:grayscale(100%); vertical-align:middle; }
     .fvq__reviews{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; margin:18px -24px; padding:4px 24px; }
     .fvq__reviews .rv-card{ flex:0 0 86%; scroll-snap-align:center; }
-    .fvq__disc{ font-size:11px; line-height:1.45; color:#9a9384; margin:22px 0 0; }
+    .fvq__disc{ font-size:11px; line-height:1.45; color:var(--q-soft); margin:22px 0 0; }
     @media (prefers-reduced-motion: reduce){
       .fvq__backdrop,.fvq__card,.fvq__bar i,.fvq__opt,.fvq__screen,.fvq__load-msg{ transition:none; animation:none; }
       .fvq__card{ transform:none; opacity:1; }
     }
   </style>
 
-  <div class="fvq" id="fvQuiz" role="dialog" aria-modal="true" aria-label="ForceVital Programm-Quiz" aria-hidden="true">
+  <div class="fvq" id="fvQuiz" role="dialog" aria-modal="true" aria-label="Programm-Quiz" aria-hidden="true">
     <div class="fvq__backdrop" data-fvq="backdrop"></div>
     <div class="fvq__card" role="document">
       <div class="fvq__bar"><i id="fvqBar"></i></div>
       <div class="fvq__head">
-        <span class="fvq__logo">ForceVital</span>
+        <span class="fvq__logo">Dein Programm</span>
         <button class="fvq__x" type="button" data-fvq="close" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
 
@@ -2394,7 +2396,7 @@
             <p class="rv-card__date">Verifizierter Kauf &middot; 06.03.2026</p>
           </article>
         </div>
-        <p class="fvq__disc">*Individuelle Ergebnisse können variieren. ForceVital ist ein Nahrungsergänzungsmittel und ersetzt keine ausgewogene Ernährung oder ärztliche Behandlung.</p>
+        <p class="fvq__disc">*Individuelle Ergebnisse können variieren. Dieses Produkt ist ein Nahrungsergänzungsmittel und ersetzt keine ausgewogene Ernährung oder ärztliche Behandlung.</p>
       </section>
     </div>
   </div>
@@ -2569,8 +2571,7 @@
         return '<div class="theme-border-radius border border-2 border-gray text-center p-4">' +
           '<h3 class="mb-0 fw-bold">Einmal ausprobieren</h3>' +
           '<p class="small mb-0">60 Tage · 2 Flaschen</p>' +
-          '<div class="col-9 mx-auto py-3"><picture><img loading="lazy" decoding="async" width="600" height="400" src="images/forcevital-2.webp" alt="ForceVital — 2 Flaschen" class="img-fluid"></picture></div>' +
-          '<div class="d-flex justify-content-center align-items-center"><h4 class="display-2 fw-bold">€79</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
+          '<div class="d-flex justify-content-center align-items-center" style="margin-top:14px;"><h4 class="display-2 fw-bold">€79</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
           '<p class="fw-bold mb-2">SIE SPAREN €200</p>' +
           TSBADGE +
           '<div class="col-12 text-center mb-4"><a class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-2.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a></div>' +
@@ -2587,8 +2588,7 @@
         return '<div class="theme-border-radius border border-2 border-gray text-center p-4">' +
           (showBadge ? '<h3 class="mb-0 fw-bold">Am Beliebtesten</h3>' : '') +
           '<p class="small mb-0">90 Tage · 3 Flaschen</p>' +
-          '<div class="col-9 mx-auto py-3"><picture><img loading="lazy" decoding="async" width="600" height="400" src="images/forcevital-3.webp" alt="ForceVital — 3 Flaschen" class="img-fluid"></picture></div>' +
-          '<div class="d-flex justify-content-center align-items-center"><h4 class="display-2 fw-bold">€69</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
+          '<div class="d-flex justify-content-center align-items-center" style="margin-top:14px;"><h4 class="display-2 fw-bold">€69</h4><div class="ms-2 pb-2 small"><span class="d-block text-start">pro</span><span class="d-block text-start">Flasche</span></div></div>' +
           '<p class="fw-bold mb-2">SIE SPAREN €330</p>' +
           TSBADGE +
           '<div class="col-12 text-center mb-4"><a class="cta addToCart btn-new btn-primary-new d-block px-0" target="_self" href="https://forcevital.site/ck/checkout-3.html?cid={clickid}&amp;aff=ICARVSGROUP&amp;subid5=&amp;sid5=">In den Warenkorb</a></div>' +
