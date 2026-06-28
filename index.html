@@ -1233,6 +1233,21 @@
               if (m && m[1]) { try { var v = decodeURIComponent(m[1]); if (plausible(v)) VKEY = v; } catch (e) {} }
             })();
 
+            // Capture the ad click + UTMs from THIS page's URL so they can ride along to the
+            // Digistore checkout (Digistore-only funnel). TikTok's click id is ttclid; cid is
+            // the click/campaign id (RedTrack or TikTok). These feed Digistore's TikTok
+            // server-side conversion and the UTMify sale match.
+            var CLICKID = '', TTCLID = '', UTMS = [];
+            (function seedTracking() {
+              try {
+                var qs = location.search;
+                var g = function (p) { var m = qs.match(new RegExp('[?&]' + p + '=([^&#]*)')); if (!m) return ''; try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; } };
+                TTCLID = g('ttclid');
+                CLICKID = TTCLID || g('cid') || g('click_id') || g('clickid') || g('gclid') || '';
+                ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { var v = g(k); if (v) UTMS.push([k, v]); });
+              } catch (e) {}
+            })();
+
             // Read one query param from a raw href (no URL parsing → cannot mangle cid).
             function readParam(href, p) {
               var q = (href.split('#')[0].split('?')[1] || ''), found = null;
@@ -1254,12 +1269,20 @@
             }
 
             // Harvest VTurb's key (its native slot is subid5), then mirror it into BOTH
-            // subid5 and sid5 (Digistore reads sid5). cid / aff are never touched.
+            // subid5 and sid5 — Digistore reads sid5 and the VTurb conversion postback
+            // (tracker.vturb.com/conversions/digistore) is keyed on {sid5}. Then forward the
+            // ad click + UTMs so Digistore can fire TikTok (server-side) and UTMify can match.
             function ensure(a) {
               var href = a.getAttribute('href'); if (!href) return;
               ['subid5', 'sid5'].forEach(function (p) { var v = readParam(href, p); if (v && plausible(v)) VKEY = v; });
               var val = encodeURIComponent(VKEY || '');
               var next = writeParam(writeParam(href, 'subid5', val), 'sid5', val);
+              // cid carries the click id; only fill the unresolved {clickid} placeholder so a
+              // real cid (e.g. server-templated) is never overwritten.
+              var cur = readParam(next, 'cid');
+              if (CLICKID && (cur === '{clickid}' || cur === null || cur === '')) next = writeParam(next, 'cid', encodeURIComponent(CLICKID));
+              if (TTCLID) next = writeParam(next, 'ttclid', encodeURIComponent(TTCLID));
+              for (var i = 0; i < UTMS.length; i++) next = writeParam(next, UTMS[i][0], encodeURIComponent(UTMS[i][1]));
               if (next !== href) a.setAttribute('href', next);
             }
             function sweep() { links().forEach(ensure); }
